@@ -12,7 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.PurchasedItems"></activity>
+        <activity
+            android:name=".Activities.CrimesList"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+        <activity
+            android:name=".Activities.PurchasedItems"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
             android:name=".Activities.AirplaneTicketInfo"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
