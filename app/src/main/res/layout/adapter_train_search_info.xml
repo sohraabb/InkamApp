@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp">
+
+        <TextView
+            android:id="@+id/tv_train_info_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="16dp"
+            android:text="غزال بن ریل"
+            android:textColor="@color/colorNightRider"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/iv_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="16dp"
+            app:srcCompat="@drawable/ic_play_gray" />
+
+        <ImageView
+            android:id="@+id/iv_fan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toEndOf="@+id/iv_play"
+            app:srcCompat="@drawable/ic_fan_gray" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_train_photo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/test_image" />
+
+        <TextView
+            android:id="@+id/tv_time_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@+id/iv_train_photo"
+            android:text="۰۴:۳۲"
+            android:textColor="@color/colorMainGreen"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/iv_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@+id/tv_time_start"
+            app:srcCompat="@drawable/ic_arrow_gray" />
+
+        <TextView
+            android:id="@+id/tv_time_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toStartOf="@+id/iv_to"
+            android:text="۱۴:۳۰"
+            android:textColor="@color/colorMainGreen"
+            android:textSize="18sp" />
+
+
+        <TextView
+            android:id="@+id/tv_rial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:text="@string/rial"
+            android:textColor="@color/colorMainGreen"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_search_train_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/tv_rial"
+            android:text="۳۰,۰۰۰"
+            android:textColor="@color/colorMainGreen"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp">
+
+        <TextView
+            android:id="@+id/tv_train_class_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="16dp"
+            android:text="۴ تخته البرز - ۱۱۸"
+            android:textColor="@color/colorBrown"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:id="@+id/tv_seat_left_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="8dp"
+            android:text="۴ نفر"
+            android:textColor="@color/colorNightRider"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_seat_left_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="16dp"
+            android:layout_toEndOf="@+id/tv_seat_left_value"
+            android:text="@string/seats_left"
+            android:textColor="@color/colorNightRider"
+            android:textSize="14sp" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

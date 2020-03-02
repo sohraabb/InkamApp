@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:orientation="horizontal"
+        android:weightSum="90">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
+            android:background="@drawable/green_rounded_background">
+
+            <TextView
+                android:id="@+id/tv_air_plane_economy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/economy"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/light_rounded_background">
+
+            <TextView
+                android:id="@+id/tv_air_plane_charter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/charter"
+                android:textColor="@color/colorNightRider"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="50">
+
+            <TextView
+                android:id="@+id/tv_air_plane_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|start"
+                android:layout_marginEnd="16dp"
+                android:text="آسمان"
+                android:textColor="@color/colorNightRider"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_train_photo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/test_image" />
+
+        <TextView
+            android:id="@+id/tv_time_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@+id/iv_train_photo"
+            android:text="۰۴:۳۲"
+            android:textColor="@color/colorMainGreen"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/iv_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@+id/tv_time_start"
+            app:srcCompat="@drawable/ic_arrow_gray" />
+
+        <TextView
+            android:id="@+id/tv_time_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toStartOf="@+id/iv_to"
+            android:text="۱۴:۳۰"
+            android:textColor="@color/colorMainGreen"
+            android:textSize="18sp" />
+
+
+        <TextView
+            android:id="@+id/tv_rial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:text="@string/rial"
+            android:textColor="@color/colorMainGreen"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_search_train_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/tv_rial"
+            android:text="۳۰,۰۰۰"
+            android:textColor="@color/colorMainGreen"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp">
+
+        <TextView
+            android:id="@+id/tv_seat_left_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="8dp"
+            android:text="۴ نفر"
+            android:textColor="@color/colorNightRider"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_seat_left_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="16dp"
+            android:layout_toEndOf="@+id/tv_seat_left_value"
+            android:text="@string/seats_left"
+            android:textColor="@color/colorNightRider"
+            android:textSize="14sp" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

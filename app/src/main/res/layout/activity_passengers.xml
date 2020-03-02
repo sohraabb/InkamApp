@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorMainBackgroundColor"
+    tools:context=".Activities.TrainTicketSequenceStep">
+
+    <RelativeLayout
+        android:id="@+id/rl_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/ib_back"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/passengers"
+            android:textSize="18sp" />
+
+
+        <ImageButton
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_menu_dots" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_stepView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:weightSum="100"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rl_header">
+
+        <RelativeLayout
+            android:id="@+id/rl_receipt_oval"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/white_oval_background">
+
+            <ImageView
+                android:id="@+id/iv_receipt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:srcCompat="@drawable/ic_receipt_gray" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_services_line"
+            android:layout_width="0dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center"
+            android:layout_weight="50"
+            android:background="@color/colorWhite">
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_services_oval"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/white_oval_background">
+
+            <ImageView
+                android:id="@+id/iv_services"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:srcCompat="@drawable/ic_service_gray" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_passengers_line"
+            android:layout_width="0dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center"
+            android:layout_weight="50"
+            android:background="@color/colorMainGreen"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_passengers_oval"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/green_oval_background">
+
+            <ImageView
+                android:id="@+id/iv_passengers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:srcCompat="@drawable/ic_passengers_white" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:showIn="@layout/activity_main"
+        android:id="@+id/main_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_stepView">
+
+    </FrameLayout>
+
+    <!--<LinearLayout-->
+        <!--android:id="@+id/cs_passengers"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:visibility="visible"-->
+        <!--android:orientation="vertical"-->
+        <!--android:weightSum="100"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/ll_stepView">-->
+
+        <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="20">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_add_passenger"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:padding="16dp"-->
+                <!--android:text="@string/add_new_passenger"-->
+                <!--android:textColor="@color/colorMainGreen"-->
+                <!--android:textSize="16sp"-->
+                <!--android:layout_centerInParent="true"-->
+                <!--android:layout_alignParentEnd="true"/>-->
+
+            <!--<ImageButton-->
+                <!--android:id="@+id/ib_history"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:background="@android:color/transparent"-->
+                <!--android:padding="16dp"-->
+                <!--android:layout_centerInParent="true"-->
+                <!--android:layout_alignParentStart="true"-->
+                <!--app:srcCompat="@drawable/ic_history_green" />-->
+        <!--</RelativeLayout>-->
+
+        <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="80">-->
+
+            <!--<androidx.recyclerview.widget.RecyclerView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"/>-->
+        <!--</RelativeLayout>-->
+
+    <!--</LinearLayout>-->
+
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_select_passenger"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:padding="16dp"-->
+        <!--android:layout_margin="16dp"-->
+        <!--android:background="@drawable/green_rounded_background"-->
+        <!--android:textColor="@color/colorWhite"-->
+        <!--android:textSize="14sp"-->
+        <!--android:text="@string/select_passenger"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"/>-->
+
+
+    <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:padding="16dp"-->
+            <!--android:layout_margin="16dp"-->
+            <!--android:background="@drawable/white_rounded_background"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/tv_add_passenger">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_passenger_name"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerInParent="true"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:padding="8dp"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:textSize="14sp"-->
+                <!--android:textColor="@color/colorNightRider"-->
+                <!--android:text="آقای امین نجفی"/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_passenger_age"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerInParent="true"-->
+                <!--android:layout_alignParentStart="true"-->
+                <!--android:padding="8dp"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:textSize="14sp"-->
+                <!--android:textColor="@color/colorMainGreen"-->
+                <!--android:text="بزرگسال"/>-->
+        <!--</RelativeLayout>-->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

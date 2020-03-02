@@ -1,0 +1,313 @@
+<resources>
+    <string name="app_name">InkamApp</string>
+
+    <string name="next">Next</string>
+    <string name="discover">Discover</string>
+    <string name="shop">Shop</string>
+    <string name="offers">Offers</string>
+    <string name="rewards">Rewards</string>
+    <string name="discover_text">Look for things around you</string>
+    <string name="shop_text"><![CDATA[Get the best deals & Coupons]]></string>
+    <string name="offers_text">Find great offers while you discover</string>
+    <string name="rewards_text"><![CDATA[Free recharge coupons & more]]></string>
+    <string name="get_started">Get Started</string>
+
+    <string name="choose_lang">انتخاب زبان</string>
+    <string name="select_lang">لطفا زبان یا گویش مورد نظر خود را انتخاب کنید</string>
+    <string name="farsi">فارسی</string>
+    <string name="kurdey">کوردی</string>
+    <string name="turkey">تورکی</string>
+
+    <string name="login_inkam">ورود به اینکام</string>
+    <string name="enter_phone">لطفا شماره موبایل خود را وارد نمایید.</string>
+    <string name="continue_">ادامه</string>
+    <string name="send_again">ارسال مجدد</string>
+
+    <string name="invitation_code">کد معرف</string>
+    <string name="do_not_have_invitation">کد معرف ندارم</string>
+    <string name="optional">(اختیاری)</string>
+    <string name="submit_code">ثبت کد</string>
+    <string name="explain_invitation_one">با وارد کردن کد معرف ، تخفیف حاصل از خرید در ۵</string>
+    <string name="explain_invitation_two">تراکنش اولتان را ۲ برابر کنید</string>
+
+    <string name="enter_pass">لطفا رمز عبور خود را وارد نمایید.</string>
+    <string name="password">رمز عبور</string>
+    <string name="enter">ورود</string>
+    <string name="forgot_password">فراموشی رمز عبور</string>
+
+    <string name="complete_profile">تکمیل پروفایل</string>
+    <string name="choose_photo">انتخاب عکس</string>
+    <string name="first_name">نام</string>
+    <string name="last_name">نام خانوادگی</string>
+    <string name="your_city">شهر شما</string>
+    <string name="pass_characters">رمز عبور باید حداقل ۶ کارکتر باشد</string>
+    <string name="submit_info">ثبت اطلاعات</string>
+
+    <string name="dashboard">پیشخوان</string>
+    <string name="wallet">کیف پول</string>
+    <string name="users">کاربران</string>
+    <string name="payment_services">خدمات مالی</string>
+
+    <string name="intro_title_one">با خرید های همیشگی خود و اطرافیانتان مادام العمر کسب درآمد کنید!</string>
+    <string name="intro_title_two">خرید تمامی محصولات با تخفیف</string>
+    <string name="intro_title_two_text">با خرید تمامی محصولات و خدمات درصدی از سود خریدتان به عنوان تخفیف به اعتبار کیف پول شما افزوده خواهد شد</string>
+    <string name="intro_title_three">کسب درآمد مادام العمر با معرفی اینکام</string>
+    <string name="intro_title_three_text">با معرفی اینکام به اطرافیان خودتان به صورت مادام العمر به ازای هر خرید آنها از اینکام درصدی از سود خرید آنها به اعتبار کیف پول شما اضافه خواهد شد</string>
+    <string name="start">شروع کنید</string>
+    <string name="empty"> </string>
+
+    <string name="recover_pass_title">بازیابی رمز عبور</string>
+    <string name="recover_pass">لطفا بعد از وارد کردن کد پیامک شده، رمز عبور جدید خود را وارد نمایید</string>
+    <string name="code">کد</string>
+    <string name="new_pass">رمز عبور جدید</string>
+    <string name="accept">تایید</string>
+
+    <string name="rial">ریال</string>
+    <string name="wallet_cashier">موجودی کیف پول</string>
+    <string name="wallet_income_inkam">درآمد از اینکام</string>
+    <string name="number_users">تعداد کاربران</string>
+    <string name="individual">نفر</string>
+
+    <string name="net_package">بسته اینترنتی</string>
+    <string name="charge">شارژ</string>
+    <string name="card_to_card">کارت به کارت</string>
+    <string name="bus_ticket">بلیط اتوبوس</string>
+    <string name="train_ticket">بلیط قطار</string>
+    <string name="air_plane_ticket">بلیط هواپیما</string>
+    <string name="car_bills">جریمه رانندگی</string>
+    <string name="phone_bills">قبض تلفن</string>
+    <string name="service_bills">قبوض خدماتی</string>
+
+    <string name="notifications">اطلاع رسانی</string>
+    <string name="messages">پیام ها</string>
+    <string name="notify">اعلان ها</string>
+
+    <string name="inkam_make_money">کسب درآمد از اینکام</string>
+
+    <string name="transactions">تراکنش ها</string>
+    <string name="user_cash_make">درآمد از کاربران</string>
+    <string name="purchase_cash_make">درآمد از خرید</string>
+    <string name="add_credit">افزایش اعتبار</string>
+    <string name="transfer_credit">انتقال اعتبار</string>
+    <string name="request_cash_out_credit">درخواست واریز اعتبار</string>
+    <string name="add_card">کارت بانکی خود را اضافه نمایید</string>
+
+    <string name="new_id">شناسه جدید</string>
+    <string name="my_friends">دوستان من</string>
+    <string name="id_name">نام شناسه</string>
+    <string name="moaref_code">نام معرف</string>
+    <string name="users_id">کاربران این شناسه</string>
+    <string name="invite_friends">دعوت دوستان</string>
+    <string name="your_income_from_users">درامد شما از کاربران</string>
+    <string name="your_users_number">تعداد کاربران شما</string>
+    <string name="number_of_invites">تعداد دعوت شدگان</string>
+
+    <string name="reports">گزارش ها</string>
+    <string name="enter_amount">مبلغ مورد نظر خود را وارد نمایید.</string>
+    <string name="dong">دنگی کردن</string>
+    <string name="get_money">دریافت پول</string>
+    <string name="send_money">ارسال پول</string>
+    <string name="send_money_to">واریز پول به</string>
+
+    <string name="submit_new_card">ثبت کارت جدید</string>
+    <string name="expiration_date">تاریخ انقضا</string>
+    <string name="submit_card">ثبت کارت</string>
+
+    <string name="make_name_invite_code">یک نام و کد معرف ایجاد کنید</string>
+    <string name="enter_code_id">کد شناسه را وارد نمایید.</string>
+    <string name="first_id_rule">شناسه انتخابی باید بیشتر از ۵ حرف و عدد باشد</string>
+    <string name="second_id_rule">شناسه می تواند شامل حروف انگلیسی و اعداد باشد</string>
+    <string name="third_id_rule">شناسه نمیتواند با ۰۹ شروع شود</string>
+    <string name="submit_id">ثبت شناسه</string>
+
+    <string name="user_details">جزییات کاربران</string>
+    <string name="submit_sheba">ثبت شماره شبا</string>
+    <string name="submit_sheba_explain">برای دریافت شماره شبا از سرور بانک لطفا شماره ملی خود را وارد کنید</string>
+    <string name="melli_code">کد ملی</string>
+    <string name="ir">IR</string>
+    <string name="submit">ثبت</string>
+    <string name="cancel">صرف نظر</string>
+    <string name="no">صرف نظر</string>
+
+    <string name="can_enter_amount">می توانید مبلغ دلخواه خود را وارد کنید</string>
+    <string name="choose_contact">مخاطب خود را برای انتقال اعتبار انتخاب کنید</string>
+    <string name="success_transfer">ارسال موفق</string>
+    <string name="success_credit_transfer">اعتبار با موفقیت ارسال گردید</string>
+
+    <string name="search">جستجو کنید</string>
+    <string name="wallet_transactions">تراکنش کیف پول</string>
+    <string name="sheba_to_sheba">شبا به شبا</string>
+    <string name="enter_card_destination">کارت مقصد را وارد نمایید</string>
+    <string name="explanation">توضیحات</string>
+    <string name="origin_card">کارت مبدا</string>
+    <string name="default_card">(کارت پیش فرض)</string>
+    <string name="destination_card">کارت مقصد</string>
+    <string name="send_money_amount">مقدار مبلغ برای ارسال</string>
+    <string name="enter_card_second_pass">رمز دوم  کارت را وارد نمایید</string>
+    <string name="enter_cvv2">CVV2 را وارد نمایید</string>
+
+    <string name="send_failed">ارسال ناموفق بود</string>
+    <string name="amount">مبلغ</string>
+    <string name="date_time">تاریخ و زمان</string>
+    <string name="consistency_number">شماره پیگیری</string>
+    <string name="own_card">صاحب کارت</string>
+    <string name="sent_success">ارسال پول با موفقیت انجام شد</string>
+    <string name="write_message">یک پیام بنویسید</string>
+
+    <string name="profile">پروفایل</string>
+    <string name="your_purchased">خرید های شما</string>
+    <string name="user_profile">پروفایل کاربری</string>
+    <string name="online_support">پشتیبانی آنلاین</string>
+    <string name="terms_conditions">قوانین و مقررات</string>
+    <string name="about_inkam">درباره اینکام</string>
+    <string name="setting">تنظیمات</string>
+    <string name="log_out">خروج از حساب</string>
+
+    <string name="request_new_pass">درخواست رمز عبور جدید</string>
+    <string name="submit_invitation_code">ثبت کد معرف</string>
+    <string name="explain_invitation_code">با وارد کردن کد معرف ، تخفیف حاصل از خرید در ۵ تراکنش اولتان را ۲ برابر کنید</string>
+
+    <string name="support">پشتیبانی</string>
+    <string name="frequently_asked_questions">سوالات متداول</string>
+    <string name="what_is_inkam">اینکام چیست؟</string>
+    <string name="inkam_business">نحوه کسب در آمد از اینکام</string>
+    <string name="inkam_security">امنیت در اینکام</string>
+
+    <string name="online_chat">چت آنلاین</string>
+    <string name="access">دسترسی ها</string>
+    <string name="contacts">مخاطبین</string>
+
+    <string name="repeat_transaction">تکرار تراکنش</string>
+    <string name="inkam_social_media">اینکام در شبکه های اجتماعی</string>
+
+    <string name="purchased">خریدها</string>
+    <string name="buy_charge">خرید شارژ</string>
+    <string name="rightel">رایتل</string>
+    <string name="hamrah_aval">همراه اول</string>
+    <string name="irancell">ایرانسل</string>
+    <string name="choose_operator">چنانچه ترابرد کرده اید، اپراتور خود را انتخاب نمایید.</string>
+    <string name="amazing">شگفت انگیز</string>
+    <string name="normal">معمولی</string>
+    <string name="riali">ریالی</string>
+
+    <string name="choose_card">کارت بانکی را انتخاب نمایید</string>
+    <string name="pay">پرداخت</string>
+    <string name="not_enough_money">عدم موجودی</string>
+    <string name="introduce_inkam">با معرفی اینکام به اطرافیان خودتان به صورت مادامالعمر به ازای هر خرید آنها از اینکام درصدی از سود خرید آنها به اعتبار کیف پول شما اضافه خواهد شد</string>
+    <string name="submit_in_repetitive_transactions">ثبت در تراکنش های پر تکرار</string>
+    <string name="next_step">مرحله بعد</string>
+
+    <string name="internet_package">بسته اینترنتی</string>
+    <string name="enter_contact_phone">شماره موبایل را وارد نمایید</string>
+    <string name="td_lte">TD-LTE</string>
+    <string name="credit">اعتباری</string>
+    <string name="constant">دایمی</string>
+    <string name="buy_packages">خرید بسته</string>
+    <string name="pay_with_wallet">پرداخت با کیف پول</string>
+    <string name="choose_card_2">انتخاب کارت</string>
+    <string name="pay_net">پرداخت اینترنتی</string>
+
+    <string name="one_way">تک سفره</string>
+    <string name="two_ways">رفت و برگشت</string>
+    <string name="choose_your_location">انتخاب مبدا</string>
+    <string name="choose_your_destination">انتخاب مقصد</string>
+    <string name="date_leave">تاریخ رفت</string>
+    <string name="date_return">تاریخ برگشت</string>
+    <string name="type_quantity_passengers">نوع و تعداد مسافران</string>
+
+    <string name="searching">جستجو</string>
+    <string name="search_ticket">جستجو بلیط</string>
+    <string name="ticket_info">اطلاعات بلیط</string>
+    <string name="train_number">شماره قطار</string>
+    <string name="train_capacity">ظرفیت کوپه</string>
+    <string name="multi_media">صوت و تصویر</string>
+    <string name="fan">تهویه</string>
+    <string name="adult_price">قیمت بزرگسال</string>
+    <string name="food_list">لیست غذا</string>
+    <string name="without_food">بدون غذا</string>
+    <string name="serve_food">پذیرایی، سرو غذا</string>
+    <string name="select_ticket">انتخاب بلیط</string>
+
+    <string name="passengers">مسافرین</string>
+    <string name="add_new_passenger">افزودن مسافر جدید</string>
+    <string name="select_passenger">انتخاب مسافر</string>
+    <string name="new_passenger">مسافر جدید</string>
+    <string name="name_farsi">نام (به فارسی)</string>
+    <string name="last_name_farsi">نام خانوادگی (به فارسی)</string>
+    <string name="first_name_english">نام (به انگلیسی)</string>
+    <string name="last_name_english">نام خانوادگی (به انگلیسی)</string>
+    <string name="birth_date">تاریخ تولد</string>
+    <string name="gender">جنسیت</string>
+    <string name="male">آقا</string>
+    <string name="female">خانم</string>
+    <string name="add_passenger">افزودن مسافر</string>
+
+    <string name="leave">رفت</string>
+    <string name="leave_return">رفت و برگشت</string>
+    <string name="bus_type">رفت</string>
+    <string name="end_origin">پایانه مبدا</string>
+    <string name="end_destination">پایانه مقصد</string>
+    <string name="barcode_scan">اسکن از طریق بارکد خوان</string>
+    <string name="bills_with_id">دریافت با شناسه</string>
+    <string name="enter_bills_id">شناسه قبض را وارد کنید</string>
+    <string name="enter_payment_id">شناسه پرداخت را وارد کنید</string>
+
+    <string name="payment_id">شناسه پرداخت</string>
+    <string name="bills_id">شناسه قبض</string>
+    <string name="price_to_pay">مبلغ قابل پرداخت</string>
+
+    <string name="phone_debt">بدهی تلفن</string>
+    <string name="mobile">موبایل</string>
+    <string name="telephone">تلفن ثابت</string>
+    <string name="instance">مثال : </string>
+    <string name="enter_telephone_number">شماره تلفن را وارد نمایید</string>
+    <string name="inquiry">استعلام</string>
+
+    <string name="inquiry_debt">استعلام بدهی</string>
+    <string name="mid_term">میان دوره</string>
+    <string name="end_of_term">پایان دوره</string>
+    <string name="mobile_number">شماره موبایل</string>
+    <string name="telephone_number">شماره تلفن</string>
+
+    <string name="car_fines">جریمه خودرو</string>
+    <string name="eight_digit_behind_card">شماره هشت رقمی پشت کارت</string>
+
+    <string name="insurance">بیمه</string>
+    <string name="charity">نیکوکاری</string>
+    <string name="having_charity">خیریه در اینکام حضور دارند.</string>
+    <string name="having_insurance">بیمه در اینکام حضور دارند.</string>
+    <string name="recent_transactions">تراکنش های اخیر کارتخوان</string>
+    <string name="date_from">از تاریخ</string>
+    <string name="date_to">تا تاریخ</string>
+    <string name="service_type">نوع سرویس</string>
+
+    <string name="select_code_receiver">انتخاب کد پذیرنده</string>
+    <string name="code_receiver">کد پذیرندگی</string>
+    <string name="receiver_end">پذیرنده/ پایانه:</string>
+    <string name="bank_follow_up_code">کد پیگیری بانک:</string>
+    <string name="card_number">شماره کارت:</string>
+
+    <string name="receiver_name">نام پذیرنده</string>
+    <string name="gold_transaction">تراکنش طلایی</string>
+    <string name="quantity">تعداد</string>
+    <string name="sum_value">مجموع ارزش</string>
+    <string name="average_timing_amount">بازه زمانی محاسبه کارمزد</string>
+    <string name="transactions_value">ارزش تراکنش ها</string>
+    <string name="value_to_credit">تبدیل ارزش به اعتبار</string>
+    <string name="seats_left">ظرفیت باقیمانده:</string>
+
+    <string name="economy">اکونومی</string>
+    <string name="charter">چارتر</string>
+    <string name="flight_number">شماره پرواز</string>
+    <string name="class_id">شناسه نرخی</string>
+    <string name="special_treatment">خدمات ویژه</string>
+    <string name="airplane">هواپیما</string>
+    <string name="child_price">قیمت کودک</string>
+    <string name="baby_price">قیمت نوزاد</string>
+
+    <string name="all">همه</string>
+    <string name="date">تاریخ</string>
+    <string name="reference_number">شماره مرجع</string>
+
+
+</resources>
