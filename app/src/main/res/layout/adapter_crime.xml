@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:background="@drawable/edittext_background_black_stroke"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_crime_type_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:text="@string/type"
+            android:textSize="16sp"
+            android:textColor="@color/colorNightRider"/>
+        <TextView
+            android:id="@+id/tv_crime_type_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toStartOf="@+id/tv_crime_type_title"
+            android:layout_marginEnd="4dp"
+            android:text="تسلیمی"
+            android:textSize="16sp"
+            android:textColor="@color/colorNightRider"/>
+
+        <TextView
+            android:id="@+id/tv_crime_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="8dp"
+            android:text="۱۳۹۷/۰۹/۱۳"
+            android:textSize="16sp"
+            android:textColor="@color/colorNightRider"/>
+
+        <TextView
+            android:id="@+id/tv_crime_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toEndOf="@+id/tv_crime_date"
+            android:text="۰۴:۳۲"
+            android:textSize="16sp"
+            android:textColor="@color/colorNightRider"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="8dp"
+        android:alpha="0.1"
+        android:background="@android:color/black" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_crime_city_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:text="@string/city"
+            android:textSize="16sp"
+            android:textColor="@color/colorBrown"/>
+
+        <TextView
+            android:id="@+id/tv_crime_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="24dp"
+            android:layout_toStartOf="@+id/tv_crime_city_title"
+            android:text="اهواز"
+            android:textSize="16sp"
+            android:textColor="@color/colorNightRider"/>
+
+        <TextView
+            android:id="@+id/tv_place_violation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentStart="true"
+            android:text="خ طالقانی"
+            android:textSize="16sp"
+            android:textColor="@color/colorNightRider"/>
+
+        <TextView
+            android:id="@+id/tv_place_violation_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="24dp"
+            android:layout_toEndOf="@+id/tv_place_violation"
+            android:text="@string/place_of_violation"
+            android:textSize="16sp"
+            android:textColor="@color/colorBrown"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="8dp"
+        android:alpha="0.1"
+        android:background="@android:color/black" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_violation_code_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:text="@string/violation_code"
+            android:textSize="16sp"
+            android:textColor="@color/colorBrown"/>
+
+        <TextView
+            android:id="@+id/tv_violation_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="24dp"
+            android:layout_toStartOf="@+id/tv_violation_code_title"
+            android:text="۲۱۶۰"
+            android:textSize="16sp"
+            android:textColor="@color/colorNightRider"/>
+
+        <TextView
+            android:id="@+id/tv_crime_serial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentStart="true"
+            android:text="۲۴۳۵۳۴۵۳۴"
+            android:textSize="16sp"
+            android:textColor="@color/colorNightRider"/>
+
+        <TextView
+            android:id="@+id/tv_crime_serial_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="24dp"
+            android:layout_toEndOf="@+id/tv_crime_serial"
+            android:text="@string/serial"
+            android:textSize="16sp"
+            android:textColor="@color/colorBrown"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="8dp"
+        android:alpha="0.1"
+        android:background="@android:color/black" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_plate_number_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:text="@string/plate_number"
+            android:textSize="16sp"
+            android:textColor="@color/colorBrown"/>
+
+        <TextView
+            android:id="@+id/tv_plate_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentStart="true"
+            android:text="۳۳۶-ایران ۹۷ د۲۴"
+            android:textSize="16sp"
+            android:textColor="@color/colorNightRider"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="8dp"
+        android:alpha="0.1"
+        android:background="@android:color/black" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_explain_violation_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:text="@string/explain_violation"
+            android:textSize="16sp"
+            android:textColor="@color/colorBrown"/>
+
+        <TextView
+            android:id="@+id/tv_explain_violation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentStart="true"
+            android:text="عدم بستن کمربند ایمنی"
+            android:textSize="16sp"
+            android:textColor="@color/colorNightRider"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:weightSum="60">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="45"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_crime_select"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/green_stroke_background"
+            android:padding="12dp"
+            android:layout_weight="15">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:srcCompat="@drawable/ic_check_white"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_crime_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="@color/colorMainGreen"
+                android:textSize="16sp"
+                android:text="@string/select"
+                android:visibility="visible"/>
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

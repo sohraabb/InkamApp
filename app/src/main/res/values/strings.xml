@@ -308,6 +308,17 @@
     <string name="all">همه</string>
     <string name="date">تاریخ</string>
     <string name="reference_number">شماره مرجع</string>
+    <string name="crimes_list">شماره مرجع</string>
+    <string name="pay_crime">پرداخت جریمه</string>
+    <string name="select_all">انتخاب همه</string>
+    <string name="type">نوع:</string>
+    <string name="city">شهر</string>
+    <string name="place_of_violation">محل تخلف</string>
+    <string name="violation_code">کد تخلف</string>
+    <string name="serial">سریال</string>
+    <string name="plate_number">شماره پلاک</string>
+    <string name="explain_violation">شرح تخلف</string>
+    <string name="select">انتخاب</string>
 
 
 </resources>
