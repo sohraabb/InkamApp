@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:background="@drawable/edittext_background_black_stroke"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_inkam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/inkam"
+            android:layout_alignParentEnd="true"
+            android:drawableEnd="@drawable/ic_green_oval"
+            android:drawablePadding="8dp"
+            android:textColor="@color/colorNightRider"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:textColor="@color/colorBrown"
+            android:layout_marginEnd="16dp"
+            android:text="۱۳۹۷/۹/۲۲"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toEndOf="@+id/tv_date"
+            android:textColor="@color/colorBrown"
+            android:text="۱۴:۳۳"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorNightRider"
+        android:alpha="0.1"
+        android:layout_margin="8dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_notif_explanation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal="true"
+            android:text="طبق قوانین بانک مرکزی امکان انتقال کارت به کارت از طریق درگاه پرداخت اینترنتی به کارت های عضو شبکه شتاب وجود ندارد."
+            android:textColor="@color/colorBrown"
+            android:textSize="14sp" />
+    </RelativeLayout>
+</LinearLayout>

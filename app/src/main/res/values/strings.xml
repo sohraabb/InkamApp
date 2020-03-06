@@ -320,5 +320,8 @@
     <string name="explain_violation">شرح تخلف</string>
     <string name="select">انتخاب</string>
 
+    <string name="increase_credit">افزایش اعتبار</string>
+    <string name="decrease_credit">کاهش اعتبار</string>
+    <string name="group_payment">پرداخت گروهی</string>
 
 </resources>

@@ -9,91 +9,90 @@
     android:orientation="vertical"
     android:padding="8dp">
 
-    <TextView
-        android:id="@+id/tv_get_money"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/send_money"
-        android:textColor="@color/colorBrown"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_card_to_card"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/light_rounded_background"
-        android:paddingStart="24dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="24dp"
-        android:paddingBottom="16dp"
-        android:text="@string/card_to_card"
-        android:textColor="@color/colorBrown"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_get_money" />
-
-    <TextView
-        android:id="@+id/tv_sheba_to_sheba"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/light_rounded_background"
-        android:paddingStart="24dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="24dp"
-        android:paddingBottom="16dp"
-        android:text="@string/sheba_to_sheba"
-        android:textColor="@color/colorBrown"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_get_money" />
-
-    <RelativeLayout
-        android:id="@+id/rl_card_destination"
+    <Button
+        android:id="@+id/btn_accept"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/edit_text_selector"
+        android:background="@drawable/button_background_disabled"
+        android:enabled="true"
+        android:padding="16dp"
+        android:text="@string/continue_"
+        android:textColor="@color/colorNightRider"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_sheba_to_sheba">
+        app:layout_constraintTop_toBottomOf="@+id/rl_add_card" />
 
-        <ImageView
-            android:id="@+id/iv_user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:layout_marginEnd="16dp"
-            app:srcCompat="@drawable/ic_card_add_gray" />
+    <LinearLayout
+        android:id="@+id/ll_send_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:weightSum="100"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_get_money">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toStartOf="@+id/iv_user_name"
-            android:layout_toEndOf="@+id/ib_cancel"
-            android:background="@android:color/transparent"
-            android:hint="@string/enter_card_destination"
-            android:padding="16dp"
-            android:textColor="@color/colorNightRider"
-            android:textSize="16sp" />
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="15" />
 
-        <ImageButton
-            android:id="@+id/ib_cancel"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerInParent="true"
-            android:background="@android:color/transparent"
-            app:srcCompat="@drawable/ic_contact_green" />
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_sheba_to_sheba"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="35"
+            android:background="@drawable/gray_rounded_background">
+
+            <TextView
+                android:id="@+id/tv_sheba_to_sheba"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="@string/sheba_to_sheba"
+                android:textColor="@color/colorBrown"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_card_to_Card"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="35"
+            android:background="@drawable/green_rounded_background">
+
+
+            <TextView
+                android:id="@+id/tv_card_to_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="@string/card_to_card"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="15" />
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/rl_send_money_explain"
@@ -106,15 +105,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rl_card_destination">
-
-        <ImageView
-            android:id="@+id/iv_explain"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:layout_marginEnd="16dp"
-            app:srcCompat="@drawable/ic_text" />
 
         <EditText
             android:layout_width="match_parent"
@@ -135,42 +125,16 @@
             android:layout_centerInParent="true"
             android:background="@android:color/transparent"
             app:srcCompat="@drawable/ic_camera" />
+
+        <ImageView
+            android:id="@+id/iv_explain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="16dp"
+            app:srcCompat="@drawable/ic_text" />
     </RelativeLayout>
-
-    <TextView
-        android:id="@+id/tv_origin_card"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/origin_card"
-        android:textColor="@color/colorBrown"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rl_send_money_explain" />
-
-    <TextView
-        android:id="@+id/tv_default_card"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:text="بانک اقتصاد نوین"
-        android:textColor="@color/colorMainGreen"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_origin_card" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/default_card"
-        android:textColor="@color/colorBrown"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/tv_default_card"
-        app:layout_constraintTop_toBottomOf="@+id/tv_origin_card" />
 
     <RelativeLayout
         android:id="@+id/rl_add_card"
@@ -215,22 +179,94 @@
             app:tabIndicatorHeight="0dp" />
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/btn_accept"
+    <RelativeLayout
+        android:id="@+id/rl_card_destination"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/button_background_disabled"
-        android:enabled="true"
-        android:padding="16dp"
-        android:text="@string/continue_"
-        android:textColor="@color/colorNightRider"
-        android:textSize="16sp"
+        android:background="@drawable/edit_text_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rl_add_card" />
+        app:layout_constraintTop_toBottomOf="@+id/ll_send_type">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/iv_user_name"
+            android:layout_toEndOf="@+id/ib_cancel"
+            android:background="@android:color/transparent"
+            android:hint="@string/enter_card_destination"
+            android:padding="16dp"
+            android:textColor="@color/colorNightRider"
+            android:textSize="16sp" />
+
+        <ImageButton
+            android:id="@+id/ib_cancel"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_contact_green" />
+
+        <ImageView
+            android:id="@+id/iv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="16dp"
+            app:srcCompat="@drawable/ic_card_add_gray" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_default_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="بانک اقتصاد نوین"
+        android:textColor="@color/colorMainGreen"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_origin_card" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/default_card"
+        android:textColor="@color/colorBrown"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_default_card"
+        app:layout_constraintTop_toBottomOf="@+id/tv_origin_card" />
+
+    <TextView
+        android:id="@+id/tv_get_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/send_money"
+        android:textColor="@color/colorBrown"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_origin_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/origin_card"
+        android:textColor="@color/colorBrown"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rl_send_money_explain" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

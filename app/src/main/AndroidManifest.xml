@@ -3,8 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.fara.inkamapp">
 
-    <uses-permission android:name="android.permission.CAMERA" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,6 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Activities.Reports"></activity>
         <activity
             android:name=".Activities.CrimesList"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
@@ -156,5 +155,7 @@
             </intent-filter>
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.CAMERA" />
 
 </manifest>
