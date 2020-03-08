@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.fara.inkamapp.BottomSheetFragments.GetMoney;
+import com.fara.inkamapp.BottomSheetFragments.GroupiePay;
 import com.fara.inkamapp.BottomSheetFragments.SendMoney;
 import com.fara.inkamapp.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -19,7 +20,7 @@ import org.w3c.dom.Text;
 public class PaymentServices extends Fragment {
 
     private BottomSheetDialogFragment bottomSheetDialogFragment;
-    private TextView getMoney, sendMoney;
+    private TextView getMoney, sendMoney, groupPayment;
 
     public PaymentServices() {
         // Required empty public constructor
@@ -32,6 +33,7 @@ public class PaymentServices extends Fragment {
 
         getMoney = view.findViewById(R.id.tv_get_money);
         sendMoney = view.findViewById(R.id.tv_send_money);
+        groupPayment = view.findViewById(R.id.tv_group_payment);
 
 
 
@@ -52,6 +54,14 @@ public class PaymentServices extends Fragment {
             }
         });
 
+        groupPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetDialogFragment = GroupiePay.newInstance("Bottom Sheet Get Money Dialog");
+                bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(),bottomSheetDialogFragment.getTag());
+
+            }
+        });
 
 
         return view;

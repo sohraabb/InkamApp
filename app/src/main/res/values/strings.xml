@@ -1,17 +1,7 @@
 <resources>
     <string name="app_name">InkamApp</string>
 
-    <string name="next">Next</string>
-    <string name="discover">Discover</string>
-    <string name="shop">Shop</string>
-    <string name="offers">Offers</string>
-    <string name="rewards">Rewards</string>
-    <string name="discover_text">Look for things around you</string>
-    <string name="shop_text"><![CDATA[Get the best deals & Coupons]]></string>
-    <string name="offers_text">Find great offers while you discover</string>
-    <string name="rewards_text"><![CDATA[Free recharge coupons & more]]></string>
-    <string name="get_started">Get Started</string>
-
+    <string name="next">بعدی</string>
     <string name="choose_lang">انتخاب زبان</string>
     <string name="select_lang">لطفا زبان یا گویش مورد نظر خود را انتخاب کنید</string>
     <string name="farsi">فارسی</string>
@@ -319,9 +309,17 @@
     <string name="plate_number">شماره پلاک</string>
     <string name="explain_violation">شرح تخلف</string>
     <string name="select">انتخاب</string>
+    <string name="inkam">اینکام</string>
 
     <string name="increase_credit">افزایش اعتبار</string>
     <string name="decrease_credit">کاهش اعتبار</string>
     <string name="group_payment">پرداخت گروهی</string>
+    <string name="share_money">هزینه را بین دوستانتان تقسیم کنید</string>
+    <string name="select_friends">انتخاب دوستان</string>
+    <string name="requested_price">مبلغ قابل درخواست</string>
+    <string name="single_price_to_pay">مبلغ قابل پرداخت برای هر فرد</string>
+    <string name="dynamic_price">می توانید مبلغ هر فرد را بصورت دستی وارد نمایید.</string>
+    <string name="group_name">نام گروه</string>
+    <string name="request_money">درخواست پول</string>
 
 </resources>

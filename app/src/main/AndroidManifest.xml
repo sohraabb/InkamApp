@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.Reports"></activity>
+        <activity android:name=".Activities.GroupPaymentActivity"></activity>
+        <activity android:name=".Activities.Reports" />
         <activity
             android:name=".Activities.CrimesList"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="55"
+            android:orientation="vertical"
+            android:weightSum="30">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_group_request"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:text="درخواست از طرف امین"
+                    android:textColor="@color/colorNightRider"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/tv_payment_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:text="در انتظار پرداخت"
+                    android:textColor="@color/colorOrangeYellow"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <ImageButton
+                    android:id="@+id/ib_chat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toStartOf="@+id/tv_bank"
+                    android:background="@android:color/transparent"
+                    app:srcCompat="@drawable/ic_chat_mini" />
+
+                <TextView
+                    android:id="@+id/tv_bank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_toStartOf="@+id/tv_date"
+                    android:text="بانک ملی"
+                    android:textColor="@color/colorBrown"
+                    android:textSize="12sp"
+                    android:visibility="invisible" />
+
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_toStartOf="@+id/tv_time"
+                    android:text="۰۴:۳۲"
+                    android:textColor="@color/colorBrown"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="8dp"
+                    android:text="۰۴:۳۲"
+                    android:textColor="@color/colorBrown"
+                    android:textSize="12sp" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="20">
+
+            <TextView
+                android:id="@+id/tv_rial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:layout_marginEnd="8dp"
+                android:text="@string/rial"
+                android:textColor="@color/colorOrangeYellow"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toEndOf="@+id/tv_rial"
+                android:text="۳۰,۰۰۰"
+                android:textColor="@color/colorOrangeYellow"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="25">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_contact_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/test_image" />
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

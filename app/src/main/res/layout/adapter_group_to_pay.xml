@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_group_pay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@color/colorWhite"
+        android:padding="8dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_user_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/test_image" />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="16dp"
+            android:layout_toStartOf="@+id/iv_user_image"
+            android:text="امین نجفی"
+            android:textColor="@color/colorBrown"
+            android:textSize="16sp" />
+
+        <ImageButton
+            android:id="@+id/ib_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_green_circular_pen"
+            android:background="@android:color/transparent"
+            android:layout_centerInParent="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:padding="8dp"/>
+
+        <TextView
+            android:id="@+id/tv_rial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/ib_edit"
+            android:textColor="@color/colorMainGreen"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="4dp"
+            android:textSize="16sp"
+            android:text="@string/rial"/>
+
+        <TextView
+            android:id="@+id/tv_user_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/tv_rial"
+            android:textColor="@color/colorMainGreen"
+            android:layout_centerInParent="true"
+            android:textSize="16sp"
+            android:text="۲۳,۰۰۰ "/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorNightRider"
+        android:alpha="0.1"
+        android:layout_margin="8dp"/>
+</LinearLayout>

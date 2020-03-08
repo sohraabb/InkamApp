@@ -46,7 +46,8 @@ public class IntroSliders extends AppCompatActivity {
         // make status bar transparent
         changeStatusBarColor();
         button.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
                 if (viewPager.getCurrentItem() < adapter.getCount() - 1) {
                     viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
                 } else {
@@ -63,19 +64,24 @@ public class IntroSliders extends AppCompatActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
-            @Override public void onPageSelected(int position) {
+
+            @Override
+            public void onPageSelected(int position) {
                 if (position == adapter.getCount() - 1) {
-                    button.setText(R.string.next);
-                } else {
                     button.setText(R.string.start);
+                } else {
+                    button.setText(R.string.next);
                 }
             }
-            @Override public void onPageScrollStateChanged(int state) {
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
             }
         });
 
 
     }
+
     private void changeStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
