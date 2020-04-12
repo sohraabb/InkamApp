@@ -1,6 +1,8 @@
 package com.fara.inkamapp.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +11,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.fara.inkamapp.R;
 import com.google.zxing.Result;
+
+import io.github.inflationx.calligraphy3.CalligraphyConfig;
+import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
+import io.github.inflationx.viewpump.ViewPump;
+import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class ServiceBillsAndCarFines extends AppCompatActivity implements ZXingScannerView.ResultHandler {
@@ -19,8 +26,22 @@ public class ServiceBillsAndCarFines extends AppCompatActivity implements ZXingS
     private FrameLayout contentFrame;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ViewPump.init(ViewPump.builder()
+                .addInterceptor(new CalligraphyInterceptor(
+                        new CalligraphyConfig.Builder()
+                                .setDefaultFontPath("fonts/IRANSansMobile.ttf")
+                                .setFontAttrId(R.attr.fontPath)
+                                .build()))
+                .build());
+
         setContentView(R.layout.activity_service_bills_and_car_fines);
 
         contentFrame = findViewById(R.id.content_frame);

@@ -314,6 +314,7 @@
             app:layout_constraintTop_toBottomOf="@+id/ll_first_row">
 
             <RelativeLayout
+                android:id="@+id/rl_bus"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
@@ -374,6 +375,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rl_plane"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="8dp"
@@ -418,6 +420,7 @@
             app:layout_constraintTop_toBottomOf="@+id/ll_second_row">
 
             <RelativeLayout
+                android:id="@+id/rl_car"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
@@ -447,6 +450,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rl_phone"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
@@ -477,6 +481,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rl_service"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="8dp"

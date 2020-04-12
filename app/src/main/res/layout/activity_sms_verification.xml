@@ -56,7 +56,7 @@
     <com.jyn.vcview.VerificationCodeView
         android:id="@+id/et_sms_verification"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         android:layout_marginTop="24dp"
         android:gravity="center"
         android:orientation="horizontal"
@@ -65,7 +65,7 @@
         app:vcv_et_inputType="number"
         app:vcv_et_number="4"
         app:vcv_et_text_color="@color/colorBrown"
-        app:vcv_et_text_size="16sp"
+        app:vcv_et_text_size="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_select_lang"/>

@@ -38,7 +38,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:id="@+id/rl_ticket_info"
+            android:id="@+id/ll_ticket_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -159,7 +159,7 @@
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rl_ticket_info">
+            app:layout_constraintTop_toBottomOf="@+id/ll_ticket_info">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_time_days"

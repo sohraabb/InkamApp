@@ -12,10 +12,14 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.fara.inkamapp.Activities.AirplaneTickets;
+import com.fara.inkamapp.Activities.BusTickets;
 import com.fara.inkamapp.Activities.BuyCharge;
 import com.fara.inkamapp.Activities.CardToCardTransfer;
 import com.fara.inkamapp.Activities.CardToCardTransfer2;
 import com.fara.inkamapp.Activities.Notifications;
+import com.fara.inkamapp.Activities.PhoneDebt;
+import com.fara.inkamapp.Activities.ServiceBillsAndCarFines;
 import com.fara.inkamapp.Activities.TrainTickets;
 import com.fara.inkamapp.BottomSheetFragments.GetMoney;
 import com.fara.inkamapp.BottomSheetFragments.InternetPackageBottomSheet;
@@ -35,7 +39,7 @@ public class Dashboard extends Fragment {
     private ImageButton notification, repeatTransaction;
     private CircleImageView profile;
     private BottomSheetDialogFragment bottomSheetDialogFragment;
-    private RelativeLayout charge, cardToCard, netPackage, trainTicket;
+    private RelativeLayout charge, cardToCard, netPackage, trainTicket, planeTicket, busTicket, phone, car, service;
 
 
     public Dashboard() {
@@ -54,6 +58,51 @@ public class Dashboard extends Fragment {
         cardToCard = view.findViewById(R.id.rl_card_to_card);
         netPackage = view.findViewById(R.id.rl_internet_package);
         trainTicket = view.findViewById(R.id.rl_train_ticket);
+        planeTicket = view.findViewById(R.id.rl_plane);
+        busTicket = view.findViewById(R.id.rl_bus);
+        phone = view.findViewById(R.id.rl_phone);
+        car = view.findViewById(R.id.rl_car);
+        service = view.findViewById(R.id.rl_service);
+
+        service.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ServiceBillsAndCarFines.class);
+                startActivity(intent);
+            }
+        });
+
+        car.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ServiceBillsAndCarFines.class);
+                startActivity(intent);
+            }
+        });
+
+        phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), PhoneDebt.class);
+                startActivity(intent);
+            }
+        });
+
+        busTicket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), BusTickets.class);
+                startActivity(intent);
+            }
+        });
+
+        planeTicket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AirplaneTickets.class);
+                startActivity(intent);
+            }
+        });
 
         trainTicket.setOnClickListener(new View.OnClickListener() {
             @Override
