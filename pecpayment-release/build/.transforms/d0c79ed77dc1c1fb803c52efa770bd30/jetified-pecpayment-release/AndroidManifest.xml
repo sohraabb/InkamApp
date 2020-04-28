@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ir.pec.mpl.pecpayment"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="27" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="false" >
+        <activity
+            android:name="ir.pec.mpl.pecpayment.view.PaymentInitiator"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+            <intent-filter>
+                <action android:name="pec.mpa.custom" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="ir.pec.mpl.pecpayment.view.CardToCardInitiator"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="909218208d5b0f0cad37d822fc602597b157dba9" />
+    </application>
+
+</manifest> <!-- android:process="ir.pec.mpl.process" -->
+<!-- <meta-data -->
+<!-- android:name="io.fabric.ApiKey" -->
+<!-- android:value="fb086a17bd7262ef5ed13d1c9729ffdf1df134ee" /> -->
