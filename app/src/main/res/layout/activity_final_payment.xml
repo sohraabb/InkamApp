@@ -25,19 +25,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_back" />
 
-        <TextView
-            android:id="@+id/tv_payment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:padding="16dp"
-            android:text="@string/pay"
-            android:textColor="@color/colorBrown"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <LinearLayout
             android:id="@+id/ll_payment_info"
             android:layout_width="match_parent"
@@ -55,7 +42,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="20"
-                android:gravity="center">
+                android:gravity="center"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_service_title"
@@ -64,6 +52,118 @@
                     android:text="قبض برق"
                     android:textColor="@color/colorMainGreen"
                     android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_single_row_charge_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp">
+
+                    <ImageView
+                        android:id="@+id/iv_logo_charge"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/irancell_logo_green" />
+
+                    <TextView
+                        android:id="@+id/tv_charge_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_toStartOf="@+id/iv_logo_charge"
+                        android:text="۳۰۰,۰۰۰"
+                        android:textColor="@color/colorMainGreen"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_rial_charge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_toStartOf="@id/tv_charge_price"
+                        android:text="@string/rial"
+                        android:textColor="@color/colorMainGreen"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_charge_phone_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerInParent="true"
+                        android:text="۰۹۱۲۳۴۵۶۷۸"
+                        android:textColor="@color/colorBrown"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_single_row_net_package_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp">
+
+                    <ImageView
+                        android:id="@+id/iv_logo_package"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/irancell_logo_green" />
+
+                    <TextView
+                        android:id="@+id/tv_net_package_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_toStartOf="@+id/iv_logo_package"
+                        android:text="۳۰۰,۰۰۰"
+                        android:textColor="@color/colorMainGreen"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_rial_net_package"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_toStartOf="@id/tv_net_package_price"
+                        android:text="@string/rial"
+                        android:textColor="@color/colorBrown"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_net_package_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/iv_logo_package"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="32dp"
+                        android:text="بسته اینترنت آلفا + ۱ روزه شبانه  ۹۰۰ مگابایت"
+                        android:textColor="@color/colorBrown"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -203,9 +303,9 @@
                 android:id="@+id/ll_three_rows_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_margin="8dp"
-                android:visibility="visible"
+                android:orientation="vertical"
+                android:visibility="gone"
                 android:weightSum="60">
 
                 <RelativeLayout
@@ -317,6 +417,19 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tv_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:padding="16dp"
+            android:text="@string/pay"
+            android:textColor="@color/colorBrown"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -326,17 +439,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ll_payment_info">
 
-
-            <TextView
-                android:id="@+id/tv_wallet_pay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="32dp"
-                android:text="@string/pay_with_wallet"
-                android:textColor="@color/colorBrown"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/btn_pay_wallet"
@@ -351,32 +453,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_wallet_pay" />
 
-            <TextView
-                android:id="@+id/tv_pay_card"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="32dp"
-                android:text="@string/choose_card_2"
-                android:textColor="@color/colorBrown"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_pay_wallet" />
-
-            <EditText
-                android:id="@+id/et_choose_card"
+            <Button
+                android:id="@+id/btn_pay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
-                android:background="@drawable/edit_text_selector"
-                android:drawableEnd="@drawable/ic_card_add_gray"
-                android:drawablePadding="16dp"
-                android:hint="@string/choose_card"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/green_rounded_background"
                 android:padding="16dp"
+                android:text="@string/pay"
+                android:textColor="@color/colorWhite"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_pay_card" />
+                app:layout_constraintTop_toBottomOf="@+id/et_cvv2" />
 
             <EditText
                 android:id="@+id/et_pass"
@@ -411,21 +502,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_pass" />
 
-            <Button
-                android:id="@+id/btn_pay"
+            <EditText
+                android:id="@+id/et_choose_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="24dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/green_rounded_background"
+                android:background="@drawable/edit_text_selector"
+                android:drawableEnd="@drawable/ic_card_add_gray"
+                android:drawablePadding="16dp"
+                android:hint="@string/choose_card"
                 android:padding="16dp"
-                android:text="@string/pay"
-                android:textColor="@color/colorWhite"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_cvv2" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_pay_card" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -434,6 +525,28 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_pay" />
+
+            <TextView
+                android:id="@+id/tv_pay_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="32dp"
+                android:text="@string/choose_card_2"
+                android:textColor="@color/colorBrown"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_pay_wallet" />
+
+            <TextView
+                android:id="@+id/tv_wallet_pay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="32dp"
+                android:text="@string/pay_with_wallet"
+                android:textColor="@color/colorBrown"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

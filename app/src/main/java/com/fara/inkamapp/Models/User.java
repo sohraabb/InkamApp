@@ -314,5 +314,5 @@ public class User {
         } catch (Exception e) {
             Log.e("User Soap", e.toString());
         }
-}
     }
+}

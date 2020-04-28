@@ -322,4 +322,11 @@
     <string name="group_name">نام گروه</string>
     <string name="request_money">درخواست پول</string>
 
+    <string name="filter_success">دسته بندی انجام شد</string>
+    <string name="try_again">دوباره تلاش کنید</string>
+    <string name="error_net">لطفااتصال به اینترنت را بررسی کنید و دوباره تلاش نمایید.</string>
+    <string name="error_input">کد رهگیری اشتباه است</string>
+    <string name="code_sent">کد رهگیری دوباره برای شما ارسال شد.</string>
+
+
 </resources>

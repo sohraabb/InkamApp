@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.multidex.MultiDex;
 
 import com.fara.inkamapp.Fragments.Dashboard;
 import com.fara.inkamapp.Fragments.PaymentServices;
@@ -79,7 +80,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
+        MultiDex.install(this);
+
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +106,11 @@ public class MainActivity extends AppCompatActivity {
         fm.beginTransaction().add(R.id.main_container, walletFragment, "2").hide(walletFragment).commit();
         fm.beginTransaction().add(R.id.main_container, dashboardFragment, "1").commit();
 
+
         menu = navView.getMenu();
+
+        menu.findItem(R.id.navigation_dashboard).setChecked(true);
+
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null)

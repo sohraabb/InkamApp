@@ -2,23 +2,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_dashboard"
-        android:title="@string/dashboard" />
-
-    <item
-        android:id="@+id/navigation_wallet"
-        android:icon="@drawable/ic_wallet"
-        android:title="@string/wallet" />
+        android:id="@+id/navigation_payment_service"
+        android:icon="@drawable/ic_service_payment"
+        android:title="@string/payment_services" />
 
     <item
         android:id="@+id/navigation_users"
         android:icon="@drawable/ic_users"
         android:title="@string/users" />
 
+
     <item
-        android:id="@+id/navigation_payment_service"
-        android:icon="@drawable/ic_service_payment"
-        android:title="@string/payment_services" />
+        android:id="@+id/navigation_wallet"
+        android:icon="@drawable/ic_wallet"
+        android:title="@string/wallet" />
+
+
+    <item
+        android:id="@+id/navigation_dashboard"
+        android:icon="@drawable/ic_dashboard"
+        android:title="@string/dashboard" />
+
 
 </menu>

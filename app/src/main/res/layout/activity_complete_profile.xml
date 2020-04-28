@@ -135,7 +135,9 @@
             android:hint="@string/password"
             android:padding="16dp"
             android:textColor="@color/colorBrown"
+            android:gravity="end"
             android:textSize="18sp"
+            android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_your_city" />

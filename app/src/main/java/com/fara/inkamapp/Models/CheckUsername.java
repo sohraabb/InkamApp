@@ -3,6 +3,7 @@ package com.fara.inkamapp.Models;
 import android.util.Log;
 
 import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
 
 public class CheckUsername {
 
@@ -16,10 +17,10 @@ public class CheckUsername {
         return _checkUserNameResult;
     }
 
-    public CheckUsername(SoapObject input) {
+    public CheckUsername(SoapPrimitive input) {
 
         try {
-            _checkUserNameResult = Integer.parseInt(input.getPropertySafelyAsString("ChekUserNameResult"));
+            _checkUserNameResult = Integer.parseInt(String.valueOf(input));
 
         } catch (Exception e) {
             Log.e("CheckCode Soap", e.toString());

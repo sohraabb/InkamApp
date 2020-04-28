@@ -179,8 +179,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
     <Button
         android:id="@+id/btn_next_step"
         android:layout_width="match_parent"

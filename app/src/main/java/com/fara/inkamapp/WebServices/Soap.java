@@ -46,6 +46,7 @@ public class Soap {
 
         HttpTransportSE httpTransport = new HttpTransportSE(_SOAP_ADDRESS);
         SoapObject response2;
+
         try {
 
             httpTransport.call(_soapAction, envelope);
