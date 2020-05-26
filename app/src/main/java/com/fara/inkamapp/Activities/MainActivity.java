@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTextMessage;
     private BottomNavigationView navView;
     private Menu menu;
+    public static String userID, token;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -113,8 +114,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null)
+        if (bundle != null) {
             isUserStartingFragment = getIntent().getExtras().getBoolean("isUserStarting");
+            userID = bundle.getString("userID");
+            token = bundle.getString("token");
+
+        }
 
         if (isUserStartingFragment != null) {
             if (!isUserStartingFragment) {

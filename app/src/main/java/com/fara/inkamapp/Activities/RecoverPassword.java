@@ -19,10 +19,22 @@ import com.fara.inkamapp.Models.ResponseStatus;
 import com.fara.inkamapp.R;
 import com.fara.inkamapp.WebServices.Caller;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
+
+import static com.fara.inkamapp.Activities.MainActivity.token;
+import static com.fara.inkamapp.Activities.MainActivity.userID;
 
 public class RecoverPassword extends AppCompatActivity {
 
@@ -57,8 +69,25 @@ public class RecoverPassword extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                oldPassword = et_oldPass.getText().toString();
-                newPassword = et_newPass.getText().toString();
+//                try {
+////                    oldPassword = RSA.encrypt(et_oldPass.getText().toString());
+////                    newPassword = RSA.encrypt(et_newPass.getText().toString());
+//
+//                } catch (UnsupportedEncodingException e) {
+//                    e.printStackTrace();
+//                } catch (NoSuchAlgorithmException e) {
+//                    e.printStackTrace();
+//                } catch (NoSuchPaddingException e) {
+//                    e.printStackTrace();
+//                } catch (InvalidKeySpecException e) {
+//                    e.printStackTrace();
+//                } catch (InvalidKeyException e) {
+//                    e.printStackTrace();
+//                } catch (IllegalBlockSizeException e) {
+//                    e.printStackTrace();
+//                } catch (BadPaddingException e) {
+//                    e.printStackTrace();
+//                }
 
                 new updatePassword().execute();
             }
@@ -96,7 +125,7 @@ public class RecoverPassword extends AppCompatActivity {
 
         @Override
         protected ResponseStatus doInBackground(Void... params) {
-            results = new Caller().updatePassword("C78201B2-F9A4-45AA-9C38-890A526468AF","9368FD3E-7650-4C43-8245-EF33F4743A00",oldPassword, newPassword);
+            results = new Caller().updatePassword(MainActivity.userID,MainActivity.token,oldPassword, newPassword);
 
             return results;
         }

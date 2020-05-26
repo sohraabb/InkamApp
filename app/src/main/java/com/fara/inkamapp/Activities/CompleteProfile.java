@@ -16,17 +16,25 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fara.inkamapp.Helpers.RSA;
 import com.fara.inkamapp.Models.ResponseStatus;
 import com.fara.inkamapp.Models.User;
+import com.fara.inkamapp.Models.UserList;
 import com.fara.inkamapp.R;
 import com.fara.inkamapp.WebServices.Caller;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Map;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
@@ -41,7 +49,7 @@ public class CompleteProfile extends AppCompatActivity {
     private JSONObject postData;
 
     private byte[] encodeData = null;
-    private String publicKey = "";
+    private String phoneNumber;
     private String privateKey = "";
 
 
@@ -70,6 +78,10 @@ public class CompleteProfile extends AppCompatActivity {
         city = findViewById(R.id.et_your_city);
         password = findViewById(R.id.et_password);
 
+        Bundle intent = getIntent().getExtras();
+
+        phoneNumber = intent.getString("phone");
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,13 +93,11 @@ public class CompleteProfile extends AppCompatActivity {
 //                startActivity(intent);
             }
         });
-
-        initRSA();
     }
 
-    private class insertUser extends AsyncTask<Void, Void, ResponseStatus> {
+    private class insertUser extends AsyncTask<Void, Void, UserList> {
 
-        ResponseStatus results = null;
+        UserList results = null;
 
         @Override
         protected void onPreExecute() {
@@ -95,12 +105,14 @@ public class CompleteProfile extends AppCompatActivity {
 
             postData = new JSONObject();
             try {
-                postData.put("UserName", "Sohraabb");
+//                String encryptedPass = RSA.encrypt(password.getText().toString());
+
+                postData.put("UserName", phoneNumber);
                 postData.put("FirstName", firstName.getText().toString());
                 postData.put("LastName", lastName.getText().toString());
                 postData.put("CityID", "1D3284CA-6711-403B-9B46-470B9756DA10");
-                postData.put("Password", password.getText().toString());
-                postData.put("Phone", "09374227117");
+//                postData.put("Password", encryptedPass);
+                postData.put("Phone", phoneNumber);
                 postData.put("UserTypeID", "C78201B2-F9A4-45AA-9C38-890A526468AF");
                 postData.put("ProfilePicURL", "");
                 postData.put("IsUser", "true");
@@ -113,19 +125,24 @@ public class CompleteProfile extends AppCompatActivity {
         }
 
         @Override
-        protected ResponseStatus doInBackground(Void... params) {
-            results = new Caller().insertUser(postData.toString());
+        protected UserList doInBackground(Void... params) {
+            String jsonToInsert = postData.toString().replace("\\n","");
+            String input = jsonToInsert.replace("\\","");
+            results = new Caller().insertUser(input);
 
             return results;
         }
 
         @Override
-        protected void onPostExecute(ResponseStatus responseStatus) {
-            super.onPostExecute(responseStatus);
+        protected void onPostExecute(UserList userList) {
+            super.onPostExecute(userList);
             //TODO we should add other items here too
 
-            if (responseStatus != null && responseStatus.equals("SUCCESS")) {
-                Intent intent = new Intent(getApplicationContext(), InvitationCode.class);
+            if (userList != null && userList.get_status().equals("SUCCESS")) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("userID", userList.get_users().get(0).get_id());
+                intent.putExtra("token", userList.get_users().get(0).get_token());
+
                 startActivity(intent);
                 finish();
 
@@ -143,61 +160,6 @@ public class CompleteProfile extends AppCompatActivity {
                 toast.show();
             }
         }
-    }
-
-    private void initRSA() {
-        try {
-            Map<String, Object> keyMap = RSA.initKey();
-            publicKey = RSA.getPublicKey(keyMap);
-            privateKey = RSA.getPrivateKey(keyMap);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void decrypt() {
-        try {
-            byte[] decodeData = RSA.encryptByPrivateKey(encodeData, getPrivateKey());
-            String decodeStr = new String(decodeData);
-            Log.i("AghaSori", "Encode String : " + decodeStr);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void encrypt() {
-        byte[] rsaData = "Salam, Chetori".getBytes();
-
-        try {
-            encodeData = RSA.encryptByPublicKey(rsaData, getPublicKey());
-            String encodeStr = new BigInteger(1, encodeData).toString();
-            Log.i("AghaSori", "Encode String : " + encodeStr);
-
-            // Sending side
-            byte[] data = encodeStr.getBytes("UTF-8");
-            String base64 = Base64.encodeToString(data, Base64.DEFAULT);
-            Log.i("AghaSori", "Base64 String : " + base64);
-
-
-            decrypt();
-//              Receiving side
-//            byte[] data = Base64.decode(base64, Base64.DEFAULT);
-//            String text = new String(data, "UTF-8");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public String getPublicKey() {
-        return publicKey;
-    }
-
-    public String getPrivateKey() {
-        return privateKey;
     }
 
 }

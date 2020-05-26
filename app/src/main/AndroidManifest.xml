@@ -12,6 +12,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
         <activity
             android:name=".Activities.GroupPaymentActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />

@@ -33,7 +33,8 @@
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_inquiry_debt_title">
+        app:layout_constraintTop_toBottomOf="@+id/tv_inquiry_debt_title"
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/tv_mid_term_title"
@@ -121,10 +122,11 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:text="@string/continue_"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/colorBlack"
         android:textSize="14sp"
         android:padding="16dp"
-        android:background="@drawable/green_rounded_background"
+        android:enabled="false"
+        android:background="@drawable/button_background_disabled"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rl_end_term" />

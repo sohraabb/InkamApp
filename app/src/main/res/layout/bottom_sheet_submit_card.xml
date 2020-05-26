@@ -10,17 +10,21 @@
     android:padding="8dp">
 
 
-    <TextView
-        android:id="@+id/tv_submit_card"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/btn_submit_card"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/submit_new_card"
-        android:textColor="@color/colorBrown"
-        android:textSize="18sp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/button_background_green"
+        android:padding="16dp"
+        android:text="@string/submit_card"
+        android:textColor="@color/colorWhite"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rl_add_card" />
 
 
     <RelativeLayout
@@ -35,6 +39,28 @@
         app:layout_constraintTop_toBottomOf="@id/tv_submit_card">
 
 
+        <EditText
+            android:id="@+id/et_first_num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_bank"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            android:imeOptions="actionNext"
+            android:inputType="numberDecimal"
+            android:maxLength="24"
+            android:maxLines="1" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_bank"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/lines" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,6 +69,15 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             app:srcCompat="@drawable/ic_bank_shetab" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_bank"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="32dp"
+            android:layout_toEndOf="@+id/et_first_num"
+            android:src="@drawable/lines" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_bank"
@@ -55,153 +90,18 @@
             android:scaleType="centerCrop"
             android:src="@drawable/empty_oval" />
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_bank"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="32dp"
-            android:src="@drawable/lines" />
-
-        <EditText
-            android:id="@+id/et_first_num"
-            android:layout_width="55dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_bank"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
-            android:maxLength="7"
-            android:background="@android:color/transparent"
-            android:inputType="numberDecimal" />
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_bank"
-            android:layout_toEndOf="@+id/et_first_num"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="32dp"
-            android:src="@drawable/lines" />
-
-        <EditText
-            android:id="@+id/et_second_num"
-            android:layout_width="55dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_bank"
-            android:layout_toEndOf="@+id/et_first_num"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
-            android:background="@android:color/transparent"
-            android:inputType="numberDecimal"
-            android:maxLength="7" />
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_bank"
-            android:layout_toEndOf="@+id/et_second_num"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="32dp"
-            android:src="@drawable/lines" />
-
-        <EditText
-            android:id="@+id/et_third_num"
-            android:layout_width="55dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_bank"
-            android:layout_toEndOf="@+id/et_second_num"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
-            android:background="@android:color/transparent"
-            android:inputType="numberDecimal"
-            android:maxLength="7" />
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_bank"
-            android:layout_toEndOf="@+id/et_third_num"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="32dp"
-            android:src="@drawable/lines" />
-
-        <EditText
-            android:id="@+id/et_fourth_num"
-            android:layout_width="55dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_bank"
-            android:layout_toEndOf="@+id/et_third_num"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
-            android:background="@android:color/transparent"
-            android:inputType="numberDecimal"
-            android:maxLength="7" />
-
-        <ImageView
-            android:layout_width="45dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_bank"
-            android:layout_toEndOf="@+id/et_fourth_num"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="32dp"
-            android:src="@drawable/two_lines_date" />
-
-        <EditText
-            android:id="@+id/et_date_year"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_bank"
-            android:layout_toEndOf="@+id/et_fourth_num"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:background="@android:color/transparent"
-            android:inputType="date"
-            android:maxLength="7" />
-
-        <ImageView
-            android:id="@+id/iv_slash"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/slash"
-            android:layout_toEndOf="@+id/et_date_year"
-            android:layout_below="@+id/iv_bank"
-            android:layout_marginTop="16dp"/>
-
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_bank"
-            android:layout_toEndOf="@+id/iv_slash"
-            android:layout_marginTop="32dp"
-            android:src="@drawable/two_lines_date" />
-
-        <EditText
-            android:id="@+id/et_date_month"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_bank"
-            android:layout_marginTop="8dp"
-            android:layout_toEndOf="@+id/iv_slash"
-            android:background="@android:color/transparent"
-            android:inputType="date"
-            android:maxLength="7" />
     </RelativeLayout>
 
-
-    <Button
-        android:id="@+id/btn_submit_card"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_submit_card"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/button_background_green"
-        android:padding="16dp"
-        android:text="@string/submit_card"
-        android:textColor="@color/colorWhite"
-        android:textSize="16sp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/submit_new_card"
+        android:textColor="@color/colorBrown"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rl_add_card" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

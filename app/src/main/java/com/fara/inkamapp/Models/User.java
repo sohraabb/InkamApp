@@ -1,8 +1,12 @@
 package com.fara.inkamapp.Models;
 
+import android.net.ParseException;
 import android.util.Log;
 
 import org.ksoap2.serialization.SoapObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class User {
 
@@ -36,6 +40,42 @@ public class User {
     private String _postalCode;
     private String _token;
     private boolean _isUser;
+    private int _userCount;
+    private String _perenestorCode;
+    private boolean _agencyRequest;
+    private int _chanceCount;
+    private double _income;
+    private String _registeryDate;
+    private String _registeryDatePersian;
+
+
+    public void set_userCount(int _userCount) {
+        this._userCount = _userCount;
+    }
+
+    public void set_agencyRequest(boolean _agencyRequest) {
+        this._agencyRequest = _agencyRequest;
+    }
+
+    public void set_chanceCount(int _chanceCount) {
+        this._chanceCount = _chanceCount;
+    }
+
+    public void set_income(double _income) {
+        this._income = _income;
+    }
+
+    public void set_perenestorCode(String _perenestorCode) {
+        this._perenestorCode = _perenestorCode;
+    }
+
+    public void set_registeryDate(String _registeryDate) {
+        this._registeryDate = _registeryDate;
+    }
+
+    public void set_registeryDatePersian(String _registeryDatePersian) {
+        this._registeryDatePersian = _registeryDatePersian;
+    }
 
     public void set_id(String _id) {
         this._id = _id;
@@ -277,6 +317,31 @@ public class User {
         return _token;
     }
 
+    public String get_registeryDate() {
+        return _registeryDate;
+    }
+
+    public double get_income() {
+        return _income;
+    }
+
+    public int get_chanceCount() {
+        return _chanceCount;
+    }
+
+    public int get_userCount() {
+        return _userCount;
+    }
+
+    public String get_perenestorCode() {
+        return _perenestorCode;
+    }
+
+    public String get_registeryDatePersian() {
+        return _registeryDatePersian;
+    }
+
+
     public User(SoapObject input) {
 
         try {
@@ -310,6 +375,24 @@ public class User {
             _postalCode = input.getPropertySafelyAsString("PostalCode");
             _token = input.getPropertySafelyAsString("Token");
             _isUser = Boolean.parseBoolean(input.getPropertySafelyAsString("IsUser"));
+            _userCount = Integer.parseInt(input.getPropertySafelyAsString("UserCount"));
+            _perenestorCode = input.getPropertySafelyAsString("perenestorCode");
+            _agencyRequest = Boolean.parseBoolean(input.getPropertySafelyAsString("AgencyRequest"));
+            _chanceCount = Integer.parseInt(input.getPropertySafelyAsString("ChanceCount"));
+            _income = Double.parseDouble(input.getPropertySafelyAsString("Income"));
+
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+//            try {
+//                Date date = new Date();
+//                _registeryDate = dateFormat.format(input.getPropertySafelyAsString("RegisteryDate"));
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+
+            _registeryDatePersian = input.getPropertySafelyAsString("RegisteryDatePersian");
+
+
+
 
         } catch (Exception e) {
             Log.e("User Soap", e.toString());

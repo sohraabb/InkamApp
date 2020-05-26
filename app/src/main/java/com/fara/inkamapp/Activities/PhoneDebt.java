@@ -42,7 +42,8 @@ public class PhoneDebt extends AppCompatActivity implements View.OnClickListener
     private EditText mobile, telephone;
     private Button inquiry;
     private Activity _context;
-    private String phoneNumber;
+    private String phoneNumber, midTermAmount, midTermBillId, midTermPaymentId, finalTermAmount, finalTermBillId, finalTermPaymentId;
+    private boolean isMobile;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -111,6 +112,7 @@ public class PhoneDebt extends AppCompatActivity implements View.OnClickListener
 
                 mobile.setVisibility(View.VISIBLE);
                 telephone.setVisibility(View.INVISIBLE);
+                isMobile = true;
 
                 break;
 
@@ -124,29 +126,32 @@ public class PhoneDebt extends AppCompatActivity implements View.OnClickListener
 
                 telephone.setVisibility(View.VISIBLE);
                 mobile.setVisibility(View.INVISIBLE);
+                isMobile = false;
 
                 break;
 
             case R.id.btn_inquiry:
 
-                phoneNumber = mobile.getText().toString();
+                if (isMobile) {
+                    phoneNumber = mobile.getText().toString();
+                    if (isHamrahAval(phoneNumber))
+                        new GetHamrahAvalBillInfo().execute();
 
-                if(isHamrahAval(phoneNumber))
-                    new GetHamrahAvalBillInfo().execute();
-                else if(isRightel(phoneNumber))
-                    new GetRightelBillInfo().execute();
+                    else if (isRightel(phoneNumber))
+                        new GetRightelBillInfo().execute();
 
-                else if(isIrancell(phoneNumber))
-                    new GetIrancelBillInfo().execute();
+                    else if (isIrancell(phoneNumber))
+                        new GetIrancelBillInfo().execute();
 
-                else
-                    Toast.makeText(getApplicationContext(), "Wrong Number" ,Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(getApplicationContext(), "Wrong Number", Toast.LENGTH_SHORT).show();
 
 
+                } else {
+                    phoneNumber = telephone.getText().toString();
+                    new GetTelecomBillInfo().execute();
+                }
 
-                InquiryDebt inquiryDebt = new InquiryDebt(this);
-                inquiryDebt.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                inquiryDebt.show();
         }
     }
 
@@ -192,6 +197,36 @@ public class PhoneDebt extends AppCompatActivity implements View.OnClickListener
 
 
             if (phoneBillInfo != null) {
+                if (phoneBillInfo.get_status().get_code().equals("G00000")) {
+                    if (phoneBillInfo.get_phoneBillParameters().get_midTermInfo() != null) {
+                        midTermAmount = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_midTermInfo().get_amount());
+                        midTermBillId = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_midTermInfo().get_billId());
+                        midTermPaymentId = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_midTermInfo().get_paymentId());
+                    }
+                    if (phoneBillInfo.get_phoneBillParameters().get_finalTermInfo() != null) {
+                        finalTermAmount = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_finalTermInfo().get_amount());
+                        finalTermBillId = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_finalTermInfo().get_billId());
+                        finalTermPaymentId = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_finalTermInfo().get_paymentId());
+                    }
+
+                    InquiryDebt inquiryDebt = new InquiryDebt(PhoneDebt.this, midTermAmount, midTermBillId, midTermPaymentId, finalTermAmount, finalTermBillId, finalTermPaymentId, phoneNumber);
+                    inquiryDebt.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    inquiryDebt.show();
+
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(), phoneBillInfo.get_status().get_description(), Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toastText = toast.getView().findViewById(android.R.id.message);
+                    toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+                    if (toastText != null) {
+                        toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                        toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                        toastText.setGravity(Gravity.CENTER);
+                        toastText.setTextSize(14);
+                    }
+                    toast.show();
+                }
 
 
             } else {
@@ -250,6 +285,36 @@ public class PhoneDebt extends AppCompatActivity implements View.OnClickListener
 
 
             if (phoneBillInfo != null) {
+                if (phoneBillInfo.get_status().get_code().equals("G00000")) {
+                    if (phoneBillInfo.get_phoneBillParameters().get_midTermInfo() != null) {
+                        midTermAmount = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_midTermInfo().get_amount());
+                        midTermBillId = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_midTermInfo().get_billId());
+                        midTermPaymentId = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_midTermInfo().get_paymentId());
+                    }
+                    if (phoneBillInfo.get_phoneBillParameters().get_finalTermInfo() != null) {
+                        finalTermAmount = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_finalTermInfo().get_amount());
+                        finalTermBillId = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_finalTermInfo().get_billId());
+                        finalTermPaymentId = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_finalTermInfo().get_paymentId());
+                    }
+
+                    InquiryDebt inquiryDebt = new InquiryDebt(PhoneDebt.this, midTermAmount, midTermBillId, midTermPaymentId, finalTermAmount, finalTermBillId, finalTermPaymentId, phoneNumber);
+                    inquiryDebt.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    inquiryDebt.show();
+
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(), phoneBillInfo.get_status().get_description(), Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toastText = toast.getView().findViewById(android.R.id.message);
+                    toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+                    if (toastText != null) {
+                        toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                        toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                        toastText.setGravity(Gravity.CENTER);
+                        toastText.setTextSize(14);
+                    }
+                    toast.show();
+                }
 
 
             } else {
@@ -308,6 +373,125 @@ public class PhoneDebt extends AppCompatActivity implements View.OnClickListener
 
 
             if (phoneBillInfo != null) {
+                if (phoneBillInfo.get_status().get_code().equals("G00000")) {
+                    if (phoneBillInfo.get_phoneBillParameters().get_midTermInfo() != null) {
+                        midTermAmount = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_midTermInfo().get_amount());
+                        midTermBillId = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_midTermInfo().get_billId());
+                        midTermPaymentId = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_midTermInfo().get_paymentId());
+                    }
+                    if (phoneBillInfo.get_phoneBillParameters().get_finalTermInfo() != null) {
+                        finalTermAmount = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_finalTermInfo().get_amount());
+                        finalTermBillId = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_finalTermInfo().get_billId());
+                        finalTermPaymentId = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_finalTermInfo().get_paymentId());
+                    }
+
+                    InquiryDebt inquiryDebt = new InquiryDebt(PhoneDebt.this, midTermAmount, midTermBillId, midTermPaymentId, finalTermAmount, finalTermBillId, finalTermPaymentId, phoneNumber);
+                    inquiryDebt.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    inquiryDebt.show();
+
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(), phoneBillInfo.get_status().get_description(), Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toastText = toast.getView().findViewById(android.R.id.message);
+                    toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+                    if (toastText != null) {
+                        toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                        toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                        toastText.setGravity(Gravity.CENTER);
+                        toastText.setTextSize(14);
+                    }
+                    toast.show();
+                }
+
+
+            } else {
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.try_again, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+            }
+
+        }
+    }
+
+    private class GetTelecomBillInfo extends AsyncTask<Void, Void, PhoneBillInfo> {
+
+        PhoneBillInfo results = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            if (!isNetworkAvailable()) {
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.error_net, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+            }
+
+        }
+
+        @Override
+        protected PhoneBillInfo doInBackground(Void... params) {
+            results = new Caller().getTelecomBillInfo(phoneNumber, "2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00");
+
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(PhoneBillInfo phoneBillInfo) {
+            super.onPostExecute(phoneBillInfo);
+            //TODO we should add other items here too
+
+
+            if (phoneBillInfo != null) {
+                if (phoneBillInfo.get_status().get_code().equals("G00000")) {
+                    if (phoneBillInfo.get_phoneBillParameters().get_midTermInfo() != null) {
+                        midTermAmount = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_midTermInfo().get_amount());
+                        midTermBillId = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_midTermInfo().get_billId());
+                        midTermPaymentId = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_midTermInfo().get_paymentId());
+                    }
+                    if (phoneBillInfo.get_phoneBillParameters().get_finalTermInfo() != null) {
+                        finalTermAmount = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_finalTermInfo().get_amount());
+                        finalTermBillId = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_finalTermInfo().get_billId());
+                        finalTermPaymentId = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_finalTermInfo().get_paymentId());
+                    }
+
+
+                    InquiryDebt inquiryDebt = new InquiryDebt(PhoneDebt.this, midTermAmount, midTermBillId, midTermPaymentId, finalTermAmount, finalTermBillId, finalTermPaymentId, phoneNumber);
+                    inquiryDebt.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    inquiryDebt.show();
+
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(), phoneBillInfo.get_status().get_description(), Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toastText = toast.getView().findViewById(android.R.id.message);
+                    toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+                    if (toastText != null) {
+                        toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                        toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                        toastText.setGravity(Gravity.CENTER);
+                        toastText.setTextSize(14);
+                    }
+                    toast.show();
+                }
 
 
             } else {

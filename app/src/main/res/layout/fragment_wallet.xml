@@ -66,21 +66,17 @@
                 android:textSize="16sp"
                 android:visibility="visible" />
 
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/pagerIntroSlider"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_cards_slide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone" />
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
+            <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
+                android:id="@+id/indicator"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:visibility="gone"
-                app:tabBackground="@drawable/slider_dot_selector"
-                app:tabGravity="center"
-                app:tabIndicatorHeight="0dp" />
+                android:visibility="gone"/>
 
         </RelativeLayout>
 

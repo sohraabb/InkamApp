@@ -26,6 +26,16 @@ import com.fara.inkamapp.R;
 import com.fara.inkamapp.WebServices.Caller;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Random;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 import ir.pec.mpl.pecpayment.view.PaymentInitiator;
 
 public class AddExtraCredit extends BottomSheetDialogFragment {
@@ -36,6 +46,7 @@ public class AddExtraCredit extends BottomSheetDialogFragment {
     private TextView toastText;
     public MainActivity activity;
     private Context _context;
+    private String dataToConfirm, amount;
 
 
 
@@ -117,12 +128,30 @@ public class AddExtraCredit extends BottomSheetDialogFragment {
                 toast.show();
             }
 
+//            try {
+//                amount = RSA.encrypt("1000");
+//            } catch (UnsupportedEncodingException e) {
+//                e.printStackTrace();
+//            } catch (NoSuchAlgorithmException e) {
+//                e.printStackTrace();
+//            } catch (NoSuchPaddingException e) {
+//                e.printStackTrace();
+//            } catch (InvalidKeySpecException e) {
+//                e.printStackTrace();
+//            } catch (InvalidKeyException e) {
+//                e.printStackTrace();
+//            } catch (IllegalBlockSizeException e) {
+//                e.printStackTrace();
+//            } catch (BadPaddingException e) {
+//                e.printStackTrace();
+//            }
+
         }
 
         @Override
         protected WalletCredit doInBackground(Void... params) {
 
-            results = new Caller().IncreaseWalletCreditRequest("2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00", Long.parseLong("09374227117"), Long.parseLong("10000"));
+            results = new Caller().IncreaseWalletCreditRequest("2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00", Long.parseLong("09374227117"), Long.parseLong("1000"));
 
             return results;
         }
@@ -134,10 +163,19 @@ public class AddExtraCredit extends BottomSheetDialogFragment {
 
                 if (walletCredit.get_data().get_token() != null) {
                     String token = walletCredit.get_data().get_token();
+
+                    // for OrderID Random Number
+                    int min = 10000;
+                    int max = 90000;
+                    Random r = new Random();
+                    int randomOrder = r.nextInt(max - min + 1) + min;
+
                     Intent intent = new Intent(_context, PaymentInitiator.class);
                     intent.putExtra("Type", "1");
                     intent.putExtra("Token", token);
-                    intent.putExtra("OrderID", 123);
+                    intent.putExtra("OrderID", randomOrder);
+                    intent.putExtra("TSPEnabled" , 1);
+
                     startActivityForResult(intent, 1);
                     //                new IncreaseWalletCreditRequestConfirm().execute();
 
@@ -186,7 +224,8 @@ public class AddExtraCredit extends BottomSheetDialogFragment {
 
         @Override
         protected String doInBackground(Void... params) {
-            results = new Caller().increaseWalletCreditRequestConfirm("2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00", "", 12000);
+
+            results = new Caller().increaseWalletCreditRequestConfirm("2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00", dataToConfirm, Double.parseDouble(amount));
 
             return results;
         }
@@ -198,8 +237,18 @@ public class AddExtraCredit extends BottomSheetDialogFragment {
 
             if (response != null) {
 
-                Intent intent = new Intent(getActivity(), InternetPackageActivity.class);
-                startActivity(intent);
+                Toast toast = Toast.makeText(getActivity(), response, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
 
             } else {
                 Toast toast = Toast.makeText(getActivity(), R.string.try_again, Toast.LENGTH_SHORT);
@@ -224,7 +273,10 @@ public class AddExtraCredit extends BottomSheetDialogFragment {
         super.onActivityResult(requestCode, resultCode, data);
         switch (resultCode) {
             case 1:
-                Toast.makeText(getActivity(), "good to go", Toast.LENGTH_SHORT).show();
+                dataToConfirm = data.getStringExtra("enData").replace("\\","");
+                String one = data.getStringExtra("message");
+                String two = String.valueOf(data.getIntExtra("status" , 0));
+                new IncreaseWalletCreditRequestConfirm().execute();
                 break;
         }
 

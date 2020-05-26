@@ -190,7 +190,7 @@ public class ServiceBillsAndCarFines extends AppCompatActivity implements ZXingS
 
 
             if (trafficFines != null) {
-                if (trafficFines.get_status().get_code().matches("")) {
+                if (trafficFines.get_status().get_code().matches("G00000")) {
                     if (trafficFines.get_carFinesParameters().get_plateNumber() != null)
                         plateNumber = trafficFines.get_carFinesParameters().get_plateNumber();
 
@@ -216,8 +216,7 @@ public class ServiceBillsAndCarFines extends AppCompatActivity implements ZXingS
                     startActivity(intent);
 
                 } else {
-                    String response = trafficFines.get_status().get_description();
-                    Toast toast = Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getApplicationContext(), trafficFines.get_status().get_description(), Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toastText = toast.getView().findViewById(android.R.id.message);
                     toast.getView().setBackgroundResource(R.drawable.toast_background);
@@ -307,7 +306,7 @@ public class ServiceBillsAndCarFines extends AppCompatActivity implements ZXingS
 
 
             if (serviceBillInfo != null) {
-                if (serviceBillInfo.get_status().get_code().matches("")) {
+                if (serviceBillInfo.get_status().get_code().matches("G00000")) {
                     if (serviceBillInfo.get_serviceBillDetails().get_address() != null)
                         addressToIntent = serviceBillInfo.get_serviceBillDetails().get_address();
 
@@ -354,8 +353,8 @@ public class ServiceBillsAndCarFines extends AppCompatActivity implements ZXingS
 
                     startActivity(intent);
                 } else {
-                    String response = serviceBillInfo.get_status().get_description();
-                    Toast toast = Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT);
+
+                    Toast toast = Toast.makeText(getApplicationContext(), serviceBillInfo.get_status().get_description(), Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toastText = toast.getView().findViewById(android.R.id.message);
                     toast.getView().setBackgroundResource(R.drawable.toast_background);

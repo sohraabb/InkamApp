@@ -147,6 +147,7 @@ public class SmsVerification extends AppCompatActivity {
             if (isCorrect != null) {
 //                if (isCorrect) {
                     Intent intent = new Intent(getApplicationContext(), CompleteProfile.class);
+                    intent.putExtra("phone", phoneNumber);
                     startActivity(intent);
 
 //                }

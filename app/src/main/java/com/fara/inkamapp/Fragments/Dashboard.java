@@ -38,6 +38,7 @@ import com.fara.inkamapp.BottomSheetFragments.InternetPackageBottomSheet;
 import com.fara.inkamapp.BottomSheetFragments.RepeatTransaction;
 import com.fara.inkamapp.BottomSheetFragments.UserProfile;
 import com.fara.inkamapp.Helpers.FaraNetwork;
+import com.fara.inkamapp.Helpers.Numbers;
 import com.fara.inkamapp.Models.ProductAndService;
 import com.fara.inkamapp.Models.ResponseStatus;
 import com.fara.inkamapp.Models.UserWallet;
@@ -49,6 +50,9 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.fara.inkamapp.Activities.MainActivity.token;
+import static com.fara.inkamapp.Activities.MainActivity.userID;
 
 
 /**
@@ -65,6 +69,7 @@ public class Dashboard extends Fragment {
     private RecyclerView mRecyclerView;
     private DashboardServiceAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private TextView walletBalance;
 
 
     public Dashboard() {
@@ -79,6 +84,7 @@ public class Dashboard extends Fragment {
         notification = view.findViewById(R.id.ib_notification);
         profile = view.findViewById(R.id.profile_image);
         repeatTransaction = view.findViewById(R.id.ib_history);
+        walletBalance = view.findViewById(R.id.tv_wallet_balance);
 //        charge = view.findViewById(R.id.rl_charge);
 //        cardToCard = view.findViewById(R.id.rl_card_to_card);
 //        netPackage = view.findViewById(R.id.rl_internet_package);
@@ -192,7 +198,7 @@ public class Dashboard extends Fragment {
 //        });
 
         new loginVerification().execute();
-        new getUserWallet().execute();
+//        new getUserWallet().execute();
 
 
         return view;
@@ -228,7 +234,7 @@ public class Dashboard extends Fragment {
 
         @Override
         protected ArrayList<ProductAndService> doInBackground(Void... params) {
-            results = new Caller().getProductAndService("2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00");
+            results = new Caller().getProductAndService(userID, token);
 
             return results;
         }
@@ -352,7 +358,7 @@ public class Dashboard extends Fragment {
 
         @Override
         protected UserWallet doInBackground(Void... params) {
-            results = new Caller().getUserWallet("2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00");
+            results = new Caller().getUserWallet(userID, token);
 
             return results;
         }
@@ -362,9 +368,8 @@ public class Dashboard extends Fragment {
             super.onPostExecute(userWallet);
             //TODO we should add other items here too
 
-
             if (userWallet != null) {
-
+                walletBalance.setText(Numbers.ToPersianNumbers(String.valueOf(userWallet.get_balance())));
 
             } else {
                 Toast toast = Toast.makeText(getActivity(), R.string.try_again, Toast.LENGTH_SHORT);

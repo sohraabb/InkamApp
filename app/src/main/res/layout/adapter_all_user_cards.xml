@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <RelativeLayout
+        android:id="@+id/rl_card"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@drawable/gray_rounded_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_submit_card">
+
+
+        <TextView
+            android:id="@+id/tv_card_sheba"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_shetab"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:text="6219 8610 2951 1317"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/tv_card_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_card_sheba"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:text="6219 8610 2951 1317"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/tv_card_expiration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_card_sheba"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:text="03/02"
+            android:layout_alignParentEnd="true" />
+
+
+        <TextView
+            android:id="@+id/tv_card_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_card_num"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp"
+            android:text="محمد رضا محمدی "
+            android:layout_alignParentStart="true" />
+
+
+        <ImageButton
+            android:id="@+id/ib_edit_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:padding="8dp"
+            app:srcCompat="@drawable/ic_pen_edit" />
+
+        <ImageView
+            android:id="@+id/iv_shetab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ib_edit_card"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:srcCompat="@drawable/ic_bank_shetab" />
+
+        <ImageView
+            android:id="@+id/iv_bank"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/empty_oval" />
+
+    </RelativeLayout>
+
+</LinearLayout>

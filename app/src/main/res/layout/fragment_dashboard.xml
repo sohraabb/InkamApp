@@ -78,7 +78,7 @@
             app:layout_constraintTop_toBottomOf="@+id/profile_image">
 
             <TextView
-                android:id="@+id/tv_cashier"
+                android:id="@+id/tv_wallet_balance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -92,7 +92,7 @@
                 android:id="@+id/tv_ryal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/tv_cashier"
+                android:layout_toStartOf="@+id/tv_wallet_balance"
                 android:text="@string/rial"
                 android:textColor="@color/colorBrown"
                 android:textSize="18sp" />
@@ -101,7 +101,7 @@
                 android:id="@+id/tv_wallet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_cashier"
+                android:layout_below="@+id/tv_wallet_balance"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"

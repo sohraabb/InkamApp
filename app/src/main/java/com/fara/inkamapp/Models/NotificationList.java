@@ -6,7 +6,7 @@ import org.ksoap2.serialization.SoapObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Notification {
+public class NotificationList {
     private String _id;
     private String _userID;
     private String _title;
@@ -57,7 +57,12 @@ public class Notification {
     public String get_userID() {
         return _userID;
     }
-    public Notification(SoapObject input){
+
+    public boolean is_status() {
+        return _status;
+    }
+
+    public NotificationList(SoapObject input){
         try {
             _id = input.getPropertySafelyAsString("ID");
             _userID = input.getPropertySafelyAsString("UserID");

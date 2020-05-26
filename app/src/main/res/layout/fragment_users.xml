@@ -40,44 +40,29 @@
         <RelativeLayout
             android:id="@+id/rl_add_card"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
             android:background="@drawable/gray_rounded_background"
-            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_wallet"
-            app:layout_constraintVertical_bias="1.0">
+            app:layout_constraintTop_toBottomOf="@id/tv_wallet">
 
-            <!--<TextView-->
-            <!--android:id="@+id/tv_add_card"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:drawableTop="@drawable/ic_add_card"-->
-            <!--android:drawablePadding="8dp"-->
-            <!--android:text="@string/add_card"-->
-            <!--android:textColor="@color/colorBrown"-->
-            <!--android:textSize="16sp"-->
-            <!--android:visibility="visible" />-->
 
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/pagerIntroSlider"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_percentage_code"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+                android:visibility="visible" />
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
+            <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
+                android:id="@+id/indicator"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                app:tabBackground="@drawable/slider_dot_selector"
-                app:tabGravity="center"
-                app:tabIndicatorHeight="0dp" />
+                android:layout_height="25dp"
+                android:layout_centerInParent="true"
+                android:layout_below="@+id/rv_percentage_code"
+                android:visibility="visible"/>
 
         </RelativeLayout>
 
