@@ -26,15 +26,26 @@ import com.fara.inkamapp.BottomSheetFragments.SubmitNewCard;
 import com.fara.inkamapp.BottomSheetFragments.TransferCredit;
 import com.fara.inkamapp.Helpers.FaraNetwork;
 import com.fara.inkamapp.Helpers.Numbers;
+import com.fara.inkamapp.Helpers.rsa;
 import com.fara.inkamapp.Models.UserCard;
 import com.fara.inkamapp.Models.UserWallet;
 import com.fara.inkamapp.R;
 import com.fara.inkamapp.WebServices.Caller;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 import ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator;
+
+import static com.fara.inkamapp.Activities.MainActivity.token;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -133,7 +144,8 @@ public class Wallet extends Fragment {
 
         @Override
         protected ArrayList<UserCard> doInBackground(Void... params) {
-            results = new Caller().getAllUserCard("2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00");
+
+            results = new Caller().getAllUserCard("2A78AB62-53C9-48B3-9D20-D7EE33337E86", token);
 
             return results;
         }
@@ -206,7 +218,8 @@ public class Wallet extends Fragment {
 
         @Override
         protected UserWallet doInBackground(Void... params) {
-            results = new Caller().getUserWallet("2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00");
+
+            results = new Caller().getUserWallet("2A78AB62-53C9-48B3-9D20-D7EE33337E86", token);
 
             return results;
         }

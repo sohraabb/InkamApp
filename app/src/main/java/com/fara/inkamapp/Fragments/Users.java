@@ -28,6 +28,8 @@ import java.util.ArrayList;
 
 import ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator;
 
+import static com.fara.inkamapp.Activities.MainActivity.token;
+
 public class Users extends Fragment {
 
     private TextView new_ID, toastText;
@@ -96,7 +98,7 @@ public class Users extends Fragment {
 
         @Override
         protected ArrayList<PercentageCode> doInBackground(Void... params) {
-            results = new Caller().getAllPresentageCode("2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00");
+            results = new Caller().getAllPresentageCode("2A78AB62-53C9-48B3-9D20-D7EE33337E86", token);
 
             return results;
         }

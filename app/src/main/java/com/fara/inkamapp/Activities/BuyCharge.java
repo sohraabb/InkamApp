@@ -32,6 +32,8 @@ import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
+import static com.fara.inkamapp.Activities.MainActivity.token;
+
 public class BuyCharge extends AppCompatActivity {
 
     private RelativeLayout charge;
@@ -60,6 +62,8 @@ public class BuyCharge extends AppCompatActivity {
         setContentView(R.layout.activity_buy_charge);
 
         charge = findViewById(R.id.rl_charge);
+
+        new GetChargeType().execute();
         reserveTopUpRequest = new ReserveTopupRequest();
 
         charge.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +93,65 @@ public class BuyCharge extends AppCompatActivity {
 
     private boolean isNetworkAvailable() {
         return FaraNetwork.isNetworkAvailable(getApplicationContext());
+    }
+
+    private class GetChargeType extends AsyncTask<Void, Void, String> {
+
+        String results = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            if (!isNetworkAvailable()) {
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.error_net, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+            }
+
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            results = new Caller().getChargeType("2A78AB62-53C9-48B3-9D20-D7EE33337E86", token);
+
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(String chargeType) {
+            super.onPostExecute(chargeType);
+            //TODO we should add other items here too
+
+
+            if (!chargeType.equals("anyType")) {
+
+
+
+            } else {
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.try_again, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+            }
+
+        }
     }
 
     private class TopUpRequest extends AsyncTask<Void, Void, ReserveTopupRequest> {

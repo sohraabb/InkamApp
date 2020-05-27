@@ -17,8 +17,18 @@ import com.fara.inkamapp.Fragments.Dashboard;
 import com.fara.inkamapp.Fragments.PaymentServices;
 import com.fara.inkamapp.Fragments.Users;
 import com.fara.inkamapp.Fragments.Wallet;
+import com.fara.inkamapp.Helpers.rsa;
 import com.fara.inkamapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
@@ -112,6 +122,23 @@ public class MainActivity extends AppCompatActivity {
 
         menu.findItem(R.id.navigation_dashboard).setChecked(true);
 
+        try {
+            token = rsa.encrypt("9368FD3E-7650-4C43-8245-EF33F4743A00");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        }
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {

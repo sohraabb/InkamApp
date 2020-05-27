@@ -2495,7 +2495,39 @@ public class Caller extends Thread {
             Log.e("Inkam_Caller", ex.toString());
             return null;
         }
+    }
 
+    public String getChargeType(String userID, String token) {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+        String _response = null;
+        PropertyInfo pi1 = new PropertyInfo();
+        pi1.setName("userID");
+        pi1.setValue(userID);
+        pi1.setType(String.class);
+        list.add(pi1);
+
+        PropertyInfo pi2 = new PropertyInfo();
+        pi2.setName("token");
+        pi2.setValue(token);
+        pi2.setType(String.class);
+        list.add(pi2);
+
+        try {
+
+            SoapPrimitive resp = cs.CallPrim("GetChargeType", list);
+//            SoapPrimitive object = (SoapPrimitive) resp.getAttribute("CheckVerificationCodeResponse");
+            if (resp != null) {
+                _response = String.valueOf(resp);
+
+            }
+
+            return _response;
+
+
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+            return "";
+        }
     }
 
 }
