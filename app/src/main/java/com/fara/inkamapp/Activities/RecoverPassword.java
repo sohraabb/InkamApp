@@ -33,8 +33,6 @@ import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
-import static com.fara.inkamapp.Activities.MainActivity.token;
-import static com.fara.inkamapp.Activities.MainActivity.userID;
 
 public class RecoverPassword extends AppCompatActivity {
 
@@ -69,25 +67,6 @@ public class RecoverPassword extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                try {
-////                    oldPassword = RSA.encrypt(et_oldPass.getText().toString());
-////                    newPassword = RSA.encrypt(et_newPass.getText().toString());
-//
-//                } catch (UnsupportedEncodingException e) {
-//                    e.printStackTrace();
-//                } catch (NoSuchAlgorithmException e) {
-//                    e.printStackTrace();
-//                } catch (NoSuchPaddingException e) {
-//                    e.printStackTrace();
-//                } catch (InvalidKeySpecException e) {
-//                    e.printStackTrace();
-//                } catch (InvalidKeyException e) {
-//                    e.printStackTrace();
-//                } catch (IllegalBlockSizeException e) {
-//                    e.printStackTrace();
-//                } catch (BadPaddingException e) {
-//                    e.printStackTrace();
-//                }
 
                 new updatePassword().execute();
             }
@@ -125,7 +104,7 @@ public class RecoverPassword extends AppCompatActivity {
 
         @Override
         protected ResponseStatus doInBackground(Void... params) {
-            results = new Caller().updatePassword(MainActivity.userID,MainActivity.token,oldPassword, newPassword);
+            results = new Caller().updatePassword(LoginInkam.userID, LoginInkam.token, oldPassword, newPassword);
 
             return results;
         }

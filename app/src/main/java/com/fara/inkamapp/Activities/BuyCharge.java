@@ -32,7 +32,6 @@ import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
-import static com.fara.inkamapp.Activities.MainActivity.token;
 
 public class BuyCharge extends AppCompatActivity {
 
@@ -121,7 +120,7 @@ public class BuyCharge extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Void... params) {
-            results = new Caller().getChargeType("2A78AB62-53C9-48B3-9D20-D7EE33337E86", token);
+            results = new Caller().getChargeType("2A78AB62-53C9-48B3-9D20-D7EE33337E86", LoginInkam.userID);
 
             return results;
         }

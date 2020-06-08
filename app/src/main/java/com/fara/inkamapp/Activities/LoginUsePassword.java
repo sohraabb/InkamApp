@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,8 +23,11 @@ import com.fara.inkamapp.Models.User;
 import com.fara.inkamapp.R;
 import com.fara.inkamapp.WebServices.Caller;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidParameterSpecException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -35,14 +39,16 @@ import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
+import static com.fara.inkamapp.Activities.CompleteProfile.MyPREFERENCES;
+import static com.fara.inkamapp.Activities.LoginInkam.publicKey;
+
 public class LoginUsePassword extends AppCompatActivity {
 
     private Button submit;
     private TextView forgot_pass, toastText;
-    private String phone, pass, token, encryptedPass;
+    private String phone, _passwords, token, encryptedPassword, AesKey;
     private EditText password;
-
-    private static String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCjL8NCgYgt7Y0Lg9OZUaziHSPusQoVpuHIkICjy7YI8yUlRBETmtNr9wdu61Wskz0PAQbj/TnCSXOhnhbWDormPk0GWyTjV/4Drrlx+hZtxPDgrYSwqscqoG2HWmWVlaqbAuVz4r/XMDbcy8zPy/ROGVey4uyGKj0hsA4p3O6YMwIDAQAB";
+    private SharedPreferences sharedpreferences;
 
 
     @Override
@@ -68,33 +74,29 @@ public class LoginUsePassword extends AppCompatActivity {
         forgot_pass = findViewById(R.id.tv_forgot_pass);
         password = findViewById(R.id.et_password);
 
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
         Bundle intent = getIntent().getExtras();
+        AesKey = sharedpreferences.getString("key", null);
         phone = intent.getString("phoneNumber");
-
-
-        try {
-//            SecretKey secret = generateKey();
-//            AESEncyption.setKey("i9N+Dy1ReoShGlWC2Ltnmg==");
-            AESEncyption.decryptMsg("IbIHuSB1LmTVvhR15WwOUg==");
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pass = password.getText().toString();
-                encrypt();
-
+                _passwords = password.getText().toString();
+                try {
+                    encryptedPassword = Base64.encode((RSA.encrypt(_passwords, publicKey)));
+                } catch (BadPaddingException e) {
+                    e.printStackTrace();
+                } catch (IllegalBlockSizeException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
+                } catch (NoSuchPaddingException e) {
+                    e.printStackTrace();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
                 new agentLogin().execute();
 
             }
@@ -112,24 +114,6 @@ public class LoginUsePassword extends AppCompatActivity {
 
     }
 
-    public void encrypt() {
-
-        try {
-            encryptedPass = Base64.encode((RSA.encrypt(pass, publicKey)));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void decrypt() {
-        try {
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     private boolean isNetworkAvailable() {
         return FaraNetwork.isNetworkAvailable(getApplicationContext());
@@ -162,9 +146,9 @@ public class LoginUsePassword extends AppCompatActivity {
 
         @Override
         protected User doInBackground(Void... params) {
-            String jsonToInsert = encryptedPass.replace("\\n", "");
+            String jsonToInsert = encryptedPassword.replace("\\n", "");
             String passData = jsonToInsert.replace("\\", "");
-            results = new Caller().agentLogin(phone, passData);
+            results = new Caller().agentLogin(phone, passData, AesKey);
 
             return results;
         }
@@ -175,13 +159,29 @@ public class LoginUsePassword extends AppCompatActivity {
             //TODO we should add other items here too
 
             if (user != null) {
-                decrypt();
-
-
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("token", token);
-                startActivity(intent);
-                finish();
+                try {
+                    token = AESEncyption.decryptMsg(user.get_token(), AesKey);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("token", token);
+                    startActivity(intent);
+                    finish();
+                } catch (NoSuchPaddingException e) {
+                    e.printStackTrace();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (InvalidParameterSpecException e) {
+                    e.printStackTrace();
+                } catch (InvalidAlgorithmParameterException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
+                } catch (BadPaddingException e) {
+                    e.printStackTrace();
+                } catch (IllegalBlockSizeException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
 
             }
         }

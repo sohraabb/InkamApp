@@ -28,5 +28,4 @@ public class RSA {
 	        return new String(cipher.doFinal(data));
 	}
 
-
 }

@@ -139,7 +139,7 @@ public class Caller extends Thread {
 
     }
 
-    public User agentLogin(String phone, String password) {
+    public User agentLogin(String phone, String password, String key) {
         List<PropertyInfo> list = new ArrayList<PropertyInfo>();
         User result = null;
 
@@ -154,6 +154,12 @@ public class Caller extends Thread {
         pi2.setValue(password);
         pi2.setType(String.class);
         list.add(pi2);
+
+        PropertyInfo pi3 = new PropertyInfo();
+        pi3.setName("key");
+        pi3.setValue(key);
+        pi3.setType(String.class);
+        list.add(pi3);
 
 
         try {

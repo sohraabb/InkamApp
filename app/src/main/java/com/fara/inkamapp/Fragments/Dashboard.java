@@ -39,29 +39,17 @@ import com.fara.inkamapp.BottomSheetFragments.RepeatTransaction;
 import com.fara.inkamapp.BottomSheetFragments.UserProfile;
 import com.fara.inkamapp.Helpers.FaraNetwork;
 import com.fara.inkamapp.Helpers.Numbers;
-import com.fara.inkamapp.Helpers.rsa;
 import com.fara.inkamapp.Models.ProductAndService;
-import com.fara.inkamapp.Models.ResponseStatus;
 import com.fara.inkamapp.Models.UserWallet;
 import com.fara.inkamapp.R;
 import com.fara.inkamapp.WebServices.Caller;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.fara.inkamapp.Activities.MainActivity.token;
-import static com.fara.inkamapp.Activities.MainActivity.userID;
 
 
 /**
@@ -245,7 +233,7 @@ public class Dashboard extends Fragment {
         @Override
         protected ArrayList<ProductAndService> doInBackground(Void... params) {
 
-            results = new Caller().getProductAndService("2A78AB62-53C9-48B3-9D20-D7EE33337E86", token);
+            results = new Caller().getProductAndService("2A78AB62-53C9-48B3-9D20-D7EE33337E86", LoginInkam.token);
 
             return results;
         }
@@ -369,7 +357,7 @@ public class Dashboard extends Fragment {
 
         @Override
         protected UserWallet doInBackground(Void... params) {
-            results = new Caller().getUserWallet("2A78AB62-53C9-48B3-9D20-D7EE33337E86", token);
+            results = new Caller().getUserWallet("2A78AB62-53C9-48B3-9D20-D7EE33337E86", LoginInkam.token);
 
             return results;
         }

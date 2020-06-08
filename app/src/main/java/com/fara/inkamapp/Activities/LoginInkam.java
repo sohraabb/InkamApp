@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -17,21 +18,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fara.inkamapp.Helpers.AESEncyption;
 import com.fara.inkamapp.Helpers.FaraNetwork;
 import com.fara.inkamapp.Models.CheckUsername;
 import com.fara.inkamapp.Models.ResponseStatus;
 import com.fara.inkamapp.R;
 import com.fara.inkamapp.WebServices.Caller;
 
-import java.util.List;
-import java.util.Random;
-
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
-import ir.pec.mpl.pecpayment.view.PaymentInitiator;
+import static com.fara.inkamapp.Activities.CompleteProfile.MyPREFERENCES;
 
 public class LoginInkam extends AppCompatActivity {
 
@@ -40,6 +39,11 @@ public class LoginInkam extends AppCompatActivity {
     private TextView toastText;
     private String phone;
     private String preCodeNumber = "0";
+    public static String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCjL8NCgYgt7Y0Lg9OZUaziHSPusQoVpuHIkICjy7YI8yUlRBETmtNr9wdu61Wskz0PAQbj/TnCSXOhnhbWDormPk0GWyTjV/4Drrlx+hZtxPDgrYSwqscqoG2HWmWVlaqbAuVz4r/XMDbcy8zPy/ROGVey4uyGKj0hsA4p3O6YMwIDAQAB";
+    public static String userID, token;
+
+    private SharedPreferences sharedPreferences;
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -59,15 +63,6 @@ public class LoginInkam extends AppCompatActivity {
                 .build());
 
         setContentView(R.layout.activity_login_inkam);
-
-
-//        Intent intent = new Intent(LoginInkam.this, PaymentInitiator.class);
-//        intent.putExtra("Type", "1");
-//        intent.putExtra("Token", token);
-//        intent.putExtra("OrderID", 12345);
-
-
-
 
         phoneNumber = findViewById(R.id.et_phone_number);
         btn_continue = findViewById(R.id.btn_continue);

@@ -17,14 +17,13 @@ import com.fara.inkamapp.Fragments.Dashboard;
 import com.fara.inkamapp.Fragments.PaymentServices;
 import com.fara.inkamapp.Fragments.Users;
 import com.fara.inkamapp.Fragments.Wallet;
-import com.fara.inkamapp.Helpers.rsa;
+import com.fara.inkamapp.Helpers.Base64;
+import com.fara.inkamapp.Helpers.RSA;
 import com.fara.inkamapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -34,6 +33,10 @@ import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
+
+import static com.fara.inkamapp.Activities.LoginInkam.publicKey;
+import static com.fara.inkamapp.Activities.LoginInkam.token;
+import static com.fara.inkamapp.Activities.LoginInkam.userID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTextMessage;
     private BottomNavigationView navView;
     private Menu menu;
-    public static String userID, token;
-
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        fm.beginTransaction().add(R.id.main_container, paymentServiceFragment, "3").hide(paymentServiceFragment).commit();
+        fm.beginTransaction().add(R.id.main_container, paymentServiceFragment, "4").hide(paymentServiceFragment).commit();
         fm.beginTransaction().add(R.id.main_container, usersFragment, "3").hide(usersFragment).commit();
         fm.beginTransaction().add(R.id.main_container, walletFragment, "2").hide(walletFragment).commit();
         fm.beginTransaction().add(R.id.main_container, dashboardFragment, "1").commit();
@@ -123,22 +124,19 @@ public class MainActivity extends AppCompatActivity {
         menu.findItem(R.id.navigation_dashboard).setChecked(true);
 
         try {
-            token = rsa.encrypt("9368FD3E-7650-4C43-8245-EF33F4743A00");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (InvalidKeySpecException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
+            token = Base64.encode((RSA.encrypt("9368FD3E-7650-4C43-8245-EF33F4743A00", publicKey)));
+        } catch (BadPaddingException e) {
             e.printStackTrace();
         } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
-        } catch (BadPaddingException e) {
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
