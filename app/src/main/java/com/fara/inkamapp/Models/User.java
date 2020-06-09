@@ -3,9 +3,13 @@ package com.fara.inkamapp.Models;
 import android.net.ParseException;
 import android.util.Log;
 
+import com.fara.inkamapp.Helpers.DateConverter;
+
 import org.ksoap2.serialization.SoapObject;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class User {
@@ -47,7 +51,25 @@ public class User {
     private double _income;
     private String _registeryDate;
     private String _registeryDatePersian;
+    private Date _expirationDate;
 
+
+    public void set_expirationDate(Date _expirationDate) {
+        this._expirationDate = _expirationDate;
+    }
+
+    public Date get_expirationDate() {
+        return _expirationDate;
+    }
+
+    public void set_tokenExpirationDate(String expirationDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            _expirationDate = dateFormat.parse(expirationDate);
+        } catch (Exception e) {
+            _expirationDate = new Date();
+        }
+    }
 
     public void set_userCount(int _userCount) {
         this._userCount = _userCount;
@@ -341,6 +363,9 @@ public class User {
         return _registeryDatePersian;
     }
 
+    public boolean is_agencyRequest() {
+        return _agencyRequest;
+    }
 
     public User(SoapObject input) {
 
@@ -380,16 +405,14 @@ public class User {
             _agencyRequest = Boolean.parseBoolean(input.getPropertySafelyAsString("AgencyRequest"));
             _chanceCount = Integer.parseInt(input.getPropertySafelyAsString("ChanceCount"));
             _income = Double.parseDouble(input.getPropertySafelyAsString("Income"));
-
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-//            try {
-//                Date date = new Date();
-//                _registeryDate = dateFormat.format(input.getPropertySafelyAsString("RegisteryDate"));
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-
             _registeryDatePersian = input.getPropertySafelyAsString("RegisteryDatePersian");
+
+            try {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                _expirationDate = formatter.parse(input.getPropertySafelyAsString("ExpDate"));
+            } catch (Exception ex) {
+                _expirationDate = new Date();
+            }
 
 
 

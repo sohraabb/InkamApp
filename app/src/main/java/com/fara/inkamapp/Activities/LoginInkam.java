@@ -40,7 +40,6 @@ public class LoginInkam extends AppCompatActivity {
     private String phone;
     private String preCodeNumber = "0";
     public static String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCjL8NCgYgt7Y0Lg9OZUaziHSPusQoVpuHIkICjy7YI8yUlRBETmtNr9wdu61Wskz0PAQbj/TnCSXOhnhbWDormPk0GWyTjV/4Drrlx+hZtxPDgrYSwqscqoG2HWmWVlaqbAuVz4r/XMDbcy8zPy/ROGVey4uyGKj0hsA4p3O6YMwIDAQAB";
-    public static String userID, token;
 
     private SharedPreferences sharedPreferences;
 

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fara.inkamapp.Activities.LoginInkam;
+import com.fara.inkamapp.Activities.MainActivity;
 import com.fara.inkamapp.Adapters.AllUserCardsAdapter;
 import com.fara.inkamapp.Adapters.UserDetailsAdapter;
 import com.fara.inkamapp.BottomSheetFragments.NewID;
@@ -62,7 +63,7 @@ public class Users extends Fragment {
             }
         });
 
-        new getAllPercentageCodes().execute();
+//        new getAllPercentageCodes().execute();
 
         return view;
     }
@@ -98,7 +99,7 @@ public class Users extends Fragment {
 
         @Override
         protected ArrayList<PercentageCode> doInBackground(Void... params) {
-            results = new Caller().getAllPresentageCode("2A78AB62-53C9-48B3-9D20-D7EE33337E86", LoginInkam.token);
+            results = new Caller().getAllPresentageCode(MainActivity._userId, MainActivity._token);
 
             return results;
         }

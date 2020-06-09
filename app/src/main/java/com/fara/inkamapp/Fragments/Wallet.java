@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.fara.inkamapp.Activities.LoginInkam;
+import com.fara.inkamapp.Activities.MainActivity;
 import com.fara.inkamapp.Activities.WalletTransactions;
 import com.fara.inkamapp.Adapters.AllUserCardsAdapter;
 import com.fara.inkamapp.BottomSheetFragments.AddExtraCredit;
@@ -74,8 +75,8 @@ public class Wallet extends Fragment {
         scrollingPagerIndicator = view.findViewById(R.id.indicator);
         walletBalance = view.findViewById(R.id.tv_wallet_cash_value);
 
-        new getAllUserCard().execute();
-        new getUserWallet().execute();
+//        new getAllUserCard().execute();
+//        new getUserWallet().execute();
 
         addCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +145,7 @@ public class Wallet extends Fragment {
         @Override
         protected ArrayList<UserCard> doInBackground(Void... params) {
 
-            results = new Caller().getAllUserCard("2A78AB62-53C9-48B3-9D20-D7EE33337E86", LoginInkam.token);
+            results = new Caller().getAllUserCard(MainActivity._userId, MainActivity._token);
 
             return results;
         }
@@ -218,7 +219,7 @@ public class Wallet extends Fragment {
         @Override
         protected UserWallet doInBackground(Void... params) {
 
-            results = new Caller().getUserWallet("2A78AB62-53C9-48B3-9D20-D7EE33337E86", LoginInkam.token);
+            results = new Caller().getUserWallet(MainActivity._userId, MainActivity._token);
 
             return results;
         }

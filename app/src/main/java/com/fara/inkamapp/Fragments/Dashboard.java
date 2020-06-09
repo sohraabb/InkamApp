@@ -27,6 +27,7 @@ import com.fara.inkamapp.Activities.CardToCardTransfer;
 import com.fara.inkamapp.Activities.CardToCardTransfer2;
 import com.fara.inkamapp.Activities.InternetPackageActivity;
 import com.fara.inkamapp.Activities.LoginInkam;
+import com.fara.inkamapp.Activities.MainActivity;
 import com.fara.inkamapp.Activities.Notifications;
 import com.fara.inkamapp.Activities.PhoneDebt;
 import com.fara.inkamapp.Activities.ServiceBillsAndCarFines;
@@ -37,19 +38,28 @@ import com.fara.inkamapp.BottomSheetFragments.GetMoney;
 import com.fara.inkamapp.BottomSheetFragments.InternetPackageBottomSheet;
 import com.fara.inkamapp.BottomSheetFragments.RepeatTransaction;
 import com.fara.inkamapp.BottomSheetFragments.UserProfile;
+import com.fara.inkamapp.Helpers.Base64;
 import com.fara.inkamapp.Helpers.FaraNetwork;
 import com.fara.inkamapp.Helpers.Numbers;
+import com.fara.inkamapp.Helpers.RSA;
 import com.fara.inkamapp.Models.ProductAndService;
 import com.fara.inkamapp.Models.UserWallet;
 import com.fara.inkamapp.R;
 import com.fara.inkamapp.WebServices.Caller;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.fara.inkamapp.Activities.LoginInkam.publicKey;
 
 
 /**
@@ -67,7 +77,7 @@ public class Dashboard extends Fragment {
     private DashboardServiceAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private TextView walletBalance;
-    private String _token;
+    private String encrytedToken;
 
 
     public Dashboard() {
@@ -83,85 +93,11 @@ public class Dashboard extends Fragment {
         profile = view.findViewById(R.id.profile_image);
         repeatTransaction = view.findViewById(R.id.ib_history);
         walletBalance = view.findViewById(R.id.tv_wallet_balance);
-//        charge = view.findViewById(R.id.rl_charge);
-//        cardToCard = view.findViewById(R.id.rl_card_to_card);
-//        netPackage = view.findViewById(R.id.rl_internet_package);
-//        trainTicket = view.findViewById(R.id.rl_train_ticket);
-//        planeTicket = view.findViewById(R.id.rl_plane);
-//        busTicket = view.findViewById(R.id.rl_bus);
-//        phone = view.findViewById(R.id.rl_phone);
-//        car = view.findViewById(R.id.rl_car);
-//        service = view.findViewById(R.id.rl_service);
 
         mRecyclerView = view.findViewById(R.id.rv_service_and_product);
         mRecyclerView.setHasFixedSize(true);
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-
-//
-//        service.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), ServiceBillsAndCarFines.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        car.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), ServiceBillsAndCarFines.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        phone.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), PhoneDebt.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        busTicket.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), BusTickets.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        planeTicket.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), AirplaneTickets.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        trainTicket.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), TrainTickets.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        charge.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), BuyCharge.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        cardToCard.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), CardToCardTransfer.class);
-//                startActivity(intent);
-//            }
-//        });
 
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,13 +123,20 @@ public class Dashboard extends Fragment {
             }
         });
 
-//        netPackage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                bottomSheetDialogFragment = InternetPackageBottomSheet.newInstance("Bottom Sheet Get Money Dialog");
-//                bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
-//            }
-//        });
+        try {
+            encrytedToken = Base64.encode((RSA.encrypt(MainActivity._token, publicKey)));
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
 
         new loginVerification().execute();
         new getUserWallet().execute();
@@ -228,12 +171,14 @@ public class Dashboard extends Fragment {
                 toast.show();
             }
 
+
+
         }
 
         @Override
         protected ArrayList<ProductAndService> doInBackground(Void... params) {
 
-            results = new Caller().getProductAndService("2A78AB62-53C9-48B3-9D20-D7EE33337E86", LoginInkam.token);
+            results = new Caller().getProductAndService(MainActivity._userId, encrytedToken);
 
             return results;
         }
@@ -320,7 +265,7 @@ public class Dashboard extends Fragment {
                 toast.getView().setBackgroundResource(R.drawable.toast_background);
 
                 if (toastText != null) {
-                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANYekanRegular.ttf"));
+                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
                     toastText.setTextColor(getResources().getColor(R.color.colorBlack));
                     toastText.setGravity(Gravity.CENTER);
                     toastText.setTextSize(14);
@@ -357,7 +302,7 @@ public class Dashboard extends Fragment {
 
         @Override
         protected UserWallet doInBackground(Void... params) {
-            results = new Caller().getUserWallet("2A78AB62-53C9-48B3-9D20-D7EE33337E86", LoginInkam.token);
+            results = new Caller().getUserWallet(MainActivity._userId, encrytedToken);
 
             return results;
         }
@@ -377,7 +322,7 @@ public class Dashboard extends Fragment {
                 toast.getView().setBackgroundResource(R.drawable.toast_background);
 
                 if (toastText != null) {
-                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANYekanRegular.ttf"));
+                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
                     toastText.setTextColor(getResources().getColor(R.color.colorBlack));
                     toastText.setGravity(Gravity.CENTER);
                     toastText.setTextSize(14);

@@ -2,6 +2,7 @@ package com.fara.inkamapp.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,26 +18,17 @@ import com.fara.inkamapp.Fragments.Dashboard;
 import com.fara.inkamapp.Fragments.PaymentServices;
 import com.fara.inkamapp.Fragments.Users;
 import com.fara.inkamapp.Fragments.Wallet;
-import com.fara.inkamapp.Helpers.Base64;
-import com.fara.inkamapp.Helpers.RSA;
 import com.fara.inkamapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
-import static com.fara.inkamapp.Activities.LoginInkam.publicKey;
-import static com.fara.inkamapp.Activities.LoginInkam.token;
-import static com.fara.inkamapp.Activities.LoginInkam.userID;
+import static com.fara.inkamapp.Activities.CompleteProfile.MyPREFERENCES;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTextMessage;
     private BottomNavigationView navView;
     private Menu menu;
+    private SharedPreferences sharedPreferences;
+
+    public static String _token, _userId;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -120,29 +115,15 @@ public class MainActivity extends AppCompatActivity {
 
 
         menu = navView.getMenu();
-
         menu.findItem(R.id.navigation_dashboard).setChecked(true);
-
-        try {
-            token = Base64.encode((RSA.encrypt("9368FD3E-7650-4C43-8245-EF33F4743A00", publicKey)));
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        _token = sharedPreferences.getString("Token", null);
+        _userId = sharedPreferences.getString("UserID", null);
 
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             isUserStartingFragment = getIntent().getExtras().getBoolean("isUserStarting");
-            userID = bundle.getString("userID");
-            token = bundle.getString("token");
 
         }
 

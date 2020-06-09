@@ -41,7 +41,6 @@ import io.github.inflationx.viewpump.ViewPump;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 import static com.fara.inkamapp.Activities.LoginInkam.publicKey;
-import static com.fara.inkamapp.Activities.LoginInkam.token;
 import static com.fara.inkamapp.Helpers.AESEncyption.sohrabGeneratesAESKey;
 
 public class CompleteProfile extends AppCompatActivity {
@@ -50,7 +49,7 @@ public class CompleteProfile extends AppCompatActivity {
     private TextView toastText;
     private EditText firstName, lastName, city, password;
     private JSONObject postData;
-    private String phoneNumber, encryptedPassword, encryptedKey, _password;
+    private String phoneNumber, encryptedPassword, encryptedKey, _password, token, userID, expDate;
     private SharedPreferences sharedpreferences;
     public static final String MyPREFERENCES = "MyPrefs";
 
@@ -73,14 +72,19 @@ public class CompleteProfile extends AppCompatActivity {
                 .build());
 
         setContentView(R.layout.activity_complete_profile);
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
+        initVariables();
 
+    }
+
+    private void initVariables(){
         submit = findViewById(R.id.btn_submit_info);
         firstName = findViewById(R.id.et_first_name);
         lastName = findViewById(R.id.et_last_name);
         city = findViewById(R.id.et_your_city);
         password = findViewById(R.id.et_password);
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
 
         Bundle intent = getIntent().getExtras();
 
@@ -101,10 +105,6 @@ public class CompleteProfile extends AppCompatActivity {
 
                 new insertUser().execute();
 
-//                encrypt();
-
-//                Intent intent = new Intent(getApplicationContext(), InvitationCode.class);
-//                startActivity(intent);
             }
         });
     }
@@ -166,15 +166,23 @@ public class CompleteProfile extends AppCompatActivity {
 
             if (userList != null && userList.get_status().equals("SUCCESS")) {
                 try {
-                    token = AESEncyption.decryptMsg(userList.get_users().get(0).get_token(),sharedpreferences.getString("key", null));
+                    token = AESEncyption.decryptMsg(userList.get_users().get(0).get_token(), sharedpreferences.getString("key", null));
+                    userID = userList.get_users().get(0).get_id();
+
+                    //Sohrab : save the expDate later on
+
+//                    expDate = userList.get_users().get(0).get_expirationDate().toString();
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putString("Token", token);
+                    editor.putString("UserID", userID);
+//                    editor.putString("ExpDate", expDate);
+
+                    editor.apply();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("userID", userList.get_users().get(0).get_id());
-                intent.putExtra("token", token);
-
                 startActivity(intent);
                 finish();
 

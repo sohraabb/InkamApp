@@ -51,7 +51,7 @@ public class Caller extends Thread {
         // cs = new SOAP("http://tempuri.org/", url);
 
         String url = "https://income-app.ir/webservice/webservice.asmx";
-        //String url2 = "http://208.73.202.178:100/Service/regUserService.asmx";
+//        String url2 = "http://172.16.1.23/InkamMvc/WebService/WebService.asmx";
         cs = new Soap("http://tempuri.org/", url);
         Log.i("SORI CAller", "url o khoond");
 
@@ -168,9 +168,50 @@ public class Caller extends Thread {
             SoapObject object = (SoapObject) resp.getProperty("UserList");
             SoapObject mainObject = (SoapObject) object.getProperty("User");
 
-
             result = new User(mainObject);
 
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+
+        }
+        return result;
+    }
+
+    public ResponseStatus insertPassword(String id, String token, String code, String password) {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+        ResponseStatus result = null;
+        PropertyInfo pi1 = new PropertyInfo();
+        pi1.setName("id");
+        pi1.setValue(id);
+        pi1.setType(String.class);
+        list.add(pi1);
+
+        PropertyInfo pi2 = new PropertyInfo();
+        pi2.setName("token");
+        pi2.setValue(token);
+        pi2.setType(String.class);
+        list.add(pi2);
+
+        PropertyInfo pi3 = new PropertyInfo();
+        pi3.setName("code");
+        pi3.setValue(code);
+        pi3.setType(String.class);
+        list.add(pi3);
+
+        PropertyInfo pi4 = new PropertyInfo();
+        pi4.setName("password");
+        pi4.setValue(password);
+        pi4.setType(String.class);
+        list.add(pi4);
+
+        try {
+
+            SoapObject resp = cs.Call("InsertPassword", list);
+
+            if (resp != null) {
+
+                result = new ResponseStatus(resp);
+            }
         } catch (Exception ex) {
             Log.e("Inkam_Caller", ex.toString());
 
@@ -2335,6 +2376,7 @@ public class Caller extends Thread {
         }
 
     }
+
     public ArrayList<NotificationList> getMessages(String userID, String token) {
         List<PropertyInfo> list = new ArrayList<PropertyInfo>();
         NotificationList result = null;
@@ -2469,6 +2511,7 @@ public class Caller extends Thread {
         }
         return result;
     }
+
     public ArrayList<PercentageCode> getAllPresentageCode(String userID, String token) {
         List<PropertyInfo> list = new ArrayList<PropertyInfo>();
         PercentageCode result = null;

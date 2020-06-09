@@ -1,6 +1,8 @@
 package com.fara.inkamapp.BottomSheetFragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -9,12 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.fara.inkamapp.Activities.AboutInkam;
 import com.fara.inkamapp.Activities.EditUserProfile;
+import com.fara.inkamapp.Activities.LoginInkam;
 import com.fara.inkamapp.Activities.Setting;
 import com.fara.inkamapp.Activities.Support;
 import com.fara.inkamapp.Activities.TermsAndConditions;
@@ -22,10 +26,13 @@ import com.fara.inkamapp.Dialogs.SuccessTransfer;
 import com.fara.inkamapp.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import static com.fara.inkamapp.Activities.CompleteProfile.MyPREFERENCES;
+
 public class UserProfile extends BottomSheetDialogFragment {
 
     String string;
     private RelativeLayout editProfile, support, termsConditions, about, settings;
+    private TextView logout;
 
     public static UserProfile newInstance(String string) {
         UserProfile userProfile = new UserProfile();
@@ -57,6 +64,7 @@ public class UserProfile extends BottomSheetDialogFragment {
         termsConditions = view.findViewById(R.id.rl_terms_conditions);
         about = view.findViewById(R.id.rl_about_inkam);
         settings = view.findViewById(R.id.rl_setting);
+        logout = view.findViewById(R.id.tv_log_out);
 
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +103,19 @@ public class UserProfile extends BottomSheetDialogFragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Setting.class);
                 startActivity(intent);
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                SharedPreferences settings = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                settings.edit().remove("Token").apply();
+
+                Intent intent = new Intent(getActivity(), LoginInkam.class);
+                startActivity(intent);
+                getActivity().finish();
             }
         });
 

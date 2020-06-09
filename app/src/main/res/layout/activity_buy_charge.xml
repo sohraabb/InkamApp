@@ -119,6 +119,7 @@
 
 
             <RelativeLayout
+                android:id="@+id/rl_rightel"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="8dp"
@@ -147,6 +148,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rl_hamrah_aval"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="8dp"
@@ -176,6 +178,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rl_irancell"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="30"
@@ -243,6 +246,7 @@
                 android:background="@drawable/gray_rounded_background">
 
                 <TextView
+                    android:id="@+id/tv_amazing_charge"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
@@ -263,6 +267,7 @@
                 android:background="@drawable/gray_rounded_background">
 
                 <TextView
+                    android:id="@+id/tv_normal_charge"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
@@ -280,108 +285,23 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:id="@+id/rl_charge"
+            android:id="@+id/rl_charge_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/white_rounded_background"
-            android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ll_operator">
 
-            <ImageView
-                android:id="@+id/iv_irancell_logo"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/irancell_logo_green" />
-
-            <TextView
-                android:id="@+id/charge_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginEnd="16dp"
-                android:layout_toStartOf="@+id/iv_irancell_logo"
-                android:text="۵۰,۰۰۰"
-                android:textColor="@color/colorMainGreen"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tv_riali"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_toStartOf="@+id/charge_amount"
-                android:text="@string/riali"
-                android:textColor="@color/colorBrown"
-                android:textSize="12sp" />
-
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="16dp"
-                app:srcCompat="@drawable/ic_arrow_small_left" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_charges"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@drawable/white_rounded_background"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rl_charge">
 
-            <ImageView
-                android:id="@+id/iv_irancell_logo2"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/irancell_logo_green" />
-
-            <TextView
-                android:id="@+id/charge_amount2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginEnd="16dp"
-                android:layout_toStartOf="@+id/iv_irancell_logo2"
-                android:text="۱۰۰,۰۰۰"
-                android:textColor="@color/colorMainGreen"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tv_riali2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_toStartOf="@+id/charge_amount2"
-                android:text="@string/riali"
-                android:textColor="@color/colorBrown"
-                android:textSize="12sp" />
-
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="16dp"
-                app:srcCompat="@drawable/ic_arrow_small_left" />
-        </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

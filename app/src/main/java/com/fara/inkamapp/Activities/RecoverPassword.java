@@ -36,9 +36,9 @@ import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 public class RecoverPassword extends AppCompatActivity {
 
-    private EditText et_oldPass, et_newPass;
+    private EditText et_code, et_password;
     private Button submit;
-    private String oldPassword, newPassword;
+    private String code, newPassword;
     private TextView toastText;
 
     @Override
@@ -60,14 +60,15 @@ public class RecoverPassword extends AppCompatActivity {
 
         setContentView(R.layout.activity_recover_password);
 
-        et_oldPass = findViewById(R.id.et_password);
-        et_newPass = findViewById(R.id.et_new_password);
+        et_code = findViewById(R.id.et_code);
+        et_password = findViewById(R.id.et_new_password);
         submit = findViewById(R.id.btn_accept);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                code = et_code.getText().toString();
+                newPassword = et_password.getText().toString();
                 new updatePassword().execute();
             }
         });
@@ -77,6 +78,7 @@ public class RecoverPassword extends AppCompatActivity {
     private boolean isNetworkAvailable() {
         return FaraNetwork.isNetworkAvailable(getApplicationContext());
     }
+
 
     private class updatePassword extends AsyncTask<Void, Void, ResponseStatus> {
 
@@ -104,7 +106,7 @@ public class RecoverPassword extends AppCompatActivity {
 
         @Override
         protected ResponseStatus doInBackground(Void... params) {
-            results = new Caller().updatePassword(LoginInkam.userID, LoginInkam.token, oldPassword, newPassword);
+            results = new Caller().insertPassword(MainActivity._userId, MainActivity._token, code, newPassword);
 
             return results;
         }
