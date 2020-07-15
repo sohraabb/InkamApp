@@ -16,33 +16,25 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
-import com.fara.inkamapp.Activities.LoginInkam;
 import com.fara.inkamapp.Activities.MainActivity;
 import com.fara.inkamapp.Activities.WalletTransactions;
 import com.fara.inkamapp.Adapters.AllUserCardsAdapter;
 import com.fara.inkamapp.BottomSheetFragments.AddExtraCredit;
-import com.fara.inkamapp.BottomSheetFragments.InternetPackageBottomSheet;
+import com.fara.inkamapp.BottomSheetFragments.DepositRequest;
 import com.fara.inkamapp.BottomSheetFragments.SubmitNewCard;
 import com.fara.inkamapp.BottomSheetFragments.TransferCredit;
 import com.fara.inkamapp.Helpers.FaraNetwork;
 import com.fara.inkamapp.Helpers.Numbers;
+import com.fara.inkamapp.Models.User;
 import com.fara.inkamapp.Models.UserCard;
-import com.fara.inkamapp.Models.UserWallet;
 import com.fara.inkamapp.R;
 import com.fara.inkamapp.WebServices.Caller;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 import ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator;
 
@@ -53,7 +45,7 @@ import ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator;
 public class Wallet extends Fragment {
 
     private BottomSheetDialogFragment bottomSheetDialogFragment;
-    private TextView transactions, addCard, toastText, walletBalance;
+    private TextView transactions, addCard, toastText, walletBalance, tvPurchaseWalletCashValue, tvUserWalletCashValue;
     private RelativeLayout addCredit, transferCredit;
     private RecyclerView userCardsRecycler;
     private ScrollingPagerIndicator scrollingPagerIndicator;
@@ -74,9 +66,21 @@ public class Wallet extends Fragment {
         userCardsRecycler = view.findViewById(R.id.rv_cards_slide);
         scrollingPagerIndicator = view.findViewById(R.id.indicator);
         walletBalance = view.findViewById(R.id.tv_wallet_cash_value);
+        tvPurchaseWalletCashValue = view.findViewById(R.id.tv_purchase_wallet_cash_value);
+        tvUserWalletCashValue = view.findViewById(R.id.tv_user_wallet_cash_value);
+        RelativeLayout rl_request_cash_out_credit = view.findViewById(R.id.rl_request_cash_out_credit);
 
-//        new getAllUserCard().execute();
-//        new getUserWallet().execute();
+
+        new getAllUserCard().execute();
+        new getUserWallet().execute();
+
+        rl_request_cash_out_credit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialogFragment = DepositRequest.newInstance("Bottom Sheet Get Money Dialog");
+                bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+            }
+        });
 
         addCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +116,16 @@ public class Wallet extends Fragment {
         });
 
         return view;
+    }
+
+    public void RefreshWallet() {
+
+        new getUserWallet().execute();
+    }
+
+    public void RefreshCard() {
+
+        new getAllUserCard().execute();
     }
 
     private boolean isNetworkAvailable() {
@@ -156,7 +170,7 @@ public class Wallet extends Fragment {
             //TODO we should add other items here too
 
             if (userCards != null) {
-                if(userCards.size()==-0){
+                if (userCards.size() == 0) {
                     addCard.setVisibility(View.VISIBLE);
                     userCardsRecycler.setVisibility(View.GONE);
                     scrollingPagerIndicator.setVisibility(View.GONE);
@@ -166,12 +180,14 @@ public class Wallet extends Fragment {
                     scrollingPagerIndicator.setVisibility(View.VISIBLE);
                     addCard.setVisibility(View.GONE);
 
-                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, true);
                     userCardsRecycler.setLayoutManager(layoutManager);
                     AllUserCardsAdapter allUserCardsAdapter = new AllUserCardsAdapter(getActivity(), userCards);
                     userCardsRecycler.setAdapter(allUserCardsAdapter);
 
                     scrollingPagerIndicator.attachToRecyclerView(userCardsRecycler);
+                    scrollingPagerIndicator.setCurrentPosition(0);
+
                 }
 
 
@@ -192,9 +208,10 @@ public class Wallet extends Fragment {
 
         }
     }
-    private class getUserWallet extends AsyncTask<Void, Void, UserWallet> {
 
-        UserWallet results = null;
+    private class getUserWallet extends AsyncTask<Void, Void, User> {
+
+        User results = null;
 
         @Override
         protected void onPreExecute() {
@@ -217,21 +234,25 @@ public class Wallet extends Fragment {
         }
 
         @Override
-        protected UserWallet doInBackground(Void... params) {
+        protected User doInBackground(Void... params) {
 
-            results = new Caller().getUserWallet(MainActivity._userId, MainActivity._token);
+            results = new Caller().getUserById(MainActivity._userId, MainActivity._token);
 
             return results;
         }
 
         @Override
-        protected void onPostExecute(UserWallet userWallet) {
+        protected void onPostExecute(User userWallet) {
             super.onPostExecute(userWallet);
             //TODO we should add other items here too
 
 
             if (userWallet != null) {
-                walletBalance.setText(Numbers.ToPersianNumbers(String.valueOf(userWallet.get_balance())));
+                NumberFormat formatter = new DecimalFormat("#,###");
+                String formattedNumber = formatter.format(Double.valueOf(userWallet.getCashOfWallet()));
+                walletBalance.setText(Numbers.ToPersianNumbers(String.valueOf(formattedNumber)));
+                tvPurchaseWalletCashValue.setText(Numbers.ToPersianNumbers(String.valueOf(formatter.format(userWallet.getTodayProfit()))));
+                tvUserWalletCashValue.setText(Numbers.ToPersianNumbers(String.valueOf(formatter.format(userWallet.getIncome()))));
 
             } else {
                 Toast toast = Toast.makeText(getActivity(), R.string.try_again, Toast.LENGTH_SHORT);
@@ -240,7 +261,7 @@ public class Wallet extends Fragment {
                 toast.getView().setBackgroundResource(R.drawable.toast_background);
 
                 if (toastText != null) {
-                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANYekanRegular.ttf"));
+                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
                     toastText.setTextColor(getResources().getColor(R.color.colorBlack));
                     toastText.setGravity(Gravity.CENTER);
                     toastText.setTextSize(14);

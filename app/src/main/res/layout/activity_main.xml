@@ -8,6 +8,8 @@
     tools:context=".Activities.MainActivity">
 
 
+
+
     <include
         layout="@layout/content_main"
         android:layout_width="match_parent"
@@ -17,6 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"

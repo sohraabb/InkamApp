@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.fara.inkamapp.Helpers.HideKeyboard;
 import com.fara.inkamapp.R;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
@@ -17,7 +18,7 @@ import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
-public class TrainTickets extends AppCompatActivity implements View.OnClickListener {
+public class TrainTickets extends HideKeyboard implements View.OnClickListener {
 
     private TextView oneWay, twoWays;
     private Button search;
@@ -84,5 +85,11 @@ public class TrainTickets extends AppCompatActivity implements View.OnClickListe
                 break;
 
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupUI(findViewById(R.id.parent));
     }
 }

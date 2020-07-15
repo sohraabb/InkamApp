@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.fara.inkamapp.Helpers.HideKeyboard;
 import com.fara.inkamapp.R;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
@@ -15,7 +16,7 @@ import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
-public class SendMoneyComplete extends AppCompatActivity {
+public class SendMoneyComplete extends HideKeyboard {
 
     private Button sendMoneyDone;
 
@@ -47,5 +48,11 @@ public class SendMoneyComplete extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupUI(findViewById(R.id.parent));
     }
 }

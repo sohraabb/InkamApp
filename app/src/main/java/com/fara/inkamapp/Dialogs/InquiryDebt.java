@@ -10,7 +10,10 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.fara.inkamapp.Activities.PhoneDebtPayment;
+import com.fara.inkamapp.BottomSheetFragments.Payment;
 import com.fara.inkamapp.Helpers.Numbers;
 import com.fara.inkamapp.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -23,6 +26,8 @@ public class InquiryDebt extends Dialog implements View.OnClickListener {
     private TextView midValue, endValue, finalTermTitle, midTermTitle;
     private String _midTerm, _midBillId, _midPaymentId, _finalTerm, _finalBillId, _finalpaymentId,
             amountToPayment, billIdToPayment, paymentIdToPayment, termToPayment, _phoneNumber;
+    private BottomSheetDialogFragment bottomSheetDialogFragment;
+
 
 
     public InquiryDebt(Activity a, String midTerm, String midBillId, String midPaymentId, String finalTerm, String finalBillId, String finalPaymentId, String phoneNumber) {
@@ -110,15 +115,36 @@ public class InquiryDebt extends Dialog implements View.OnClickListener {
                 break;
 
             case R.id.btn_continue:
-                Intent intent = new Intent(activity, PhoneDebtPayment.class);
-                intent.putExtra("billAmount", amountToPayment);
-                intent.putExtra("billID", billIdToPayment);
-                intent.putExtra("paymentID", paymentIdToPayment);
-                intent.putExtra("phoneNumber", _phoneNumber);
-                intent.putExtra("termTitle", termToPayment);
+//                Intent intent = new Intent(activity, PhoneDebtPayment.class);
+//                intent.putExtra("billAmount", amountToPayment);
+//                intent.putExtra("billID", billIdToPayment);
+//                intent.putExtra("paymentID", paymentIdToPayment);
+//                intent.putExtra("phoneNumber", _phoneNumber);
+//                intent.putExtra("termTitle", termToPayment);
+//
+//
+//                activity.startActivity(intent);
+//                dismiss();
 
-                activity.startActivity(intent);
-                dismiss();
+                try {
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("billAmount", amountToPayment);
+                    bundle.putString("billID", billIdToPayment);
+                    bundle.putString("paymentID", paymentIdToPayment);
+                    bundle.putString("phoneNumber", _phoneNumber);
+                    bundle.putString("termTitle", termToPayment);
+                    bundle.putInt("serviceType",1);
+
+
+                    bottomSheetDialogFragment = Payment.newInstance("Bottom Sheet Payment Dialog");
+                    bottomSheetDialogFragment.setArguments(bundle);
+                    bottomSheetDialogFragment.show(((AppCompatActivity) activity).getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+                    dismiss();
+
+                } catch (Exception e) {
+                    e.toString();
+                }
 
                 break;
         }

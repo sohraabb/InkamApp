@@ -50,8 +50,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="20"
+            android:layout_height="wrap_content"
             android:padding="8dp">
 
             <ImageView
@@ -64,8 +63,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="80"
+            android:layout_height="wrap_content"
             android:padding="16dp">
 
             <TextView

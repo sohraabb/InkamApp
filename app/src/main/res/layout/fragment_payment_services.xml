@@ -6,6 +6,109 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.PaymentServices">
 
+    <EditText
+        android:id="@+id/et_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/edittext_background_black_stroke"
+        android:gravity="center"
+        android:inputType="number"
+        android:padding="16dp"
+        android:maxLines="1"
+        android:imeOptions="actionDone"
+        android:textColor="@color/colorNightRider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="90"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_amount">
+
+        <RelativeLayout
+            android:id="@+id/rl_group_payment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="30"
+            android:background="@drawable/green_rounded_background"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp">
+
+            <TextView
+                android:id="@+id/tv_group_payment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/group_payment"
+                android:clickable="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_get_money"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_weight="30"
+            android:background="@drawable/green_rounded_background"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp">
+
+            <TextView
+                android:id="@+id/tv_get_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/get_money"
+                android:clickable="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_send_money"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="4dp"
+            android:layout_weight="30"
+            android:background="@drawable/green_rounded_background"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp">
+
+            <TextView
+                android:id="@+id/tv_send_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:clickable="false"
+                android:text="@string/send_money"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="250dp"
@@ -13,31 +116,6 @@
         android:background="@drawable/curved_shape_p"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_reports"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/reports"
-        android:padding="8dp"
-        android:textColor="@color/colorMainGreen"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_payment_service"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:text="@string/payment_services"
-        android:textColor="@color/colorNightRider"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_reports" />
 
     <TextView
         android:id="@+id/tv_payment_service_text"
@@ -51,21 +129,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_payment_service" />
 
-    <EditText
-        android:id="@+id/et_amount"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_reports"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/edittext_background_black_stroke"
-        android:padding="16dp"
-        android:inputType="number"
-        android:gravity="center"
-        android:textColor="@color/colorNightRider"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"
+        android:padding="8dp"
+        android:text="@string/reports"
+        android:textColor="@color/colorMainGreen"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -75,68 +148,23 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/rial"
-        android:textSize="12sp"
         android:textColor="@color/colorBrown"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/et_amount"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_group_payment"
+        android:id="@+id/tv_payment_service"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/green_rounded_background"
-        android:padding="16dp"
-        android:text="@string/group_payment"
-        android:textColor="@color/colorWhite"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tv_get_money"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_amount" />
-
-    <TextView
-        android:id="@+id/tv_get_money"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/green_rounded_background"
-        android:padding="16dp"
-        android:text="@string/get_money"
-        android:textColor="@color/colorWhite"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:text="@string/payment_services"
+        android:textColor="@color/colorNightRider"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_amount" />
-
-    <TextView
-        android:id="@+id/tv_send_money"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/green_rounded_background"
-        android:padding="16dp"
-        android:text="@string/send_money"
-        android:textColor="@color/colorWhite"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_get_money"
-        app:layout_constraintTop_toBottomOf="@+id/et_amount" />
-
-
-
+        app:layout_constraintTop_toBottomOf="@+id/tv_reports" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

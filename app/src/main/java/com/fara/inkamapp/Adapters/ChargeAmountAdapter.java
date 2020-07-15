@@ -42,11 +42,11 @@ public class ChargeAmountAdapter extends RecyclerView.Adapter<ChargeAmountAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final ChargesList _charges = chargesLists.get(position);
 
-//        if (_charges.get() != null)
-//            holder.name.setText(_charges.get_name());
+        if (_charges.get_amount() != null)
+            holder.amount.setText(_charges.get_amount());
 
-//        if (_contacts.get_phone() != null)
-//            holder.expirationDate.setText(_contacts.get_phone());
+        if (_charges.get_logo() != 0)
+            holder.logo.setImageResource(_charges.get_logo());
 
 //        if (_contacts.get_description() != null)
 //            holder.name.setText(_contacts.get_description());

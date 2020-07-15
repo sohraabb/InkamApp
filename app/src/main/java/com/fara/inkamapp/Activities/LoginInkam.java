@@ -15,15 +15,21 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fara.inkamapp.Helpers.AESEncyption;
 import com.fara.inkamapp.Helpers.FaraNetwork;
+import com.fara.inkamapp.Helpers.HideKeyboard;
 import com.fara.inkamapp.Models.CheckUsername;
+import com.fara.inkamapp.Models.Province;
 import com.fara.inkamapp.Models.ResponseStatus;
 import com.fara.inkamapp.R;
 import com.fara.inkamapp.WebServices.Caller;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
@@ -32,7 +38,7 @@ import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 import static com.fara.inkamapp.Activities.CompleteProfile.MyPREFERENCES;
 
-public class LoginInkam extends AppCompatActivity {
+public class LoginInkam extends HideKeyboard {
 
     private Button btn_continue;
     private EditText phoneNumber;
@@ -40,8 +46,10 @@ public class LoginInkam extends AppCompatActivity {
     private String phone;
     private String preCodeNumber = "0";
     public static String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCjL8NCgYgt7Y0Lg9OZUaziHSPusQoVpuHIkICjy7YI8yUlRBETmtNr9wdu61Wskz0PAQbj/TnCSXOhnhbWDormPk0GWyTjV/4Drrlx+hZtxPDgrYSwqscqoG2HWmWVlaqbAuVz4r/XMDbcy8zPy/ROGVey4uyGKj0hsA4p3O6YMwIDAQAB";
-
     private SharedPreferences sharedPreferences;
+    private checkUsername _checkUsername;
+    private loginVerification _loginVerification;
+    private ProgressBar loadingProgress;
 
 
     @Override
@@ -62,17 +70,25 @@ public class LoginInkam extends AppCompatActivity {
                 .build());
 
         setContentView(R.layout.activity_login_inkam);
+        initVariables();
 
+
+    }
+
+    private void initVariables() {
         phoneNumber = findViewById(R.id.et_phone_number);
         btn_continue = findViewById(R.id.btn_continue);
+        loadingProgress = findViewById(R.id.progress_loader);
 
         phoneNumber.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if (s.toString().trim().length() < 10) {
+                if (s.toString().trim().length() < 10 || s.toString().trim().length() > 11) {
                     btn_continue.setEnabled(false);
+                    btn_continue.setBackgroundResource(R.drawable.button_background_disabled);
+                    btn_continue.setTextColor(getResources().getColor(R.color.colorNightRider));
                 } else {
                     btn_continue.setEnabled(true);
                     btn_continue.setBackgroundResource(R.drawable.button_background_green);
@@ -97,10 +113,9 @@ public class LoginInkam extends AppCompatActivity {
         btn_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new checkUsername().execute();
+                _checkUsername = new checkUsername();
+                _checkUsername.execute();
 
-//                Intent intent = new Intent(getApplicationContext(), CompleteProfile.class);
-//                startActivity(intent);
             }
         });
     }
@@ -129,9 +144,19 @@ public class LoginInkam extends AppCompatActivity {
                     toastText.setTextSize(14);
                 }
                 toast.show();
+            } else {
+                loadingProgress.setVisibility(View.VISIBLE);
+                loadingProgress.setActivated(true);
             }
 
-            phone = preCodeNumber + phoneNumber.getText().toString();
+            // Sohrab : please check this with RegularExpression Later
+
+//            !phone.matches("(\\+98|0)?9\\d{9}")
+
+            if (phoneNumber.getText().toString().startsWith("0"))
+                phone = phoneNumber.getText().toString();
+            else if (!phoneNumber.getText().toString().startsWith("0"))
+                phone = preCodeNumber + phoneNumber.getText().toString();
 
         }
 
@@ -150,16 +175,13 @@ public class LoginInkam extends AppCompatActivity {
             if (login != null) {
 
                 if (login.get_checkUserNameResult() == 0) {
-
-                    new loginVerification().execute();
-
+                    _loginVerification = new loginVerification();
+                    _loginVerification.execute();
 
                 } else if (login.get_checkUserNameResult() > 0) {
                     Intent intent = new Intent(LoginInkam.this, LoginUsePassword.class);
                     intent.putExtra("phoneNumber", phone);
                     startActivity(intent);
-                    finish();
-
                 }
 
             } else {
@@ -176,6 +198,9 @@ public class LoginInkam extends AppCompatActivity {
                 }
                 toast.show();
             }
+
+            loadingProgress.setActivated(false);
+            loadingProgress.setVisibility(View.GONE);
         }
 
     }
@@ -200,6 +225,9 @@ public class LoginInkam extends AppCompatActivity {
                     toastText.setTextSize(14);
                 }
                 toast.show();
+            } else {
+                loadingProgress.setVisibility(View.VISIBLE);
+                loadingProgress.setActivated(true);
             }
 
         }
@@ -235,7 +263,28 @@ public class LoginInkam extends AppCompatActivity {
                 }
                 toast.show();
             }
+            loadingProgress.setActivated(false);
+            loadingProgress.setVisibility(View.GONE);
         }
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupUI(findViewById(R.id.parent));
+        phoneNumber.setText("");
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (_checkUsername != null) {
+            _checkUsername.cancel(true);
+        }
+        if (_loginVerification != null) {
+            _loginVerification.cancel(true);
+        }
     }
 }

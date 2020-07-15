@@ -8,6 +8,7 @@
     tools:context=".Activities.CardToCardTransfer">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorMainBackgroundColor">
@@ -82,6 +83,8 @@
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/edit_text_selector"
                 android:drawableEnd="@drawable/ic_money_gray"
+                android:maxLines="1"
+                android:imeOptions="actionNext"
                 android:drawablePadding="16dp"
                 android:hint="@string/enter_amount"
                 android:padding="16dp" />
@@ -104,6 +107,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
+                android:maxLines="1"
+                android:imeOptions="actionNext"
                 android:background="@drawable/edit_text_selector"
                 android:drawableEnd="@drawable/ic_card_add_gray"
                 android:drawablePadding="16dp"
@@ -118,6 +123,8 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/edit_text_selector"
+                android:maxLines="1"
+                android:imeOptions="actionNext"
                 android:drawableEnd="@drawable/ic_card_add_gray"
                 android:drawablePadding="16dp"
                 android:hint="@string/enter_card_destination"
@@ -130,6 +137,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
+                android:maxLines="1"
+                android:imeOptions="actionDone"
                 android:background="@drawable/edit_text_selector"
                 android:drawableEnd="@drawable/ic_text"
                 android:drawablePadding="16dp"

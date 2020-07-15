@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.fara.inkamapp.BottomSheetFragments.CharityPriceInfo;
@@ -22,6 +23,7 @@ public class CharityAndInsurance extends AppCompatActivity {
 
     private RelativeLayout goToCharity;
     private BottomSheetDialogFragment bottomSheetDialogFragment;
+    private ImageButton back;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -49,6 +51,15 @@ public class CharityAndInsurance extends AppCompatActivity {
             public void onClick(View view) {
                 bottomSheetDialogFragment = RecentTransactions.newInstance("Bottom Sheet Get Money Dialog");
                 bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+            }
+        });
+
+        back = findViewById(R.id.ib_back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
             }
         });
     }

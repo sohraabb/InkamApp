@@ -1,17 +1,24 @@
 package com.fara.inkamapp.BottomSheetFragments;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +39,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class InternetPackageBottomSheet extends BottomSheetDialogFragment implements View.OnClickListener {
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class InternetPackageBottomSheet extends BottomSheetDialogFragment {
 
     private String string;
     private TextView toastText;
@@ -40,9 +50,11 @@ public class InternetPackageBottomSheet extends BottomSheetDialogFragment implem
     private JSONObject postData;
     private RelativeLayout hamrahAval, rightel, irancell;
     private int previousOperatorType = 0;
-    private int operatorValue=0;
+    private int operatorValue = 0;
     private EditText phoneNumber;
-
+    private ImageButton contact;
+    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
+    private static final int PICK_CONTACT = 856;
 
     public static InternetPackageBottomSheet newInstance(String string) {
         InternetPackageBottomSheet internetPackageBottomSheet = new InternetPackageBottomSheet();
@@ -77,28 +89,56 @@ public class InternetPackageBottomSheet extends BottomSheetDialogFragment implem
         hamrahAval = view.findViewById(R.id.rl_hamrah_aval);
         irancell = view.findViewById(R.id.rl_irancell);
         phoneNumber = view.findViewById(R.id.et_phone_number);
+        contact = view.findViewById(R.id.ib_contact);
 
-        rightel.setOnClickListener(this);
-        hamrahAval.setOnClickListener(this);
-        irancell.setOnClickListener(this);
 
+        contact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
+                }else {
+                    Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                    startActivityForResult(intent, PICK_CONTACT);
+                }
+
+            }
+        });
+        phoneNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isIrancell(s.toString())){
+                    irancell.setBackgroundResource(R.drawable.green_stroke_background);
+                    hamrahAval.setBackgroundResource(R.drawable.white_rounded_background);
+                    rightel.setBackgroundResource(R.drawable.white_rounded_background);
+                    operatorValue=0;
+                }else if(isHamrahAval(s.toString())){
+                    hamrahAval.setBackgroundResource(R.drawable.green_stroke_background);
+                    irancell.setBackgroundResource(R.drawable.white_rounded_background);
+                    rightel.setBackgroundResource(R.drawable.white_rounded_background);
+                    operatorValue=1;
+                }else if(isRightel(s.toString())){
+                    rightel.setBackgroundResource(R.drawable.green_stroke_background);
+                    hamrahAval.setBackgroundResource(R.drawable.white_rounded_background);
+                    irancell.setBackgroundResource(R.drawable.white_rounded_background);
+                    operatorValue=3;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                postData = new JSONObject();
-//                try {
-//                    postData.put("CellNumbers", phoneNumber.getText().toString());
-//                    postData.put("ChargeType", "0");
-//                    postData.put("BankId", "08");
-//                    postData.put("DeviceType", "59");
-//                    postData.put("Operator", operatorValue);
-//                    postData.put("Merchant", "irancell");
-//                    postData.put("packageDescription", "0");
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
 
                 Intent intent = new Intent(getActivity(), InternetPackageActivity.class);
                 intent.putExtra("CellNumbers", phoneNumber.getText().toString());
@@ -110,119 +150,24 @@ public class InternetPackageBottomSheet extends BottomSheetDialogFragment implem
         return view;
     }
 
-    @Override
-    public void onClick(View v) {
-        int temp = 0;
-
-        temp = v.getId();
-
-        rightel.setBackgroundResource(R.drawable.edittext_background_black_stroke);
-        hamrahAval.setBackgroundResource(R.drawable.edittext_background_black_stroke);
-        irancell.setBackgroundResource(R.drawable.edittext_background_black_stroke);
-
-
-        if (temp == previousOperatorType) {
-            temp = 0;
-            previousOperatorType = 0;
-        }
-
-
-        switch (temp) {
-
-            case R.id.rl_rightel: {
-
-                rightel.setBackgroundResource(R.drawable.green_stroke_background);
-                operatorValue = OperatorType.Rightel.getValue();
-
-            }
-
-            break;
-            case R.id.rl_hamrah_aval: {
-                hamrahAval.setBackgroundResource(R.drawable.green_stroke_background);
-                operatorValue = OperatorType.Mci.getValue();
-
-            }
-            break;
-
-            case R.id.rl_irancell: {
-                irancell.setBackgroundResource(R.drawable.green_stroke_background);
-                operatorValue = OperatorType.Mtn.getValue();
-
-            }
-            break;
-
-        }
-        previousOperatorType = temp;
-
+    private boolean isIrancell(String input) {
+        Pattern p = Pattern.compile("^09[0|3][0-9]{8}$");
+        Matcher m = p.matcher(input);
+        return m.matches();
     }
 
-    private boolean isNetworkAvailable() {
-        return FaraNetwork.isNetworkAvailable(getActivity());
+    private boolean isRightel(String input) {
+        Pattern p = Pattern.compile("^09[2][0-9]{8}$");
+        Matcher m = p.matcher(input);
+        return m.matches();
     }
 
-    private class InternetPackageReserve extends AsyncTask<Void, Void, ReserveTopupRequest> {
-
-        ReserveTopupRequest results = null;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            if (!isNetworkAvailable()) {
-                Toast toast = Toast.makeText(getActivity(), R.string.error_net, Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toastText = toast.getView().findViewById(android.R.id.message);
-                toast.getView().setBackgroundResource(R.drawable.toast_background);
-                if (toastText != null) {
-                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
-                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
-                    toastText.setGravity(Gravity.CENTER);
-                    toastText.setTextSize(14);
-                }
-                toast.show();
-            }
-
-        }
-
-        @Override
-        protected ReserveTopupRequest doInBackground(Void... params) {
-            results = new Caller().internetPackageReserve("2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00", postData.toString());
-
-            return results;
-        }
-
-        @Override
-        protected void onPostExecute(ReserveTopupRequest reserveTopUpRequest) {
-            super.onPostExecute(reserveTopUpRequest);
-            //TODO we should add other items here too
-
-            if (reserveTopUpRequest.get_token() != null) {
-
-                Intent intent = new Intent(getActivity(), InternetPackageActivity.class);
-                startActivity(intent);
-
-//                Intent intent = new Intent(getActivity(), BuyPackages.class);
-//                intent.putExtra("orderID", reserveTopUpRequest.get_reserveNumber());
-//                intent.putExtra("data", "");
-//                startActivity(intent);
-
-            } else {
-                Toast toast = Toast.makeText(getActivity(), R.string.try_again, Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toastText = toast.getView().findViewById(android.R.id.message);
-                toast.getView().setBackgroundResource(R.drawable.toast_background);
-
-                if (toastText != null) {
-                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
-                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
-                    toastText.setGravity(Gravity.CENTER);
-                    toastText.setTextSize(14);
-                }
-                toast.show();
-            }
-
-        }
+    private boolean isHamrahAval(String input) {
+        Pattern p = Pattern.compile("^09[1][0-9]{8}$");
+        Matcher m = p.matcher(input);
+        return m.matches();
     }
+
 
 }
 

@@ -1,17 +1,26 @@
 package com.fara.inkamapp.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,21 +30,34 @@ import android.widget.Toast;
 
 import com.fara.inkamapp.Dialogs.InquiryDebt;
 import com.fara.inkamapp.Dialogs.SuccessTransfer;
+import com.fara.inkamapp.Helpers.Base64;
 import com.fara.inkamapp.Helpers.FaraNetwork;
+import com.fara.inkamapp.Helpers.HideKeyboard;
+import com.fara.inkamapp.Helpers.Numbers;
+import com.fara.inkamapp.Helpers.RSA;
 import com.fara.inkamapp.Models.PhoneBillInfo;
 import com.fara.inkamapp.Models.ReserveTopupRequest;
 import com.fara.inkamapp.R;
 import com.fara.inkamapp.WebServices.Caller;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
-public class PhoneDebt extends AppCompatActivity implements View.OnClickListener {
+import static com.fara.inkamapp.Activities.CompleteProfile.MyPREFERENCES;
+import static com.fara.inkamapp.Activities.LoginInkam.publicKey;
+
+public class PhoneDebt extends HideKeyboard implements View.OnClickListener {
 
     private RelativeLayout mobileView, telephoneView;
     private TextView mobileText, telephoneText, instanceText, toastText;
@@ -44,6 +66,11 @@ public class PhoneDebt extends AppCompatActivity implements View.OnClickListener
     private Activity _context;
     private String phoneNumber, midTermAmount, midTermBillId, midTermPaymentId, finalTermAmount, finalTermBillId, finalTermPaymentId;
     private boolean isMobile;
+    private String amount, operator, type, phone, token, userID, encryptedToken, AesKey, dataToConfirm;
+    private SharedPreferences sharedpreferences;
+
+    private static final int PICK_CONTACT = 856;
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -73,13 +100,61 @@ public class PhoneDebt extends AppCompatActivity implements View.OnClickListener
         telephone = findViewById(R.id.et_enter_telephone_number);
         inquiry = findViewById(R.id.btn_inquiry);
 
+        mobile.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    if (motionEvent.getRawX() - 118 <= (mobile.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
+                        // your action here
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
+                        }else {
+                            Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                            startActivityForResult(intent, PICK_CONTACT);
+                        }
+                        return false;
+                    }
+                }
+                return false;
+            }
+        });
         inquiry.setOnClickListener(this);
         mobileView.setOnClickListener(this);
         telephoneView.setOnClickListener(this);
         instanceText.setText("۳۲۳۲۳۴۵ ۰۳۴");
 
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        token = sharedpreferences.getString("Token", null);
+        userID = sharedpreferences.getString("UserID", null);
+        AesKey = sharedpreferences.getString("key", null);
+
+        try {
+            encryptedToken = Base64.encode((RSA.encrypt(token, publicKey)));
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupUI(findViewById(R.id.parent));
+    }
 
     private boolean isIrancell(String input) {
         Pattern p = Pattern.compile("^09[0|3][0-9]{8}$");
@@ -185,7 +260,7 @@ public class PhoneDebt extends AppCompatActivity implements View.OnClickListener
 
         @Override
         protected PhoneBillInfo doInBackground(Void... params) {
-            results = new Caller().getIrancelBillInfo(phoneNumber, "2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00");
+            results = new Caller().getIrancelBillInfo(phoneNumber, userID, encryptedToken);
 
             return results;
         }
@@ -273,7 +348,7 @@ public class PhoneDebt extends AppCompatActivity implements View.OnClickListener
 
         @Override
         protected PhoneBillInfo doInBackground(Void... params) {
-            results = new Caller().getHamrahAvalBillInfo(phoneNumber, "2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00");
+            results = new Caller().getHamrahAvalBillInfo(phoneNumber, userID, encryptedToken);
 
             return results;
         }
@@ -284,7 +359,7 @@ public class PhoneDebt extends AppCompatActivity implements View.OnClickListener
             //TODO we should add other items here too
 
 
-            if (phoneBillInfo != null) {
+            if (phoneBillInfo != null && phoneBillInfo.get_status() != null) {
                 if (phoneBillInfo.get_status().get_code().equals("G00000")) {
                     if (phoneBillInfo.get_phoneBillParameters().get_midTermInfo() != null) {
                         midTermAmount = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_midTermInfo().get_amount());
@@ -361,7 +436,7 @@ public class PhoneDebt extends AppCompatActivity implements View.OnClickListener
 
         @Override
         protected PhoneBillInfo doInBackground(Void... params) {
-            results = new Caller().getRightelBillInfo(phoneNumber, "2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00");
+            results = new Caller().getRightelBillInfo(phoneNumber, userID, encryptedToken);
 
             return results;
         }
@@ -449,7 +524,7 @@ public class PhoneDebt extends AppCompatActivity implements View.OnClickListener
 
         @Override
         protected PhoneBillInfo doInBackground(Void... params) {
-            results = new Caller().getTelecomBillInfo(phoneNumber, "2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00");
+            results = new Caller().getTelecomBillInfo(phoneNumber, userID, encryptedToken);
 
             return results;
         }
@@ -460,7 +535,7 @@ public class PhoneDebt extends AppCompatActivity implements View.OnClickListener
             //TODO we should add other items here too
 
 
-            if (phoneBillInfo != null) {
+            if (phoneBillInfo != null && phoneBillInfo.get_status().get_code() != null) {
                 if (phoneBillInfo.get_status().get_code().equals("G00000")) {
                     if (phoneBillInfo.get_phoneBillParameters().get_midTermInfo() != null) {
                         midTermAmount = String.valueOf(phoneBillInfo.get_phoneBillParameters().get_midTermInfo().get_amount());
@@ -510,5 +585,82 @@ public class PhoneDebt extends AppCompatActivity implements View.OnClickListener
             }
 
         }
+    }
+
+    public void backClicke(View v) {
+        finish();
+    }
+
+    @Override
+    public void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+
+        switch (reqCode) {
+            case (PICK_CONTACT):
+                if (resultCode == Activity.RESULT_OK) {
+                    try {
+
+
+                            Uri contactData = data.getData();
+                            Cursor c = managedQuery(contactData, null, null, null, null);
+                            if (c.moveToFirst()) {
+                                String id = c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
+
+                                String hasPhone =
+                                        c.getString(c.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+
+                                if (hasPhone.equalsIgnoreCase("1")) {
+                                    Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + id, null, null);
+                                    phones.moveToFirst();
+                                    String cNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                                    mobile.setText(cNumber);
+                                    // Toast.makeText(getApplicationContext(), cNumber, Toast.LENGTH_SHORT).show();
+                                    // setCn(cNumber);
+                                }
+                            }
+
+                    } catch (Exception e) {
+                        Toast.makeText(_context, e.toString(), Toast.LENGTH_LONG).show();
+                    }
+
+                }
+        }
+    }
+    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                startActivityForResult(intent, PICK_CONTACT);
+
+            } else {
+                Toast.makeText(this, "Until you grant the permission, we canot display the names", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void getContactNames() {
+        Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+        String[] projection    = new String[]          {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Phone.NUMBER};
+
+        Cursor people = getContentResolver().query(uri, projection, null,  null, null);
+
+        int indexName = people.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+        int indexNumber = people.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+
+        if(people.moveToFirst()) {
+            do {
+                String name   = people.getString(indexName);
+                String number = people.getString(indexNumber);
+                // add number to list
+                // Do work...
+            } while (people.moveToNext());
+        }
+        people.close();
     }
 }

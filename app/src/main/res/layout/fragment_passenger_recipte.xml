@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@color/colorMainBackgroundColor"
+    tools:context=".Fragments.PassengerRecipte">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:background="@color/colorMainBackgroundColor"
+     >
+  <!--  <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="556dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/white_rounded_background">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout4"
+            android:layout_width="48dp"
+            android:layout_height="93dp"
+            android:layout_weight="25"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_destination"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:padding="8dp"
+                android:text="تهران" />
+
+            <TextView
+                android:id="@+id/tv_destination_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_destination"
+                android:layout_centerHorizontal="true"
+                android:text="۰۴:۳۲"
+                android:textColor="@color/colorMainGreen"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="184dp"
+            android:layout_height="97dp"
+            android:layout_marginStart="28dp"
+            android:layout_weight="50"
+            android:orientation="vertical"
+            android:weightSum="100"
+            app:layout_constraintStart_toEndOf="@+id/relativeLayout4"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="8dp"
+                android:layout_weight="30">
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="۱۳۹۷/۰۹/۱۳"
+                    android:textColor="@color/colorBrown"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="جمعه"
+                    android:textColor="@color/colorBrown"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="8dp"
+                android:layout_weight="40">
+
+                <ImageView
+                    android:id="@+id/iv_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    app:srcCompat="@drawable/ic_long_green_arrow" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="8dp"
+                android:layout_weight="30">
+
+                <TextView
+                    android:id="@+id/tv_number_passengers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="۲ مسافر "
+                    android:textColor="@color/colorBrown"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="21dp"
+            android:layout_weight="35"
+            app:layout_constraintBottom_toBottomOf="@+id/relativeLayout4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.3"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout3"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:id="@+id/tv_current_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:padding="8dp"
+                android:text="کرمان" />
+
+            <TextView
+                android:id="@+id/tv_current_loc_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_current_location"
+                android:layout_centerHorizontal="true"
+                android:text="۰۴:۳۲"
+                android:textColor="@color/colorMainGreen"
+                android:textSize="14sp" />
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+        <LinearLayout
+            android:id="@+id/rl_ticket_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/white_rounded_background"
+
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:weightSum="100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/r3_header">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="25">
+
+                    <TextView
+                        android:id="@+id/tv_destination"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:padding="8dp"
+                        android:text="تهران" />
+
+                    <TextView
+                        android:id="@+id/tv_destination_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_destination"
+                        android:layout_centerHorizontal="true"
+                        android:text="۰۴:۳۲"
+                        android:textColor="@color/colorMainGreen"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="50"
+                    android:orientation="vertical"
+                    android:weightSum="100">
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="30">
+
+                        <TextView
+                            android:id="@+id/tv_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="۱۳۹۷/۰۹/۱۳"
+                            android:textColor="@color/colorBrown"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/tv_day"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_toEndOf="@+id/tv_date"
+                            android:text="جمعه"
+                            android:textColor="@color/colorBrown"
+                            android:textSize="12sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_margin="8dp"
+                        android:layout_weight="40">
+
+                        <ImageView
+                            android:id="@+id/iv_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            app:srcCompat="@drawable/ic_long_green_arrow" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_margin="8dp"
+                        android:layout_weight="30">
+
+                        <TextView
+                            android:id="@+id/tv_number_passengers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="۲ مسافر "
+                            android:textColor="@color/colorBrown"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="35">
+
+
+                    <TextView
+                        android:id="@+id/tv_current_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:padding="8dp"
+                        android:text="کرمان" />
+
+                    <TextView
+                        android:id="@+id/tv_current_loc_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_current_location"
+                        android:layout_centerHorizontal="true"
+                        android:text="۰۴:۳۲"
+                        android:textColor="@color/colorMainGreen"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/mdtp_transparent_black"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="60">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="30">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="8dp"
+                            android:text="@string/moving_time"
+                            android:textColor="@color/colorMainGreen"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="30">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/iv_train_photo"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/test_image" />
+
+                        <TextView
+                            android:id="@+id/tv_bus_company"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginEnd="8dp"
+                            android:layout_toStartOf="@+id/iv_train_photo"
+                            android:text="تعاونی ۴ میهن نور"
+                            android:textColor="@color/colorNightRider"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp">
+
+                    <TextView
+                        android:id="@+id/tv_bus_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="16dp"
+                        android:text="۴ تخته البرز - ۱۱۸"
+                        android:textColor="@color/colorBrown"
+                        android:textSize="14sp" />
+
+
+                    <TextView
+                        android:id="@+id/tv_date1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginStart="16dp"
+                        android:text="۴ نفر"
+                        android:textColor="@color/colorMainGreen"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_day1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="16dp"
+                        android:layout_toEndOf="@+id/tv_seat_left_value"
+                        android:text="@string/seats_left"
+                        android:textColor="@color/colorNightRider"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_passengers"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rl_ticket_info" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
+        android:background="@drawable/button_background_disabled"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="@string/rial"
+            android:textColor="@color/colorMainGreen" />
+
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="30000"
+            android:textColor="@color/colorMainGreen"
+            android:textSize="18sp" />
+        <RelativeLayout
+            android:id="@+id/rl_discount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:layout_marginTop="2dp"
+            android:layout_centerInParent="true"
+            android:layout_toEndOf="@id/tv_adult_price">
+            <TextView
+                android:id="@+id/tv_price_discount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="2dp"
+
+                android:text="۳۰,۰۰۰"
+                android:textColor="@color/colorRed"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:layout_width="20dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="12dp"
+
+                android:background="@color/colorRed"></LinearLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:text="@string/payable_amount"
+            android:textColor="@color/colorNightRider"
+            android:textSize="18sp" />
+        />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/agreement"
+        android:textAlignment="center"
+       android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"></TextView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

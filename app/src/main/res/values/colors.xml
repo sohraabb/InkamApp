@@ -20,6 +20,11 @@
     <color name="colorYellow">#F5A623</color>
     <color name="colorGreen">#00D350</color>
     <color name="colorOrangeYellow">#F5A623</color>
-
+    <color name="colorDotGray">#D8D8D8</color>
+    <color name="colorFemale">#ffb3bc</color>
+    <color name="colorMale">#b3d6ff</color>
+    <color name="colorSelectedSeat">#009b8a</color>
+    <color name="colorUnSelectedSeat">#e8e9ea</color>
+    <color name="colorUnableSeat">#f4f4f4</color>
 
 </resources>

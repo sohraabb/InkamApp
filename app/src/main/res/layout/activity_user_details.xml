@@ -27,12 +27,12 @@
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
         android:background="@android:color/transparent"
         android:padding="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_back" />
+        app:srcCompat="@drawable/ic_back"
+        android:onClick="backClicked"/>
 
     <RelativeLayout
         android:id="@+id/relativeLayout3"
@@ -128,6 +128,7 @@
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rc_users"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"

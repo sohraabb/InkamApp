@@ -51,6 +51,8 @@
         android:background="@drawable/edit_text_selector"
         android:gravity="start"
         android:hint="@string/melli_code"
+        android:maxLines="1"
+        android:imeOptions="actionDone"
         android:inputType="number"
         android:padding="16dp"
         android:textColor="@color/colorBrown"

@@ -32,7 +32,6 @@
             android:layout_centerInParent="true"
             android:textColor="@color/colorBrown"
             android:layout_marginEnd="16dp"
-            android:text="۱۳۹۷/۹/۲۲"
             android:textSize="14sp" />
 
         <TextView
@@ -42,7 +41,6 @@
             android:layout_centerInParent="true"
             android:layout_toEndOf="@+id/tv_date"
             android:textColor="@color/colorBrown"
-            android:text="۱۴:۳۳"
             android:textSize="14sp" />
 
     </RelativeLayout>

@@ -42,24 +42,25 @@
             android:id="@+id/rl_add_card"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:background="@drawable/gray_rounded_background"
+            android:layout_marginEnd="16dp"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_wallet"
-            app:layout_constraintVertical_bias="1.0">
+            app:layout_constraintTop_toBottomOf="@id/tv_wallet">
 
             <TextView
                 android:id="@+id/tv_add_card"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:gravity="center"
                 android:layout_marginTop="8dp"
+                android:paddingTop="64dp"
+                android:paddingBottom="64dp"
                 android:drawableTop="@drawable/ic_add_card"
+                android:background="@drawable/gray_rounded_background"
                 android:drawablePadding="8dp"
                 android:text="@string/add_card"
                 android:textColor="@color/colorBrown"
@@ -76,6 +77,10 @@
                 android:id="@+id/indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_alignParentBottom="true"
+                app:spi_dotSelectedColor="@color/colorDotGray"
+                app:spi_dotColor="@color/colorMainGreen"
                 android:visibility="gone"/>
 
         </RelativeLayout>
@@ -120,7 +125,6 @@
                 android:layout_centerInParent="true"
                 android:layout_marginStart="8dp"
                 android:layout_toEndOf="@+id/tv_rial"
-                android:text="12,000"
                 android:textColor="@color/colorMainGreen"
                 android:textSize="18sp" />
         </RelativeLayout>
@@ -144,7 +148,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="50"
                 android:background="@drawable/white_rounded_background"
-                android:padding="16dp">
+                android:padding="8dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -176,7 +180,6 @@
                     android:layout_centerHorizontal="true"
                     android:layout_toEndOf="@+id/tv_user_rial"
                     android:padding="4dp"
-                    android:text="12,000"
                     android:textColor="@color/colorMainGreen"
                     android:textSize="18sp" />
 
@@ -190,7 +193,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="50"
                 android:background="@drawable/white_rounded_background"
-                android:padding="16dp">
+                android:padding="8dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -222,7 +225,6 @@
                     android:layout_centerHorizontal="true"
                     android:layout_toEndOf="@+id/tv_purchase_rial"
                     android:padding="4dp"
-                    android:text="12,000"
                     android:textColor="@color/colorMainGreen"
                     android:textSize="18sp" />
             </RelativeLayout>

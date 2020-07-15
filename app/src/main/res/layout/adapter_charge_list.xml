@@ -2,13 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/white_rounded_background"
         android:padding="16dp">
 
@@ -21,16 +24,13 @@
             android:layout_marginEnd="16dp"
             android:src="@drawable/irancell_logo_green" />
 
-        <TextView
-            android:id="@+id/charge_amount"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
-            android:layout_marginEnd="16dp"
-            android:layout_toStartOf="@+id/iv_operator_logo"
-            android:text="۱۰,۰۰۰"
-            android:textColor="@color/colorMainGreen"
-            android:textSize="14sp" />
+            android:layout_marginStart="16dp"
+            app:srcCompat="@drawable/ic_arrow_small_left" />
 
         <TextView
             android:id="@+id/tv_riali"
@@ -43,13 +43,16 @@
             android:textSize="12sp" />
 
 
-        <ImageView
+        <TextView
+            android:id="@+id/charge_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
-            android:layout_marginStart="16dp"
-            app:srcCompat="@drawable/ic_arrow_small_left" />
+            android:layout_marginEnd="16dp"
+            android:layout_toStartOf="@+id/iv_operator_logo"
+            android:text="۱۰,۰۰۰"
+            android:textColor="@color/colorMainGreen"
+            android:textSize="14sp" />
     </RelativeLayout>
 
 

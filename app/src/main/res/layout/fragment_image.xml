@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.fara.inkamapp.Helpers.CarouselLinearLayout
+        android:id="@+id/root_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_carouser"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:orientation="vertical"
+            android:weightSum="100"
+>
+
+
+            <TextView
+                android:id="@+id/tv_Price_of_date"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="35"
+                android:text=" "
+                android:textColor="@color/colorBlack"></TextView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="30"
+                    android:orientation="horizontal"
+                    android:weightSum="100"
+                    android:background="@drawable/white_very_rounded_background">
+
+                    <TextView
+                        android:id="@+id/tv_day1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="50"
+                        android:gravity="center"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="22sp"></TextView>
+
+                    <TextView
+                        android:id="@+id/tv_day_of_week"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="50"
+                        android:gravity="center"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="22sp"></TextView>
+                </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="35"></LinearLayout>
+
+        </LinearLayout>
+
+
+    </com.fara.inkamapp.Helpers.CarouselLinearLayout>
+
+</LinearLayout>

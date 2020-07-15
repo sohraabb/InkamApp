@@ -14,6 +14,21 @@
         android:orientation="vertical"
         android:padding="8dp">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="5dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/bottom_sheet_swipe" />
+        </RelativeLayout>
+
         <TextView
             android:id="@+id/tv_new_passenger"
             android:layout_width="wrap_content"
@@ -34,6 +49,10 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/edit_text_selector"
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:imeOptions="actionNext"
+            android:inputType="text"
             android:hint="@string/name_farsi"
             android:padding="16dp"
             android:textColor="@color/colorNightRider"
@@ -49,6 +68,10 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/edit_text_selector"
+            android:maxLines="1"
+            android:textSize="14sp"
+            android:imeOptions="actionNext"
+            android:inputType="text"
             android:hint="@string/last_name_farsi"
             android:padding="16dp"
             android:textColor="@color/colorNightRider"
@@ -76,9 +99,13 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/edit_text_selector"
+            android:maxLines="1"
+            android:inputType="text"
+            android:imeOptions="actionNext"
             android:hint="@string/first_name_english"
             android:padding="16dp"
             android:gravity="end"
+            android:textSize="14sp"
             android:textColor="@color/colorNightRider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -94,6 +121,10 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/edit_text_selector"
             android:hint="@string/last_name_english"
+            android:inputType="text"
+            android:maxLines="1"
+            android:imeOptions="actionNext"
+            android:textSize="14sp"
             android:padding="16dp"
             android:gravity="end"
             android:textColor="@color/colorNightRider"
@@ -113,14 +144,18 @@
             app:layout_constraintTop_toBottomOf="@+id/et_last_name_english"/>
 
         <EditText
-            android:id="@+id/et_birth_date"
+            android:id="@+id/et_phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/edit_text_selector"
-            android:hint="@string/birth_date"
+            android:hint="@string/mobile_number"
+            android:maxLines="1"
+            android:inputType="phone"
+            android:imeOptions="actionDone"
+            android:textSize="14sp"
             android:padding="16dp"
             android:textColor="@color/colorNightRider"
             app:layout_constraintEnd_toEndOf="parent"
@@ -137,7 +172,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_birth_date"
+            app:layout_constraintTop_toBottomOf="@+id/et_phone_number"
             android:padding="8dp"/>
         
         <RadioGroup
@@ -145,7 +180,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_birth_date"
+            app:layout_constraintTop_toBottomOf="@+id/et_phone_number"
             app:layout_constraintEnd_toStartOf="@+id/tv_gender_title"
             android:layout_marginTop="16dp"
             android:orientation="horizontal"
@@ -158,6 +193,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorBrown"
                 android:text="@string/female"
+                android:textSize="14sp"
                 android:padding="4dp"
                 android:layout_marginStart="8dp"
                 />
@@ -168,6 +204,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/male"
                 android:layout_marginStart="24dp"
+                android:textSize="14sp"
                 android:textColor="@color/colorBrown"
                 android:padding="4dp"/>
         </RadioGroup>
@@ -182,6 +219,10 @@
             android:background="@drawable/edit_text_selector"
             android:hint="@string/melli_code"
             android:padding="16dp"
+            android:maxLines="1"
+            android:inputType="number"
+            android:imeOptions="actionDone"
+            android:textSize="14sp"
             android:textColor="@color/colorNightRider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

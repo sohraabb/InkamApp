@@ -14,54 +14,6 @@
         android:orientation="vertical"
         android:padding="8dp">
 
-        <TextView
-            android:id="@+id/tv_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/profile"
-            android:textColor="@color/colorBrown"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_user_profile"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:src="@drawable/test_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_profile" />
-
-        <TextView
-            android:id="@+id/tv_user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="امین نجفی"
-            android:textColor="@color/colorNightRider"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_user_profile" />
-
-        <TextView
-            android:id="@+id/tv_user_phone_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="۰۹۱۲۳۴۵۶۷۸۹"
-            android:textColor="@color/colorNightRider"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_user_name" />
-
         <Button
             android:id="@+id/btn_purchased"
             android:layout_width="match_parent"
@@ -78,6 +30,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_user_phone_number" />
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="5dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/bottom_sheet_swipe" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rl_edit_profile"
@@ -99,6 +65,13 @@
                 android:layout_centerInParent="true"
                 app:srcCompat="@drawable/ic_pen_black" />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                app:srcCompat="@drawable/ic_arrow_small_left" />
+
             <TextView
                 android:id="@+id/tv_user_profile"
                 android:layout_width="wrap_content"
@@ -109,13 +82,6 @@
                 android:text="@string/user_profile"
                 android:textColor="@color/colorNightRider"
                 android:textSize="16sp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                app:srcCompat="@drawable/ic_arrow_small_left" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -149,6 +115,13 @@
                 android:layout_centerInParent="true"
                 app:srcCompat="@drawable/ic_support" />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                app:srcCompat="@drawable/ic_arrow_small_left" />
+
             <TextView
                 android:id="@+id/tv_online_support"
                 android:layout_width="wrap_content"
@@ -159,13 +132,6 @@
                 android:text="@string/online_support"
                 android:textColor="@color/colorNightRider"
                 android:textSize="16sp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                app:srcCompat="@drawable/ic_arrow_small_left" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -178,6 +144,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rl_online_support" />
+
 
         <RelativeLayout
             android:id="@+id/rl_terms_conditions"
@@ -199,6 +166,13 @@
                 android:layout_centerInParent="true"
                 app:srcCompat="@drawable/ic_alert_rules" />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                app:srcCompat="@drawable/ic_arrow_small_left" />
+
             <TextView
                 android:id="@+id/tv_rules"
                 android:layout_width="wrap_content"
@@ -209,13 +183,6 @@
                 android:text="@string/terms_conditions"
                 android:textColor="@color/colorNightRider"
                 android:textSize="16sp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                app:srcCompat="@drawable/ic_arrow_small_left" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -249,6 +216,13 @@
                 android:layout_centerInParent="true"
                 app:srcCompat="@drawable/ic_alert_about" />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                app:srcCompat="@drawable/ic_arrow_small_left" />
+
             <TextView
                 android:id="@+id/tv_about"
                 android:layout_width="wrap_content"
@@ -259,13 +233,6 @@
                 android:text="@string/about_inkam"
                 android:textColor="@color/colorNightRider"
                 android:textSize="16sp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                app:srcCompat="@drawable/ic_arrow_small_left" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -299,6 +266,13 @@
                 android:layout_centerInParent="true"
                 app:srcCompat="@drawable/ic_setting" />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                app:srcCompat="@drawable/ic_arrow_small_left" />
+
             <TextView
                 android:id="@+id/tv_setting"
                 android:layout_width="wrap_content"
@@ -309,14 +283,41 @@
                 android:text="@string/setting"
                 android:textColor="@color/colorNightRider"
                 android:textSize="16sp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                app:srcCompat="@drawable/ic_arrow_small_left" />
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/profile"
+            android:textColor="@color/colorBrown"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorNightRider"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_user_profile" />
+
+        <TextView
+            android:id="@+id/tv_user_phone_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorNightRider"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_user_name" />
 
         <TextView
             android:id="@+id/tv_log_out"
@@ -330,6 +331,18 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rl_setting" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_user_profile"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/test_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_profile" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

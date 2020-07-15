@@ -9,6 +9,21 @@
     android:orientation="vertical"
     android:padding="8dp">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="5dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/bottom_sheet_swipe" />
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/tv_recent_transactions"
         android:layout_width="wrap_content"
@@ -32,6 +47,8 @@
         android:drawableEnd="@drawable/ic_calendar_gray"
         android:drawablePadding="16dp"
         android:hint="@string/date_from"
+        android:maxLines="1"
+        android:imeOptions="actionNext"
         android:padding="16dp"
         android:textColor="@color/colorBrown"
         android:textSize="14sp"
@@ -53,6 +70,8 @@
         android:drawableEnd="@drawable/ic_calendar_gray"
         android:drawablePadding="16dp"
         android:hint="@string/date_to"
+        android:maxLines="1"
+        android:imeOptions="actionDone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_date_from"/>

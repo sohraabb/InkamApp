@@ -62,6 +62,10 @@ public class UserCard {
         return _bankId;
     }
 
+    public boolean is_isDefault() {
+        return _isDefault;
+    }
+
     public String get_cardNumber() {
         return _cardNumber;
     }

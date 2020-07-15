@@ -6,6 +6,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,11 +24,14 @@ import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
+import static com.fara.inkamapp.Activities.CompleteProfile.MyPREFERENCES;
+
 public class IntroSliders extends AppCompatActivity {
 
     private ViewPager viewPager;
     private Button button;
     private SliderPager adapter;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -44,6 +48,8 @@ public class IntroSliders extends AppCompatActivity {
                                 .setFontAttrId(R.attr.fontPath)
                                 .build()))
                 .build());
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
 
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().getDecorView()
@@ -72,6 +78,8 @@ public class IntroSliders extends AppCompatActivity {
                 } else {
                     Intent intent = new Intent(getApplicationContext(), LoginInkam.class);
                     startActivity(intent);
+                    sharedPreferences.edit().putBoolean("my_first_time", false).apply();
+
                 }
             }
         });

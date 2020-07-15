@@ -9,6 +9,21 @@
     android:orientation="vertical"
     android:padding="8dp">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="5dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/bottom_sheet_swipe" />
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/tv_transfer_credit"
         android:layout_width="wrap_content"
@@ -42,15 +57,18 @@
             android:layout_marginEnd="16dp"
             app:srcCompat="@drawable/ic_add_user_name" />
 
-        <EditText
+        <AutoCompleteTextView
+            android:id="@+id/et_contact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/iv_user_name"
             android:layout_toEndOf="@+id/ib_cancel"
+            android:background="@android:color/transparent"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
             android:padding="16dp"
-            android:textSize="16sp"
             android:textColor="@color/colorNightRider"
-            android:background="@android:color/transparent"/>
+            android:textSize="16sp" />
 
         <ImageButton
             android:id="@+id/ib_cancel"
@@ -83,6 +101,8 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
+        android:maxLines="1"
+        android:imeOptions="actionDone"
         android:background="@drawable/edittext_background_black_stroke"
         android:padding="16dp"
         android:inputType="number"

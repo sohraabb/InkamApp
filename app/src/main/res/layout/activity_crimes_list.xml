@@ -25,7 +25,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/ic_back" />
+            app:srcCompat="@drawable/ic_back"
+            android:onClick="onBackClicked"/>
 
         <TextView
             android:id="@+id/tv_title"
@@ -58,6 +59,7 @@
         android:text="@string/pay_crime"
         android:textColor="@color/colorWhite"
         android:textSize="16sp"
+        android:onClick="payFine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rl_header" />
@@ -65,18 +67,18 @@
     <LinearLayout
         android:id="@+id/ll_crime_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="16dp"
         android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/rl_separator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_pay_crime"
-        app:layout_constraintBottom_toTopOf="@+id/rl_separator">
+        app:layout_constraintTop_toBottomOf="@+id/btn_pay_crime">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_crimes"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <RelativeLayout
@@ -102,6 +104,7 @@
         android:text="@string/pay_crime"
         android:textColor="@color/colorWhite"
         android:textSize="16sp"
+        android:onClick="payFine"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -116,7 +119,8 @@
         android:drawableEnd="@drawable/ic_select"
         android:drawablePadding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:onClick="onAllSelect"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,6 +22,7 @@
             android:padding="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:onClick="backClicked"
             app:srcCompat="@drawable/ic_back" />
 
         <TextView

@@ -4,13 +4,18 @@ import android.content.Context;
 import android.util.Log;
 
 import com.fara.inkamapp.Models.BookTicket;
+import com.fara.inkamapp.Models.Bus;
 import com.fara.inkamapp.Models.BusCities;
+import com.fara.inkamapp.Models.BusSummary;
 import com.fara.inkamapp.Models.City;
 import com.fara.inkamapp.Models.ContactList;
+import com.fara.inkamapp.Models.Data;
 import com.fara.inkamapp.Models.NotificationList;
 import com.fara.inkamapp.Models.PackagesDataPlan;
 import com.fara.inkamapp.Models.PercentageCode;
 import com.fara.inkamapp.Models.PhoneBillInfo;
+import com.fara.inkamapp.Models.Profit;
+import com.fara.inkamapp.Models.Province;
 import com.fara.inkamapp.Models.Report;
 import com.fara.inkamapp.Models.Routes;
 import com.fara.inkamapp.Models.ServiceBillInfo;
@@ -26,13 +31,19 @@ import com.fara.inkamapp.Models.UserCard;
 import com.fara.inkamapp.Models.UserList;
 import com.fara.inkamapp.Models.UserWallet;
 import com.fara.inkamapp.Models.WalletCredit;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 public class Caller extends Thread {
     private static final Object _balancee = null;
@@ -51,7 +62,7 @@ public class Caller extends Thread {
         // cs = new SOAP("http://tempuri.org/", url);
 
         String url = "https://income-app.ir/webservice/webservice.asmx";
-//        String url2 = "http://172.16.1.23/InkamMvc/WebService/WebService.asmx";
+        String url2 = "http://172.16.1.23/InkamMvc/WebService/WebService.asmx";
         cs = new Soap("http://tempuri.org/", url);
         Log.i("SORI CAller", "url o khoond");
 
@@ -177,7 +188,7 @@ public class Caller extends Thread {
         return result;
     }
 
-    public ResponseStatus insertPassword(String id, String token, String code, String password) {
+    public ResponseStatus insertPassword(String id, String Password, String code, String phone) {
         List<PropertyInfo> list = new ArrayList<PropertyInfo>();
         ResponseStatus result = null;
         PropertyInfo pi1 = new PropertyInfo();
@@ -187,8 +198,8 @@ public class Caller extends Thread {
         list.add(pi1);
 
         PropertyInfo pi2 = new PropertyInfo();
-        pi2.setName("token");
-        pi2.setValue(token);
+        pi2.setName("Password");
+        pi2.setValue(Password);
         pi2.setType(String.class);
         list.add(pi2);
 
@@ -199,8 +210,8 @@ public class Caller extends Thread {
         list.add(pi3);
 
         PropertyInfo pi4 = new PropertyInfo();
-        pi4.setName("password");
-        pi4.setValue(password);
+        pi4.setName("phone");
+        pi4.setValue(phone);
         pi4.setType(String.class);
         list.add(pi4);
 
@@ -249,6 +260,37 @@ public class Caller extends Thread {
         try {
 
             SoapObject resp = cs.Call("ChangePassword", list);
+
+            if (resp != null) {
+
+                result = new ResponseStatus(resp);
+            }
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+
+        }
+        return result;
+    }
+
+    public ResponseStatus updateUser(String token, String user) {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+        ResponseStatus result = null;
+
+        PropertyInfo pi1 = new PropertyInfo();
+        pi1.setName("token");
+        pi1.setValue(token);
+        pi1.setType(String.class);
+        list.add(pi1);
+
+        PropertyInfo pi2 = new PropertyInfo();
+        pi2.setName("user");
+        pi2.setValue(user);
+        pi2.setType(String.class);
+        list.add(pi2);
+
+        try {
+
+            SoapObject resp = cs.Call("UpdateUser", list);
 
             if (resp != null) {
 
@@ -382,6 +424,35 @@ public class Caller extends Thread {
         }
         return result;
     }
+    public Profit GetUserProfitReport(String userID, String token) {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+        Profit result = null;
+
+        PropertyInfo pi1 = new PropertyInfo();
+        pi1.setName("userID");
+        pi1.setValue(userID);
+        pi1.setType(String.class);
+        list.add(pi1);
+
+        PropertyInfo pi2 = new PropertyInfo();
+        pi2.setName("token");
+        pi2.setValue(token);
+        pi2.setType(String.class);
+        list.add(pi2);
+
+
+        try {
+
+            SoapObject resp = cs.Call("GetUserProfitReport", list);
+
+            result = new Profit(resp);
+
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+
+        }
+        return result;
+    }
 
     public ReserveTopupRequest topupServiceReserve(String userID, String token, String topupRequest, int type) {
         List<PropertyInfo> list = new ArrayList<PropertyInfo>();
@@ -425,7 +496,7 @@ public class Caller extends Thread {
         return result;
     }
 
-    public ReserveTopupRequest approveTopupServiceReserve(String userID, String token, String data, long orderID, double amount, int type) {
+    public ReserveTopupRequest approveTopupServiceReserve(String userID, String token, String data, String orderID, String amount, int type) {
         List<PropertyInfo> list = new ArrayList<PropertyInfo>();
         ReserveTopupRequest result = null;
 
@@ -958,6 +1029,98 @@ public class Caller extends Thread {
             return "";
         }
     }
+    public String TrafficBillSuccess(String param, String pelak, String userID, String token,String orderID,String data) {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+        String _response = null;
+        PropertyInfo pi1 = new PropertyInfo();
+        pi1.setName("param");
+        pi1.setValue(param);
+        pi1.setType(String.class);
+        list.add(pi1);
+
+        PropertyInfo pi2 = new PropertyInfo();
+        pi2.setName("pelak");
+        pi2.setValue(pelak);
+        pi2.setType(String.class);
+        list.add(pi2);
+
+        PropertyInfo pi3 = new PropertyInfo();
+        pi3.setName("userID");
+        pi3.setValue(userID);
+        pi3.setType(String.class);
+        list.add(pi3);
+
+        PropertyInfo pi4 = new PropertyInfo();
+        pi4.setName("token");
+        pi4.setValue(token);
+        pi4.setType(String.class);
+        list.add(pi4);
+        PropertyInfo pi5 = new PropertyInfo();
+        pi5.setName("orderID");
+        pi5.setValue(orderID);
+        pi5.setType(String.class);
+        list.add(pi5);
+        PropertyInfo pi6 = new PropertyInfo();
+        pi6.setName("data");
+        pi6.setValue(data);
+        pi6.setType(String.class);
+        list.add(pi6);
+
+        try {
+
+            SoapPrimitive resp = cs.CallPrim("TrafficBillSuccess", list);
+//            SoapPrimitive object = (SoapPrimitive) resp.getAttribute("CheckVerificationCodeResponse");
+            if (resp != null) {
+                _response = String.valueOf(resp);
+
+            }
+
+            return _response;
+
+
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+            return "";
+        }
+    }
+    public String BillPaymentFromWallet(String param, String userID, String token) {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+        String _response = null;
+        PropertyInfo pi1 = new PropertyInfo();
+        pi1.setName("param");
+        pi1.setValue(param);
+        pi1.setType(String.class);
+        list.add(pi1);
+        PropertyInfo pi3 = new PropertyInfo();
+        pi3.setName("userID");
+        pi3.setValue(userID);
+        pi3.setType(String.class);
+        list.add(pi3);
+
+        PropertyInfo pi4 = new PropertyInfo();
+        pi4.setName("token");
+        pi4.setValue(token);
+        pi4.setType(String.class);
+        list.add(pi4);
+
+        try {
+
+            SoapPrimitive resp = cs.CallPrim("BillPaymentFromWallet", list);
+            SoapObject respp = cs.Call("BillPaymentFromWallet", list);
+//            SoapPrimitive object = (SoapPrimitive) resp.getAttribute("CheckVerificationCodeResponse");
+            if (resp != null) {
+                _response = String.valueOf(resp);
+
+            }
+
+            return _response;
+
+
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+            return "";
+        }
+    }
 
     public ResponseStatus updateUserCard(String userID, String token, String card) {
         List<PropertyInfo> list = new ArrayList<PropertyInfo>();
@@ -1115,15 +1278,18 @@ public class Caller extends Thread {
         list.add(pi1);
 
 
-        try {
-            ArrayList<City> cities = new ArrayList<City>();
-            SoapObject resp = cs.Call("GetCityByProvince", list);
+            try {
+                ArrayList<City> cities = new ArrayList<City>();
+                SoapObject resp = cs.Call("GetCityByProvince", list);
+                SoapObject object = (SoapObject) resp.getProperty("CityList");
 
-            for (int i = 0; i < resp.getPropertyCount(); i++) {
-                result = new City((SoapObject) resp.getProperty(i));
-                cities.add(result);
-            }
-            return cities;
+                for (int i = 0; i < object.getPropertyCount(); i++) {
+                    result = new City((SoapObject) object.getProperty(i));
+                    cities.add(result);
+                }
+                return cities;
+
+
 
         } catch (Exception ex) {
             Log.e("Inkam_Caller", ex.toString());
@@ -1195,9 +1361,9 @@ public class Caller extends Thread {
         try {
             ArrayList<Report> reportList = new ArrayList<Report>();
             SoapObject resp = cs.Call("GetWalletTransactionReport", list);
-
-            for (int i = 0; i < resp.getPropertyCount(); i++) {
-                result = new Report((SoapObject) resp.getProperty(i));
+            SoapObject resp1 = (SoapObject) resp.getProperty(0);
+            for (int i = 0; i < resp1.getPropertyCount(); i++) {
+                result = new Report((SoapObject) resp1.getProperty(i));
                 reportList.add(result);
             }
             return reportList;
@@ -1493,6 +1659,52 @@ public class Caller extends Thread {
         }
         return result;
     }
+    public Data InternetPackageApprove(String userID, String token, String data, String orderID, String amount) {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+        Data result = null;
+
+        PropertyInfo pi1 = new PropertyInfo();
+        pi1.setName("userID");
+        pi1.setValue(userID);
+        pi1.setType(String.class);
+        list.add(pi1);
+
+        PropertyInfo pi2 = new PropertyInfo();
+        pi2.setName("token");
+        pi2.setValue(token);
+        pi2.setType(String.class);
+        list.add(pi2);
+
+        PropertyInfo pi3 = new PropertyInfo();
+        pi3.setName("data");
+        pi3.setValue(data);
+        pi3.setType(String.class);
+        list.add(pi3);
+        PropertyInfo pi4 = new PropertyInfo();
+        pi4.setName("orderID");
+        pi4.setValue(orderID);
+        pi4.setType(String.class);
+        list.add(pi4);
+
+        PropertyInfo pi5 = new PropertyInfo();
+        pi5.setName("amount");
+        pi5.setValue(amount);
+        pi5.setType(String.class);
+        list.add(pi5);
+
+
+        try {
+
+            SoapObject resp = cs.Call("InternetPackageApprove", list);
+
+            result = new Data(resp);
+
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+
+        }
+        return result;
+    }
 
     public ResponseStatus insertUserCard(String userID, String token, String card) {
         List<PropertyInfo> list = new ArrayList<PropertyInfo>();
@@ -1532,9 +1744,9 @@ public class Caller extends Thread {
         return result;
     }
 
-    public WalletCredit IncreaseWalletCreditRequest(String userID, String token, long mobile, long amount) {
+    public String IncreaseWalletCreditRequest(String userID, String token, long mobile, String amount) {
         List<PropertyInfo> list = new ArrayList<PropertyInfo>();
-        WalletCredit result = null;
+        String result = "";
         PropertyInfo pi1 = new PropertyInfo();
         pi1.setName("userID");
         pi1.setValue(userID);
@@ -1561,11 +1773,11 @@ public class Caller extends Thread {
 
         try {
 
-            SoapObject resp = cs.Call("IncreaseWalletCreditRequest", list);
+            SoapPrimitive resp = cs.CallPrim("IncreaseWalletCreditRequest", list);
 
             if (resp != null) {
 
-                result = new WalletCredit(resp);
+                return resp.toString();
 
             }
 
@@ -1576,7 +1788,7 @@ public class Caller extends Thread {
         return result;
     }
 
-    public String increaseWalletCreditRequestConfirm(String userID, String token, String data, double amount) {
+    public String increaseWalletCreditRequestConfirm(String userID, String token, String data, String amount) {
         List<PropertyInfo> list = new ArrayList<PropertyInfo>();
         String result = "";
         PropertyInfo pi1 = new PropertyInfo();
@@ -1664,9 +1876,9 @@ public class Caller extends Thread {
         return result;
     }
 
-    public BookTicket bookBusTicket(String userID, String token, String tiketToBook) {
+    public String bookBusTicket(String userID, String token, String tiketToBook) {
         List<PropertyInfo> list = new ArrayList<PropertyInfo>();
-        BookTicket result = null;
+        String result = null;
         PropertyInfo pi1 = new PropertyInfo();
         pi1.setName("userID");
         pi1.setValue(userID);
@@ -1687,11 +1899,11 @@ public class Caller extends Thread {
 
         try {
 
-            SoapObject resp = cs.Call("bookBusTicketForApp", list);
+            SoapPrimitive resp = cs.CallPrim("bookBusTicketForApp", list);
 
             if (resp != null) {
 
-                result = new BookTicket(resp);
+                return resp.toString();
 
             }
 
@@ -1702,9 +1914,10 @@ public class Caller extends Thread {
         return result;
     }
 
-    public BookTicket bookTicketFromWallet(String userID, String token, String tiketToBook) {
+
+    public String bookTicketFromWallet(String userID, String token, String tiketToBook) {
         List<PropertyInfo> list = new ArrayList<PropertyInfo>();
-        BookTicket result = null;
+        String result = null;
 
         PropertyInfo pi1 = new PropertyInfo();
         pi1.setName("userID");
@@ -1727,9 +1940,10 @@ public class Caller extends Thread {
 
         try {
 
-            SoapObject resp = cs.Call("bookTicketFromWallet", list);
-
-            result = new BookTicket(resp);
+            SoapPrimitive resp = cs.CallPrim("bookTicketFromWallet", list);
+            if (resp != null)
+                return resp.toString();
+            //  result = new BookTicket(resp);
 
         } catch (Exception ex) {
             Log.e("Inkam_Caller", ex.toString());
@@ -1737,7 +1951,6 @@ public class Caller extends Thread {
         }
         return result;
     }
-
     public SpecificTicketInfo getSpecificTicket(String userID, String token, String ticketID) {
         List<PropertyInfo> list = new ArrayList<PropertyInfo>();
         SpecificTicketInfo result = null;
@@ -1809,7 +2022,7 @@ public class Caller extends Thread {
         return result;
     }
 
-    public WalletCredit busTicketSuccess(String userID, String token, String data, long orderID, double amount) {
+    public WalletCredit busTicketSuccess(String userID, String token, String data, String orderID, String amount) {
         List<PropertyInfo> list = new ArrayList<PropertyInfo>();
         WalletCredit result = null;
 
@@ -2579,4 +2792,514 @@ public class Caller extends Thread {
         }
     }
 
+    public ArrayList<Province> getProvince() {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+        Province result = null;
+
+        try {
+            ArrayList<Province> provinceList = new ArrayList<Province>();
+
+            SoapObject resp = cs.Call("GetProvince", list);
+            SoapObject object = (SoapObject) resp.getProperty("ProvinceList");
+
+            for (int i = 0; i < object.getPropertyCount(); i++) {
+                result = new Province((SoapObject) object.getProperty(i));
+                provinceList.add(result);
+            }
+            return provinceList;
+
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+            return null;
+        }
+    }
+    public String GetBillToken(String userID, String token, long mobile, long payID, long billID) {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+        String _response = null;
+        PropertyInfo pi1 = new PropertyInfo();
+        pi1.setName("userID");
+        pi1.setValue(userID);
+        pi1.setType(String.class);
+        list.add(pi1);
+        PropertyInfo pi2 = new PropertyInfo();
+        pi2.setName("token");
+        pi2.setValue(token);
+        pi2.setType(String.class);
+        list.add(pi2);
+        PropertyInfo pi3 = new PropertyInfo();
+        pi3.setName("mobile");
+        pi3.setValue(mobile);
+        pi3.setType(String.class);
+        list.add(pi3);
+        PropertyInfo pi4 = new PropertyInfo();
+        pi4.setName("payID");
+        pi4.setValue(payID);
+        pi4.setType(String.class);
+        list.add(pi4);
+        PropertyInfo pi5 = new PropertyInfo();
+        pi5.setName("billID");
+        pi5.setValue(billID);
+        pi5.setType(String.class);
+        list.add(pi5);
+
+        try {
+            ArrayList<Province> provinceList = new ArrayList<Province>();
+
+            SoapPrimitive resp = cs.CallPrim("GetBillToken", list);
+
+            return resp.toString();
+
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+            return null;
+        }
+    }
+    public String BillSuccess(String userID, String token, String data, String orderID, String amount) {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+        String result = null;
+
+        PropertyInfo pi1 = new PropertyInfo();
+        pi1.setName("userID");
+        pi1.setValue(userID);
+        pi1.setType(String.class);
+        list.add(pi1);
+
+        PropertyInfo pi2 = new PropertyInfo();
+        pi2.setName("token");
+        pi2.setValue(token);
+        pi2.setType(String.class);
+        list.add(pi2);
+
+        PropertyInfo pi3 = new PropertyInfo();
+        pi3.setName("data");
+        pi3.setValue(data);
+        pi3.setType(String.class);
+        list.add(pi3);
+
+        PropertyInfo pi4 = new PropertyInfo();
+        pi4.setName("orderID");
+        pi4.setValue(orderID);
+        pi4.setType(String.class);
+        list.add(pi4);
+
+        PropertyInfo pi5 = new PropertyInfo();
+        pi5.setName("amount");
+        pi5.setValue(amount);
+        pi5.setType(String.class);
+        list.add(pi5);
+
+
+
+        try {
+
+            SoapPrimitive resp = cs.CallPrim("BillSuccess", list);
+
+            return  resp.toString();
+
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+
+        }
+        return result;
+    }
+    public Map GetInternetPeriod(String userID, String token) {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+       Map result = new Hashtable<>();
+
+        PropertyInfo pi1 = new PropertyInfo();
+        pi1.setName("userID");
+        pi1.setValue(userID);
+        pi1.setType(String.class);
+        list.add(pi1);
+
+        PropertyInfo pi2 = new PropertyInfo();
+        pi2.setName("token");
+        pi2.setValue(token);
+        pi2.setType(String.class);
+        list.add(pi2);
+
+
+
+        try {
+
+            SoapPrimitive resp = cs.CallPrim("GetInternetPeriod", list);
+
+           String jsonString= resp.toString();
+            Gson g= new Gson();
+            return g.fromJson(jsonString, Map.class);
+
+           // Assert.assertEquals(2, map.size());
+          //  Assert.assertEquals(Double.class, map.get("employee.salary").getClass());
+
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+
+        }
+        return result;
+    }
+
+    public boolean checkPresentageCode(String code) {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+        PropertyInfo pi1 = new PropertyInfo();
+        pi1.setName("code");
+        pi1.setValue(code);
+        pi1.setType(String.class);
+        list.add(pi1);
+
+        try {
+
+            SoapPrimitive resp = cs.CallPrim("CheckPresentageCode", list);
+//            SoapPrimitive object = (SoapPrimitive) resp.getAttribute("CheckVerificationCodeResponse");
+
+            return resp != null && resp.toString().equals("true");
+
+
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+            return false;
+        }
+
+    }
+
+    public ResponseStatus InsertDepositTransaction(String userID, String token, String sheba, String ownerName, String amount) {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+        ResponseStatus result = null;
+        PropertyInfo pi1 = new PropertyInfo();
+        pi1.setName("userID");
+        pi1.setValue(userID);
+        pi1.setType(String.class);
+        list.add(pi1);
+
+        PropertyInfo pi2 = new PropertyInfo();
+        pi2.setName("token");
+        pi2.setValue(token);
+        pi2.setType(String.class);
+        list.add(pi2);
+
+        PropertyInfo pi3 = new PropertyInfo();
+        pi3.setName("sheba");
+        pi3.setValue(sheba);
+        pi3.setType(String.class);
+        list.add(pi3);
+
+        PropertyInfo pi4 = new PropertyInfo();
+        pi4.setName("amount");
+        pi4.setValue(amount);
+        pi4.setType(String.class);
+        list.add(pi4);
+        PropertyInfo pi5 = new PropertyInfo();
+        pi5.setName("ownerName");
+        pi5.setValue(ownerName);
+        pi5.setType(String.class);
+        list.add(pi5);
+
+        try {
+
+            SoapObject resp = cs.Call("InsertDepositTransaction", list);
+
+            if (resp != null) {
+
+                result = new ResponseStatus(resp);
+            }
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+
+        }
+        return result;
+    }
+
+    public Bus getSpecificService(String userID, String token, String busID) {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+        Bus result = null;
+
+        PropertyInfo pi1 = new PropertyInfo();
+        pi1.setName("userID");
+        pi1.setValue(userID);
+        pi1.setType(String.class);
+        list.add(pi1);
+
+        PropertyInfo pi2 = new PropertyInfo();
+        pi2.setName("token");
+        pi2.setValue(token);
+        pi2.setType(String.class);
+        list.add(pi2);
+
+        PropertyInfo pi3 = new PropertyInfo();
+        pi3.setName("busID");
+        pi3.setValue(busID);
+        pi3.setType(String.class);
+        list.add(pi3);
+
+
+        try {
+
+            SoapObject resp = cs.Call("getSpecificService", list);
+
+            if (resp != null) {
+
+                // for (int i = 0; i < resp.getPropertyCount(); i++) {
+                result = new Bus(resp);
+
+                //}
+            }
+
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+
+        }
+        return result;
+    }
+    public List<City> GetCities(String userID, String token) {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+        City result = null;
+        List<City> cityList = new ArrayList<>();
+        PropertyInfo pi1 = new PropertyInfo();
+        pi1.setName("userID");
+        pi1.setValue(userID);
+        pi1.setType(String.class);
+        list.add(pi1);
+
+        PropertyInfo pi2 = new PropertyInfo();
+        pi2.setName("token");
+        pi2.setValue(token);
+        pi2.setType(String.class);
+        list.add(pi2);
+
+
+        try {
+
+            SoapObject resp = cs.Call("getBusCities", list);
+
+            if (resp != null) {
+
+                for (int i = 0; i < resp.getPropertyCount(); i++) {
+                    result = new City((SoapObject) resp.getProperty(i));
+                    cityList.add(result);
+                }
+            }
+
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+
+        }
+        return cityList;
+    }
+    public List<BusSummary> getAvailableServices(String userID, String token, String from, String to, String date) {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+        BusSummary result = null;
+        List<BusSummary> busList = new ArrayList<>();
+        PropertyInfo pi1 = new PropertyInfo();
+        pi1.setName("userID");
+        pi1.setValue(userID);
+        pi1.setType(String.class);
+        list.add(pi1);
+
+        PropertyInfo pi2 = new PropertyInfo();
+        pi2.setName("token");
+        pi2.setValue(token);
+        pi2.setType(String.class);
+        list.add(pi2);
+
+        PropertyInfo pi3 = new PropertyInfo();
+        pi3.setName("from");
+        pi3.setValue(from);
+        pi3.setType(String.class);
+        list.add(pi3);
+
+        PropertyInfo pi4 = new PropertyInfo();
+        pi4.setName("to");
+        pi4.setValue(to);
+        pi4.setType(String.class);
+        list.add(pi4);
+
+        PropertyInfo pi5 = new PropertyInfo();
+        pi5.setName("date");
+        pi5.setValue(date);
+        pi5.setType(String.class);
+        list.add(pi5);
+
+
+        try {
+
+            SoapObject resp = cs.Call("getAvailableServices", list);
+
+            if (resp != null) {
+
+                for (int i = 0; i < resp.getPropertyCount(); i++) {
+                    result = new BusSummary((SoapObject) resp.getProperty(i));
+                    busList.add(result);
+                }
+            }
+
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+
+        }
+        return busList;
+    }
+
+
+    public ArrayList<ContactList> getAllRegisteredContact(String userID, String token) {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+        ContactList result = null;
+
+        PropertyInfo pi1 = new PropertyInfo();
+        pi1.setName("userID");
+        pi1.setValue(userID);
+        pi1.setType(String.class);
+        list.add(pi1);
+
+        PropertyInfo pi2 = new PropertyInfo();
+        pi2.setName("token");
+        pi2.setValue(token);
+        pi2.setType(String.class);
+        list.add(pi2);
+
+        try {
+            ArrayList<ContactList> contacts = new ArrayList<ContactList>();
+            SoapObject resp = cs.Call("getAllRegisteredContact", list);
+            SoapObject object = (SoapObject) resp.getProperty("ContactList");
+
+            for (int i = 0; i < object.getPropertyCount(); i++) {
+                result = new ContactList((SoapObject) object.getProperty(i));
+                contacts.add(result);
+            }
+            return contacts;
+
+
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+            return null;
+
+        }
+    }
+    public ResponseStatus TransferCredit(String userID, String token, String phone, String amount) {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+        ResponseStatus result = null;
+        PropertyInfo pi1 = new PropertyInfo();
+        pi1.setName("userID");
+        pi1.setValue(userID);
+        pi1.setType(String.class);
+        list.add(pi1);
+
+        PropertyInfo pi2 = new PropertyInfo();
+        pi2.setName("token");
+        pi2.setValue(token);
+        pi2.setType(String.class);
+        list.add(pi2);
+
+        PropertyInfo pi3 = new PropertyInfo();
+        pi3.setName("phone");
+        pi3.setValue(phone);
+        pi3.setType(String.class);
+        list.add(pi3);
+
+        PropertyInfo pi4 = new PropertyInfo();
+        pi4.setName("amount");
+        pi4.setValue(amount);
+        pi4.setType(String.class);
+        list.add(pi4);
+
+        try {
+
+            SoapObject resp = cs.Call("TransferCredit", list);
+
+            if (resp != null) {
+
+                result = new ResponseStatus(resp);
+            }
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+
+        }
+        return result;
+    }
+    public List<User> GetUserByPresentageCode(String userID, String token, String code) {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+        List<User> result = new ArrayList<>();
+
+        PropertyInfo pi1 = new PropertyInfo();
+        pi1.setName("userID");
+        pi1.setValue(userID);
+        pi1.setType(String.class);
+        list.add(pi1);
+
+        PropertyInfo pi2 = new PropertyInfo();
+        pi2.setName("token");
+        pi2.setValue(token);
+        pi2.setType(String.class);
+        list.add(pi2);
+        PropertyInfo pi3 = new PropertyInfo();
+        pi3.setName("code");
+        pi3.setValue(code);
+        pi3.setType(String.class);
+        list.add(pi3);
+
+
+        try {
+
+            SoapObject resp = cs.Call("GetUserByPresentageCode", list);
+            SoapObject object = (SoapObject) resp.getProperty("UserList");
+            for (int i = 0; i < object.getPropertyCount(); i++) {
+                SoapObject mainObject = (SoapObject) object.getProperty(i);
+                result.add(new User(mainObject));
+            }
+
+
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+
+        }
+        return result;
+    }
+    public String GetProfileImageByUserName(String userName) {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+        String _response = null;
+        PropertyInfo pi1 = new PropertyInfo();
+        pi1.setName("userName");
+        pi1.setValue(userName);
+        pi1.setType(String.class);
+        list.add(pi1);
+
+        try {
+
+
+            SoapObject resp = cs.Call("GetProfileImageByUserName", list);
+
+            return resp.toString();
+
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+            return null;
+        }
+    }
+    public Map<String,String> getAirportCities(String userID, String token) {
+        List<PropertyInfo> list = new ArrayList<PropertyInfo>();
+        Map<String,String> result = new Hashtable<>();
+
+        PropertyInfo pi1 = new PropertyInfo();
+        pi1.setName("userID");
+        pi1.setValue(userID);
+        pi1.setType(String.class);
+        list.add(pi1);
+
+        PropertyInfo pi2 = new PropertyInfo();
+        pi2.setName("token");
+        pi2.setValue(token);
+        pi2.setType(String.class);
+        list.add(pi2);
+
+
+        try {
+
+            SoapPrimitive resp = cs.CallPrim("GetAirportCities", list);
+            Map<String, String> map = new Gson().fromJson(resp.toString(), new TypeToken<HashMap<String, String>>() {}.getType());
+            return map;
+
+        } catch (Exception ex) {
+            Log.e("Inkam_Caller", ex.toString());
+
+        }
+        return result;
+    }
 }

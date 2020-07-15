@@ -2,6 +2,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -77,7 +78,8 @@
                 android:layout_centerInParent="true"
                 android:background="@android:color/transparent"
                 android:padding="8dp"
-                app:srcCompat="@drawable/ic_contact_green" />
+                app:srcCompat="@drawable/ic_contact_green"
+                android:onClick="contactClicked"/>
 
             <EditText
                 android:id="@+id/et_enter_phone_number"
@@ -87,6 +89,8 @@
                 android:layout_toEndOf="@+id/ib_contact"
                 android:background="@android:color/transparent"
                 android:gravity="end|center"
+                android:maxLines="1"
+                android:imeOptions="actionDone"
                 android:hint="@string/enter_phone"
                 android:inputType="phone"
                 android:padding="8dp"
@@ -243,6 +247,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="30"
+                android:onClick="onClick"
                 android:background="@drawable/gray_rounded_background">
 
                 <TextView
@@ -264,6 +269,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="30"
+                android:onClick="onClick"
                 android:background="@drawable/gray_rounded_background">
 
                 <TextView

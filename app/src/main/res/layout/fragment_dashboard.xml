@@ -84,7 +84,6 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerInParent="true"
                 android:layout_margin="8dp"
-                android:text="۳۴۰۰۰۰"
                 android:textColor="@color/colorNightRider"
                 android:textSize="20sp" />
 
@@ -125,7 +124,6 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text="۱۲۰۰۰"
                     android:textColor="@color/colorNightRider"
                     android:textSize="20sp" />
 
@@ -138,7 +136,7 @@
                     android:layout_toStartOf="@+id/tv_income"
                     android:text="@string/rial"
                     android:textColor="@color/colorNightRider"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/tv_income_title"
@@ -153,7 +151,7 @@
                     android:drawablePadding="8dp"
                     android:text="@string/wallet_income_inkam"
                     android:textColor="@color/colorBrown"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tv_users"
@@ -162,7 +160,6 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_toEndOf="@+id/tv_individual"
-                    android:text="۴۳"
                     android:textColor="@color/colorNightRider"
                     android:textSize="20sp" />
 
@@ -176,7 +173,7 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/individual"
                     android:textColor="@color/colorNightRider"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tv_users_title"
@@ -191,7 +188,7 @@
                     android:drawablePadding="8dp"
                     android:text="@string/number_users"
                     android:textColor="@color/colorBrown"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
             </RelativeLayout>
         </RelativeLayout>
 

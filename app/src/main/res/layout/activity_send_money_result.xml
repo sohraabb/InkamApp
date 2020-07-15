@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorMainBackgroundColor"
@@ -123,6 +124,8 @@
             android:layout_marginEnd="24dp"
             android:layout_weight="10">
 
+
+
             <TextView
                 android:id="@+id/tv_amount_title"
                 android:layout_width="wrap_content"
@@ -152,6 +155,15 @@
                 android:layout_marginStart="8dp"
                 android:layout_toEndOf="@+id/tv_amount_rial"
                 android:text="۳۰,۰۰۰"
+                android:textColor="@color/colorNightRider" />
+            <TextView
+                android:id="@+id/tv_operator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@+id/tv_amount"
+                android:text="ایرانسل"
                 android:textColor="@color/colorNightRider" />
         </RelativeLayout>
 

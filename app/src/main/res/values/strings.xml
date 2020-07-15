@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">InkamApp</string>
+    <string name="app_name">اینکام</string>
 
     <string name="next">بعدی</string>
     <string name="choose_lang">انتخاب زبان</string>
@@ -260,7 +260,7 @@
     <string name="telephone_number">شماره تلفن</string>
 
     <string name="car_fines">جریمه خودرو</string>
-    <string name="eight_digit_behind_card">شماره هشت رقمی پشت کارت</string>
+    <string name="eight_digit_behind_card">شماره هشت الی ده رقمی پشت کارت</string>
 
     <string name="insurance">بیمه</string>
     <string name="charity">نیکوکاری</string>
@@ -327,6 +327,46 @@
     <string name="error_net">لطفااتصال به اینترنت را بررسی کنید و دوباره تلاش نمایید.</string>
     <string name="error_input">کد رهگیری اشتباه است</string>
     <string name="code_sent">کد رهگیری دوباره برای شما ارسال شد.</string>
+
+    <string name="search_your_city">شهر خود را جستجو کنید</string>
+    <string name="pay_wallet">پرداخت با کیف پول</string>
+
+    <string name="success_payment">خرید موفق</string>
+    <string name="bill">قبض</string>
+    <string name="phone_bill">قبض تلفن</string>
+    <string name="pay_bill">پرداخت قبض</string>
+    <string name="variz">واریز اعتبار</string>
+    <string name="price_in_rial">مبلغ به ریال</string>
+    <string name="account_owner_name">نام صاحب حساب</string>
+    <string name="iban">شماره شبا</string>
+    <string name="deposit_req_success">درخواست واریز با موفقیت ثبت شد.</string>
+    <string name="newid_success">شناسه جدید با موفقیت ثبت شد</string>
+
+    <string name="user_success">اطلاعات با موفقیت ثبت شد</string>
+    <string name="wrong_presenter_code">کد معرف نامعتبر است</string>
+
+    <string name="please_choose_seat">لطفا صندلی خود را انتخاب کنید.</string>
+    <string name="un_buy">غیرقابل خررید</string>
+    <string name="buy_for_man">خریداری شده برای آقایان</string>
+    <string name="buy_for_woman">خریداری شده برای بانوان</string>
+    <string name="agreement">با خرید بلیط موافقت خود را با قوانین سایت اینکام اعلام میکنم.</string>
+    <string name="payable_amount">مبلغ قابل پرداخت</string>
+    <string name="moving_time">زمان حرکت</string>
+    <string name="choose_seat_please">لطفا صندلی مورد نطر خود را انتخاب کنید.</string>
+    <string name="complete_passenger_info">لطفا مشخصات یکی از مسافران را به صورت کامل و صحیح وارد کنید.</string>
+    <string name="choose_seat">انتخاب صندلی</string>
+    <string name="travel_recipt">رسید سفر</string>
+    <string name="select_resource_city">لطفا شهر مبدا، را انتخاب کنید.</string>
+    <string name="select_destinationCity">لطفا شهرمقصد را انتخاب کنید.</string>
+    <string name="choose_date">لطفا تاریخ حرکت را مشخص کنید.</string>
+    <string name="next_livel">مرحله بعدی</string>
+    <string name="please_fil_info">لطفا اطلاعات را تکمیل کنید.</string>
+
+    <string name="send_code">ارسال مجدد کد</string>
+    <string name="price_with_tax">مبلغ با مالیات</string>
+    <string name="online_pay">پرداخت آنلاین</string>
+
+    <string name="no_ticket">بلیطی پیدا نشد</string>
 
 
 </resources>

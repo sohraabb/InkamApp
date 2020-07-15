@@ -2,7 +2,9 @@ package com.fara.inkamapp.Models;
 
 import android.net.ParseException;
 import android.util.Log;
+
 import org.ksoap2.serialization.SoapObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -12,7 +14,9 @@ public class NotificationList {
     private String _title;
     private String _message;
     private boolean _status;
-    private String _dateTime;
+    private Date _dateTime;
+    private String _persianDateTIme;
+
 
     public void set_id(String _id) {
         this._id = _id;
@@ -26,8 +30,12 @@ public class NotificationList {
         this._message = _message;
     }
 
-    public void set_dateTime(String _dateTime) {
+    public void set_dateTime(Date _dateTime) {
         this._dateTime = _dateTime;
+    }
+
+    public void set_persianDateTIme(String _persianDateTIme) {
+        this._persianDateTIme = _persianDateTIme;
     }
 
     public void set_title(String _title) {
@@ -46,8 +54,12 @@ public class NotificationList {
         return _message;
     }
 
-    public String get_dateTime() {
+    public Date get_dateTime() {
         return _dateTime;
+    }
+
+    public String get_persianDateTIme() {
+        return _persianDateTIme;
     }
 
     public String get_title() {
@@ -62,7 +74,7 @@ public class NotificationList {
         return _status;
     }
 
-    public NotificationList(SoapObject input){
+    public NotificationList(SoapObject input) {
         try {
             _id = input.getPropertySafelyAsString("ID");
             _userID = input.getPropertySafelyAsString("UserID");
@@ -70,14 +82,14 @@ public class NotificationList {
             _message = input.getPropertySafelyAsString("Message");
             _status = Boolean.parseBoolean(input.getPropertySafelyAsString("Status"));
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
             try {
-                Date date = new Date();
-                _dateTime = dateFormat.format(input.getPropertySafelyAsString("Datetime"));
-            } catch (ParseException e) {
-                e.printStackTrace();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                _dateTime = formatter.parse(input.getPropertySafelyAsString("Datetime"));
+            } catch (Exception ex) {
+                _dateTime = new Date();
             }
 
+            _persianDateTIme = input.getPropertySafelyAsString("DatetimePersian");
 
         } catch (Exception e) {
             Log.e("CheckCode Soap", e.toString());

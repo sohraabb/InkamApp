@@ -8,6 +8,7 @@
     tools:context=".Activities.BuyPackages">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorMainBackgroundColor">
@@ -60,7 +61,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/irancell_logo_green" />
+                />
 
             <TextView
                 android:id="@+id/tv_price"
@@ -68,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="24dp"
                 android:layout_toStartOf="@+id/iv_logo"
-                android:text="۱۰,۰۰۰"
+
                 android:textColor="@color/colorMainGreen"
                 android:textSize="16sp" />
 
@@ -89,7 +90,7 @@
                 android:layout_below="@id/iv_logo"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="16dp"
-                android:text="بسته اینترنت آلفا + ۱ روزه شبانه  ۹۰۰ مگابایت ۱ روزه"
+
                 android:textColor="@color/colorBrown"
                 android:textSize="14sp" />
 
@@ -124,13 +125,14 @@
                 android:textSize="18sp" />
 
             <Button
+                android:id="@+id/btn_pay_wallet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:background="@drawable/btn_yellow_background"
+                android:background="@drawable/button_background_disabled"
                 android:padding="16dp"
-                android:text="@string/pay"
-                android:textColor="@color/colorWhite"
+                android:text="@string/not_enough_money"
+
                 android:textSize="14sp" />
 
             <TextView
@@ -196,6 +198,7 @@
                 android:padding="16dp" />
 
             <Button
+                android:id="@+id/btn_pay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"

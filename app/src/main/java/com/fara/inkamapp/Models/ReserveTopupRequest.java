@@ -4,7 +4,9 @@ import android.util.Log;
 
 import org.ksoap2.serialization.SoapObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ReserveTopupRequest {
@@ -16,6 +18,11 @@ public class ReserveTopupRequest {
     private double _amount;
     private String _cellNumber;
     private String _cellNumbers;
+    private String _reserveNumberString;
+    private String _referenceNumberString;
+    private String _date;
+
+
     /// <summary>
     /// نوع درگاه خرید شارژ
     /// </summary>
@@ -262,6 +269,30 @@ public class ReserveTopupRequest {
         return _responseMessage;
     }
 
+    public String get_reserveNumberString() {
+        return _reserveNumberString;
+    }
+
+    public void set_reserveNumberString(String _reserveNumberString) {
+        this._reserveNumberString = _reserveNumberString;
+    }
+
+    public String get_referenceNumberString() {
+        return _referenceNumberString;
+    }
+
+    public void set_referenceNumberString(String _referenceNumberString) {
+        this._referenceNumberString = _referenceNumberString;
+    }
+
+    public String get_date() {
+        return _date;
+    }
+
+    public void set_date(String _date) {
+        this._date = _date;
+    }
+
     public class ApproveRequest {
         public long _reserveNumber;
         public long _referenceNumber;
@@ -294,7 +325,8 @@ public class ReserveTopupRequest {
         }
     }
 
-    public ReserveTopupRequest(){}
+    public ReserveTopupRequest() {
+    }
 
     public ReserveTopupRequest(SoapObject input) {
 
@@ -316,7 +348,8 @@ public class ReserveTopupRequest {
             _referenceNumber = Long.parseLong(input.getPropertySafelyAsString("ReferenceNumber"));
             _principalAmount = Double.parseDouble(input.getPropertySafelyAsString("PrincipalAmount"));
             _responseCode = Integer.parseInt(input.getPropertySafelyAsString("ResponseCode"));
-
+            _reserveNumberString = input.getPropertySafelyAsString("ReserveNumberString");
+            _referenceNumberString = input.getPropertySafelyAsString("ReferenceNumberString");
             SoapObject responseMessage = (SoapObject) input.getPropertySafely("ResponseMessage");
             _responseMessage = responseMessage.getPropertySafelyAsString("string");
 
@@ -325,7 +358,13 @@ public class ReserveTopupRequest {
             _packageDescription = input.getPropertySafelyAsString("PackageDescription");
             _token = input.getPropertySafelyAsString("Token");
             _pinList = input.getPropertySafelyAsString("PinList");
-
+            _date = input.getPropertySafelyAsString("Date");
+            try {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+               // _date = formatter.parse(input.getPropertySafelyAsString("Date"));
+            } catch (Exception ex) {
+               // _date = new Date();
+            }
         } catch (Exception e) {
             Log.e("Charge Soap", e.toString());
         }

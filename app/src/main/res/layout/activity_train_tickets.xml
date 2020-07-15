@@ -8,6 +8,7 @@
     tools:context=".Activities.TrainTickets">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorMainBackgroundColor">
@@ -179,6 +180,8 @@
                             android:drawableEnd="@drawable/ic_train_gray"
                             android:hint="@string/choose_your_location"
                             android:drawablePadding="8dp"
+                            android:maxLines="1"
+                            android:imeOptions="actionNext"
                             android:textSize="14sp"
                             android:textColor="@color/colorNightRider"
                             android:padding="16dp" />
@@ -199,6 +202,8 @@
                             android:background="@drawable/edit_text_selector"
                             android:drawableEnd="@drawable/ic_train_gray"
                             android:textSize="14sp"
+                            android:maxLines="1"
+                            android:imeOptions="actionNext"
                             android:textColor="@color/colorNightRider"
                             android:hint="@string/choose_your_destination"
                             android:drawablePadding="8dp"
@@ -270,6 +275,8 @@
                 android:drawableEnd="@drawable/ic_users_gray"
                 android:hint="@string/type_quantity_passengers"
                 android:drawablePadding="8dp"
+                android:maxLines="1"
+                android:imeOptions="actionDone"
                 android:textSize="14sp"
                 android:textColor="@color/colorNightRider"
                 android:padding="16dp" />

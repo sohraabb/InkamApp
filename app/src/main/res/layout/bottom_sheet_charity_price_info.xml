@@ -9,6 +9,21 @@
     android:orientation="vertical"
     android:padding="8dp">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="5dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/bottom_sheet_swipe" />
+    </RelativeLayout>
+
     <ImageView
         android:id="@+id/iv_charity"
         android:layout_width="50dp"
@@ -50,6 +65,8 @@
             android:background="@android:color/transparent"
             android:drawableEnd="@drawable/ic_money_gray"
             android:drawablePadding="8dp"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
             android:hint="@string/enter_amount"
             android:padding="16dp"
             android:textColor="@color/colorNightRider"

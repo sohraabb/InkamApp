@@ -10,6 +10,8 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +34,7 @@ public class Contacts extends AppCompatActivity {
 
     private TextView toastText;
     private RecyclerView contactsRecycler;
+    private ImageButton back;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -53,6 +56,15 @@ public class Contacts extends AppCompatActivity {
         setContentView(R.layout.activity_contacts);
 
         contactsRecycler = findViewById(R.id.rv_contacts);
+
+        back = findViewById(R.id.ib_back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
     }
 

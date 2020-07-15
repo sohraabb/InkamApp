@@ -9,6 +9,21 @@
     android:orientation="vertical"
     android:padding="8dp">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="5dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/bottom_sheet_swipe" />
+    </RelativeLayout>
+
 
     <Button
         android:id="@+id/btn_submit_card"
@@ -30,18 +45,19 @@
     <RelativeLayout
         android:id="@+id/rl_add_card"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="180dp"
         android:layout_marginTop="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/gray_rounded_background"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_submit_card">
 
-
         <EditText
-            android:id="@+id/et_first_num"
-            android:layout_width="match_parent"
+            android:id="@+id/et_card_number"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_bank"
             android:layout_marginStart="16dp"
@@ -50,15 +66,104 @@
             android:background="@android:color/transparent"
             android:imeOptions="actionNext"
             android:inputType="numberDecimal"
-            android:maxLength="24"
-            android:maxLines="1" />
+            android:maxLength="19"
+            android:maxLines="1"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/et_card_month_date"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_bank"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            android:imeOptions="actionDone"
+            android:inputType="date"
+            android:maxLength="2"
+            android:maxLines="1"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/et_card_year_date"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_bank"
+            android:layout_marginTop="8dp"
+            android:layout_toStartOf="@+id/date_separator"
+            android:background="@android:color/transparent"
+            android:imeOptions="actionNext"
+            android:inputType="date"
+            android:maxLength="2"
+            android:maxLines="1"
+            android:textSize="18sp" />
 
         <ImageView
-            android:layout_width="50dp"
+            android:id="@+id/date_separator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_bank"
+            android:layout_marginTop="21dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@+id/et_card_month_date"
+            app:srcCompat="@drawable/ic_slash" />
+
+        <ImageView
+            android:id="@+id/line_year"
+            android:layout_width="42dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_bank"
+            android:layout_marginTop="32dp"
+            android:layout_toStartOf="@+id/date_separator"
+            android:src="@drawable/lines_two" />
+
+        <ImageView
+            android:id="@+id/line_month"
+            android:layout_width="42dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_bank"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/lines_two" />
+
+        <ImageView
+            android:id="@+id/first_line"
+            android:layout_width="42dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_bank"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/lines" />
+
+        <ImageView
+            android:id="@+id/second_line"
+            android:layout_width="42dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_bank"
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
+            android:layout_toEndOf="@+id/first_line"
+            android:src="@drawable/lines" />
+
+        <ImageView
+            android:id="@+id/fourth_line"
+            android:layout_width="42dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_bank"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_toEndOf="@+id/second_line"
+            android:src="@drawable/lines" />
+
+        <ImageView
+            android:layout_width="42dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_bank"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_toEndOf="@+id/fourth_line"
             android:src="@drawable/lines" />
 
         <ImageView
@@ -70,25 +175,29 @@
             android:layout_marginTop="16dp"
             app:srcCompat="@drawable/ic_bank_shetab" />
 
-        <ImageView
-            android:layout_width="50dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_bank"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="32dp"
-            android:layout_toEndOf="@+id/et_first_num"
-            android:src="@drawable/lines" />
+            android:layout_below="@+id/et_card_month_date"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/expiration_date"
+            android:textColor="@color/colorBrown"
+            android:textSize="12sp" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
+
+        <ImageView
             android:id="@+id/iv_bank"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/empty_oval" />
+            app:srcCompat="@drawable/empty_oval" />
+
 
     </RelativeLayout>
 

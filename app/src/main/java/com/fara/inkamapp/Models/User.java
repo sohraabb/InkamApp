@@ -1,417 +1,423 @@
 package com.fara.inkamapp.Models;
 
-import android.net.ParseException;
 import android.util.Log;
-
-import com.fara.inkamapp.Helpers.DateConverter;
 
 import org.ksoap2.serialization.SoapObject;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 public class User {
 
-    private String _id;
-    private String _username;
-    private String _password;
-    private String _firstName;
-    private String _lastName;
-    private String _email;
-    private String _phone;
-    private String _melliCode;
-    private String _profilePicture;
-    private String _cityId;
-    private String _provinceId;
-    private String _presentorId;
-    private String _userTypeId;
-    private String _languageId;
-    private double _point;
-    private double _todayProfit;
-    private double _cashOfWallet;
-    private String _creditCard;
-    private String _sheba;
-    private String _bankName;
-    private String _storeName;
-    private int _fieldId;
-    private String _creditCardOwner;
-    private String _fieldName;
-    private int _acquaintanceId;
-    private String _acquaintanceName;
-    private String _address;
-    private String _postalCode;
-    private String _token;
-    private boolean _isUser;
-    private int _userCount;
-    private String _perenestorCode;
-    private boolean _agencyRequest;
-    private int _chanceCount;
-    private double _income;
-    private String _registeryDate;
-    private String _registeryDatePersian;
-    private Date _expirationDate;
+    private String ID;
+    private String UserName;
+    private String Password;
+    private String FirstName;
+    private String LastName;
+    private String Email;
+    private String Phone;
+    private String MelliCode;
+    private String ProfilePicURL;
+    private String CityID;
+    private String CityName;
+    private String ProvinceID;
+    private String PresentorID;
+    private String UserTypeID;
+    private String LanguageID;
+    private double Point;
+    private double TodayProfit;
+    private double CashOfWallet;
+    private String CreditCard;
+    private String Sheba;
+    private String BankName;
+    private String StoreName;
+    private int FieldID;
+    private String CreditCardOwner;
+    private String FieldName;
+    private int AcquaintanceID;
+    private String AcquaintanceName;
+    private String Address;
+    private String PostalCode;
+    private String Token;
+    private boolean IsUser;
+    private int UserCount;
+    private String perenestorCode;
+    private boolean AgencyRequest;
+    private int ChanceCount;
+    private double Income;
+    private String RegisteryDate;
+    private String RegisteryDatePersian;
+    private Date ExpirationDate;
 
 
-    public void set_expirationDate(Date _expirationDate) {
-        this._expirationDate = _expirationDate;
+    public void setExpirationDate(Date expirationDate) {
+        this.ExpirationDate = expirationDate;
     }
 
-    public Date get_expirationDate() {
-        return _expirationDate;
+    public Date getExpirationDate() {
+        return ExpirationDate;
     }
 
     public void set_tokenExpirationDate(String expirationDate) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            _expirationDate = dateFormat.parse(expirationDate);
+            ExpirationDate = dateFormat.parse(expirationDate);
         } catch (Exception e) {
-            _expirationDate = new Date();
+            ExpirationDate = new Date();
         }
     }
 
-    public void set_userCount(int _userCount) {
-        this._userCount = _userCount;
+    public void setUserCount(int userCount) {
+        this.UserCount = userCount;
     }
 
-    public void set_agencyRequest(boolean _agencyRequest) {
-        this._agencyRequest = _agencyRequest;
+    public void setAgencyRequest(boolean agencyRequest) {
+        this.AgencyRequest = agencyRequest;
     }
 
-    public void set_chanceCount(int _chanceCount) {
-        this._chanceCount = _chanceCount;
+    public void setChanceCount(int chanceCount) {
+        this.ChanceCount = chanceCount;
     }
 
-    public void set_income(double _income) {
-        this._income = _income;
+    public void setIncome(double income) {
+        this.Income = income;
     }
 
-    public void set_perenestorCode(String _perenestorCode) {
-        this._perenestorCode = _perenestorCode;
+    public void setPerenestorCode(String perenestorCode) {
+        this.perenestorCode = perenestorCode;
     }
 
-    public void set_registeryDate(String _registeryDate) {
-        this._registeryDate = _registeryDate;
+    public void setRegisteryDate(String registeryDate) {
+        this.RegisteryDate = registeryDate;
     }
 
-    public void set_registeryDatePersian(String _registeryDatePersian) {
-        this._registeryDatePersian = _registeryDatePersian;
+    public void setRegisteryDatePersian(String registeryDatePersian) {
+        this.RegisteryDatePersian = registeryDatePersian;
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
-    public void set_email(String _email) {
-        this._email = _email;
+    public void setEmail(String email) {
+        this.Email = email;
     }
 
-    public void set_firstName(String _firstName) {
-        this._firstName = _firstName;
+    public void setFirstName(String firstName) {
+        this.FirstName = firstName;
     }
 
-    public void set_cityId(String _cityId) {
-        this._cityId = _cityId;
+    public void setCityID(String cityID) {
+        this.CityID = cityID;
     }
 
-    public void set_languageId(String _languageId) {
-        this._languageId = _languageId;
+    public void setLanguageID(String languageID) {
+        this.LanguageID = languageID;
     }
 
-    public void set_lastName(String _lastName) {
-        this._lastName = _lastName;
+    public void setLastName(String lastName) {
+        this.LastName = lastName;
     }
 
-    public void set_melliCode(String _melliCode) {
-        this._melliCode = _melliCode;
+    public void setMelliCode(String melliCode) {
+        this.MelliCode = melliCode;
     }
 
-    public void set_password(String _password) {
-        this._password = _password;
+    public void setPassword(String password) {
+        this.Password = password;
     }
 
-    public void set_phone(String _phone) {
-        this._phone = _phone;
+    public void setPhone(String phone) {
+        this.Phone = phone;
     }
 
-    public void set_cashOfWallet(double _cashOfWallet) {
-        this._cashOfWallet = _cashOfWallet;
+    public void setCashOfWallet(double cashOfWallet) {
+        this.CashOfWallet = cashOfWallet;
     }
 
-    public void set_point(double _point) {
-        this._point = _point;
+    public void setPoint(double point) {
+        this.Point = point;
     }
 
-    public void set_username(String _username) {
-        this._username = _username;
+    public void setUserName(String userName) {
+        this.UserName = userName;
     }
 
-    public void set_presentorId(String _presentorId) {
-        this._presentorId = _presentorId;
+    public void setPresentorID(String presentorID) {
+        this.PresentorID = presentorID;
     }
 
-    public void set_bankName(String _bankName) {
-        this._bankName = _bankName;
+    public void setBankName(String bankName) {
+        this.BankName = bankName;
     }
 
-    public void set_profilePicture(String _profilePicture) {
-        this._profilePicture = _profilePicture;
+    public void setProfilePicURL(String profilePicURL) {
+        this.ProfilePicURL = profilePicURL;
     }
 
-    public void set_provinceId(String _provinceId) {
-        this._provinceId = _provinceId;
+    public void setProvinceID(String provinceID) {
+        this.ProvinceID = provinceID;
     }
 
-    public void set_todayProfit(double _todayProfit) {
-        this._todayProfit = _todayProfit;
+    public void setTodayProfit(double todayProfit) {
+        this.TodayProfit = todayProfit;
     }
 
-    public void set_userTypeId(String _userTypeId) {
-        this._userTypeId = _userTypeId;
+    public void setUserTypeID(String userTypeID) {
+        this.UserTypeID = userTypeID;
     }
 
-    public String get_id() {
-        return _id;
+    public String getID() {
+        return ID;
     }
 
-    public String get_cityId() {
-        return _cityId;
+    public String getCityID() {
+        return CityID;
     }
 
-    public double get_cashOfWallet() {
-        return _cashOfWallet;
+    public double getCashOfWallet() {
+        return CashOfWallet;
     }
 
-    public String get_email() {
-        return _email;
+    public String getEmail() {
+        return Email;
     }
 
-    public double get_todayProfit() {
-        return _todayProfit;
+    public double getTodayProfit() {
+        return TodayProfit;
     }
 
-    public String get_bankName() {
-        return _bankName;
+    public String getBankName() {
+        return BankName;
     }
 
-    public String get_firstName() {
-        return _firstName;
+    public String getFirstName() {
+        return FirstName;
     }
 
-    public String get_languageId() {
-        return _languageId;
+    public String getLanguageID() {
+        return LanguageID;
     }
 
-    public String get_lastName() {
-        return _lastName;
+    public String getLastName() {
+        return LastName;
     }
 
-    public String get_creditCard() {
-        return _creditCard;
+    public String getCreditCard() {
+        return CreditCard;
     }
 
-    public String get_melliCode() {
-        return _melliCode;
+    public String getMelliCode() {
+        return MelliCode;
     }
 
-    public String get_password() {
-        return _password;
+    public String getPassword() {
+        return Password;
     }
 
-    public String get_phone() {
-        return _phone;
+    public String getPhone() {
+        return Phone;
     }
 
-    public String get_presentorId() {
-        return _presentorId;
+    public String getPresentorID() {
+        return PresentorID;
     }
 
-    public String get_profilePicture() {
-        return _profilePicture;
+    public String getProfilePicURL() {
+        return ProfilePicURL;
     }
 
-    public double get_point() {
-        return _point;
+    public double getPoint() {
+        return Point;
     }
 
-    public String get_username() {
-        return _username;
+    public String getUserName() {
+        return UserName;
     }
 
-    public String get_provinceId() {
-        return _provinceId;
+    public String getProvinceID() {
+        return ProvinceID;
     }
 
-    public String get_userTypeId() {
-        return _userTypeId;
+    public String getUserTypeID() {
+        return UserTypeID;
     }
 
-    public boolean is_isUser() {
-        return _isUser;
+    public boolean isUser() {
+        return IsUser;
     }
 
-    public void set_isUser(boolean _isUser) {
-        this._isUser = _isUser;
+    public void setUser(boolean user) {
+        this.IsUser = user;
     }
 
-    public void set_acquaintanceId(int _acquaintanceId) {
-        this._acquaintanceId = _acquaintanceId;
+    public void setAcquaintanceID(int acquaintanceID) {
+        this.AcquaintanceID = acquaintanceID;
     }
 
-    public void set_creditCard(String _creditCard) {
-        this._creditCard = _creditCard;
+    public void setCreditCard(String creditCard) {
+        this.CreditCard = creditCard;
     }
 
-    public void set_acquaintanceName(String _acquaintanceName) {
-        this._acquaintanceName = _acquaintanceName;
+    public void setAcquaintanceName(String acquaintanceName) {
+        this.AcquaintanceName = acquaintanceName;
     }
 
-    public void set_address(String _address) {
-        this._address = _address;
+    public void setAddress(String address) {
+        this.Address = address;
     }
 
-    public void set_creditCardOwner(String _creditCardOwner) {
-        this._creditCardOwner = _creditCardOwner;
+    public void setCreditCardOwner(String creditCardOwner) {
+        this.CreditCardOwner = creditCardOwner;
     }
 
-    public void set_fieldId(int _fieldId) {
-        this._fieldId = _fieldId;
+    public void setFieldID(int fieldID) {
+        this.FieldID = fieldID;
     }
 
-    public void set_fieldName(String _fieldName) {
-        this._fieldName = _fieldName;
+    public void setFieldName(String fieldName) {
+        this.FieldName = fieldName;
     }
 
-    public void set_postalCode(String _postalCode) {
-        this._postalCode = _postalCode;
+    public void setPostalCode(String postalCode) {
+        this.PostalCode = postalCode;
     }
 
-    public void set_sheba(String _sheba) {
-        this._sheba = _sheba;
+    public void setSheba(String sheba) {
+        this.Sheba = sheba;
     }
 
-    public void set_storeName(String _storeName) {
-        this._storeName = _storeName;
+    public void setStoreName(String storeName) {
+        this.StoreName = storeName;
     }
 
-    public void set_token(String _token) {
-        this._token = _token;
+    public void setToken(String token) {
+        this.Token = token;
     }
 
-    public int get_fieldId() {
-        return _fieldId;
+    public int getFieldID() {
+        return FieldID;
     }
 
-    public String get_sheba() {
-        return _sheba;
+    public String getSheba() {
+        return Sheba;
     }
 
-    public int get_acquaintanceId() {
-        return _acquaintanceId;
+    public int getAcquaintanceID() {
+        return AcquaintanceID;
     }
 
-    public String get_acquaintanceName() {
-        return _acquaintanceName;
+    public String getAcquaintanceName() {
+        return AcquaintanceName;
     }
 
-    public String get_storeName() {
-        return _storeName;
+    public String getStoreName() {
+        return StoreName;
     }
 
-    public String get_address() {
-        return _address;
+    public String getAddress() {
+        return Address;
     }
 
-    public String get_creditCardOwner() {
-        return _creditCardOwner;
+    public String getCreditCardOwner() {
+        return CreditCardOwner;
     }
 
-    public String get_fieldName() {
-        return _fieldName;
+    public String getFieldName() {
+        return FieldName;
     }
 
-    public String get_postalCode() {
-        return _postalCode;
+    public String getPostalCode() {
+        return PostalCode;
     }
 
-    public String get_token() {
-        return _token;
+    public String getToken() {
+        return Token;
     }
 
-    public String get_registeryDate() {
-        return _registeryDate;
+    public String getRegisteryDate() {
+        return RegisteryDate;
     }
 
-    public double get_income() {
-        return _income;
+    public double getIncome() {
+        return Income;
     }
 
-    public int get_chanceCount() {
-        return _chanceCount;
+    public int getChanceCount() {
+        return ChanceCount;
     }
 
-    public int get_userCount() {
-        return _userCount;
+    public int getUserCount() {
+        return UserCount;
     }
 
-    public String get_perenestorCode() {
-        return _perenestorCode;
+    public String getPerenestorCode() {
+        return perenestorCode;
     }
 
-    public String get_registeryDatePersian() {
-        return _registeryDatePersian;
+    public String getRegisteryDatePersian() {
+        return RegisteryDatePersian;
     }
 
-    public boolean is_agencyRequest() {
-        return _agencyRequest;
+    public boolean isAgencyRequest() {
+        return AgencyRequest;
+    }
+
+    public void setCityName(String cityName) {
+        this.CityName = cityName;
+    }
+
+    public String getCityName() {
+        return CityName;
     }
 
     public User(SoapObject input) {
 
         try {
-            _id = input.getPropertySafelyAsString("ID");
-            _username = input.getPropertySafelyAsString("UserName");
-            _password = input.getPropertySafelyAsString("Password");
-            _firstName = input.getPropertySafelyAsString("FirstName");
-            _lastName = input.getPropertySafelyAsString("LastName");
-            _email = input.getPropertySafelyAsString("Email");
-            _phone = input.getPropertySafelyAsString("Phone");
-            _melliCode = input.getPropertySafelyAsString("MelliCode");
-            _profilePicture = input.getPropertySafelyAsString("ProfilePicURL");
-            _cityId = input.getPropertySafelyAsString("CityID");
-            _provinceId = input.getPropertySafelyAsString("ProvinceID");
-            _presentorId = input.getPropertySafelyAsString("PresentorID");
-            _userTypeId = input.getPropertySafelyAsString("UserTypeID");
-            _languageId = input.getPropertySafelyAsString("LanguageID");
-            _point = Double.parseDouble(input.getPropertySafelyAsString("Point"));
-            _todayProfit = Double.parseDouble(input.getPropertySafelyAsString("TodayProfit"));
-            _cashOfWallet = Double.parseDouble(input.getPropertySafelyAsString("CashOfWallet"));
-            _creditCard = input.getPropertySafelyAsString("CreditCard");
-            _sheba = input.getPropertySafelyAsString("Sheba");
-            _bankName = input.getPropertySafelyAsString("BankName");
-            _storeName = input.getPropertySafelyAsString("StoreName");
-            _fieldId = Integer.parseInt(input.getPropertySafelyAsString("FieldID"));
-            _creditCardOwner = input.getPropertySafelyAsString("CreditCardOwner");
-            _fieldName = input.getPropertySafelyAsString("FieldName");
-            _acquaintanceId = Integer.parseInt(input.getPropertySafelyAsString("AcquaintanceID"));
-            _acquaintanceName = input.getPropertySafelyAsString("AcquaintanceName");
-            _address = input.getPropertySafelyAsString("Address");
-            _postalCode = input.getPropertySafelyAsString("PostalCode");
-            _token = input.getPropertySafelyAsString("Token");
-            _isUser = Boolean.parseBoolean(input.getPropertySafelyAsString("IsUser"));
-            _userCount = Integer.parseInt(input.getPropertySafelyAsString("UserCount"));
-            _perenestorCode = input.getPropertySafelyAsString("perenestorCode");
-            _agencyRequest = Boolean.parseBoolean(input.getPropertySafelyAsString("AgencyRequest"));
-            _chanceCount = Integer.parseInt(input.getPropertySafelyAsString("ChanceCount"));
-            _income = Double.parseDouble(input.getPropertySafelyAsString("Income"));
-            _registeryDatePersian = input.getPropertySafelyAsString("RegisteryDatePersian");
+            ID = input.getPropertySafelyAsString("ID");
+            UserName = input.getPropertySafelyAsString("UserName");
+            Password = input.getPropertySafelyAsString("Password");
+            FirstName = input.getPropertySafelyAsString("FirstName");
+            LastName = input.getPropertySafelyAsString("LastName");
+            Email = input.getPropertySafelyAsString("Email");
+            Phone = input.getPropertySafelyAsString("Phone");
+            MelliCode = input.getPropertySafelyAsString("MelliCode");
+            ProfilePicURL = input.getPropertySafelyAsString("ProfilePicURL");
+            CityID = input.getPropertySafelyAsString("CityID");
+            ProvinceID = input.getPropertySafelyAsString("ProvinceID");
+            PresentorID = input.getPropertySafelyAsString("PresentorID");
+            UserTypeID = input.getPropertySafelyAsString("UserTypeID");
+            LanguageID = input.getPropertySafelyAsString("LanguageID");
+            Point = Double.parseDouble(input.getPropertySafelyAsString("Point"));
+            TodayProfit = Double.parseDouble(input.getPropertySafelyAsString("TodayProfit"));
+            CashOfWallet = Double.parseDouble(input.getPropertySafelyAsString("CashOfWallet"));
+            CreditCard = input.getPropertySafelyAsString("CreditCard");
+            Sheba = input.getPropertySafelyAsString("Sheba");
+            BankName = input.getPropertySafelyAsString("BankName");
+            StoreName = input.getPropertySafelyAsString("StoreName");
+            FieldID = Integer.parseInt(input.getPropertySafelyAsString("FieldID"));
+            CreditCardOwner = input.getPropertySafelyAsString("CreditCardOwner");
+            FieldName = input.getPropertySafelyAsString("FieldName");
+            AcquaintanceID = Integer.parseInt(input.getPropertySafelyAsString("AcquaintanceID"));
+            AcquaintanceName = input.getPropertySafelyAsString("AcquaintanceName");
+            Address = input.getPropertySafelyAsString("Address");
+            PostalCode = input.getPropertySafelyAsString("PostalCode");
+            Token = input.getPropertySafelyAsString("Token");
+            IsUser = Boolean.parseBoolean(input.getPropertySafelyAsString("IsUser"));
+            UserCount = Integer.parseInt(input.getPropertySafelyAsString("UserCount"));
+            perenestorCode = input.getPropertySafelyAsString("perenestorCode");
+            AgencyRequest = Boolean.parseBoolean(input.getPropertySafelyAsString("AgencyRequest"));
+            ChanceCount = Integer.parseInt(input.getPropertySafelyAsString("ChanceCount"));
+            Income = Double.parseDouble(input.getPropertySafelyAsString("Income"));
+            RegisteryDatePersian = input.getPropertySafelyAsString("RegisteryDatePersian");
+            CityName = input.getPropertySafelyAsString("CityName");
+
 
             try {
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                _expirationDate = formatter.parse(input.getPropertySafelyAsString("ExpDate"));
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
+                ExpirationDate = formatter.parse(input.getPropertySafelyAsString("ExpDate"));
             } catch (Exception ex) {
-                _expirationDate = new Date();
+                ExpirationDate = new Date();
             }
 
 

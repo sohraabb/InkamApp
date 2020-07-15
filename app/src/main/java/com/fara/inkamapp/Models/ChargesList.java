@@ -15,8 +15,13 @@ public class ChargesList {
     public int get_logo() {
         return _logo;
     }
-
     public String get_amount() {
         return _amount;
     }
+
+    public ChargesList(int logo, String amount){
+        this._amount = amount;
+        this._logo = logo;
+    }
+
 }

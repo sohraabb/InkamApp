@@ -1,6 +1,7 @@
 package com.fara.inkamapp.Adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,8 +48,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         if (_notifications.get_title() != null)
             holder.title.setText(_notifications.get_title());
 
-        if (_notifications.get_dateTime() != null)
-            holder.dateTime.setText(_notifications.get_dateTime());
+        if (_notifications.get_persianDateTIme() != null)
+            holder.dateTime.setText(_notifications.get_persianDateTIme());
 
         if (_notifications.get_message() != null)
             holder.message.setText(_notifications.get_message());
@@ -69,15 +70,23 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView title, dateTime, message;
+        private TextView title, dateTime, message, time;
 
         ViewHolder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.tv_inkam_title);
             message = itemView.findViewById(R.id.tv_message);
             dateTime = itemView.findViewById(R.id.tv_date);
+            time = itemView.findViewById(R.id.tv_time);
 
             itemView.setOnClickListener(this);
+
+            Typeface typeface = Typeface.createFromAsset(context.getAssets(),
+                    "fonts/IRANSansMobile.ttf");
+            title.setTypeface(typeface);
+            message.setTypeface(typeface);
+            dateTime.setTypeface(typeface);
+            time.setTypeface(typeface);
         }
 
         @Override

@@ -1,15 +1,28 @@
 package com.fara.inkamapp.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -19,13 +32,26 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fara.inkamapp.Adapters.CrimeAdapter;
+import com.fara.inkamapp.BottomSheetFragments.Payment;
+import com.fara.inkamapp.Helpers.Base64;
 import com.fara.inkamapp.Helpers.FaraNetwork;
+import com.fara.inkamapp.Helpers.HideKeyboard;
+import com.fara.inkamapp.Helpers.RSA;
 import com.fara.inkamapp.Models.ReserveTopupRequest;
 import com.fara.inkamapp.Models.ServiceBillInfo;
 import com.fara.inkamapp.Models.TrafficFines;
 import com.fara.inkamapp.R;
 import com.fara.inkamapp.WebServices.Caller;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.zxing.Result;
+
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
@@ -33,19 +59,26 @@ import io.github.inflationx.viewpump.ViewPump;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class ServiceBillsAndCarFines extends AppCompatActivity implements ZXingScannerView.ResultHandler {
+import static com.fara.inkamapp.Activities.CompleteProfile.MyPREFERENCES;
+import static com.fara.inkamapp.Activities.LoginInkam.publicKey;
+
+public class ServiceBillsAndCarFines extends HideKeyboard implements ZXingScannerView.ResultHandler {
 
     private ZXingScannerView mScannerView;
+    private static final int MY_CAMERA_REQUEST_CODE = 100;
     private TextView scanBarcode, toastText;
     private RelativeLayout showBarcode, hideBarcode;
-    private FrameLayout contentFrame;
+    private ViewGroup contentFrame;
     private int billCode;
-    private ImageButton trafficInfo;
+    private ImageButton trafficInfo, back;
     private EditText carBillCode, billId, paymentId;
     private Button nextStep;
     private String inputBillID, billIdText, billPaymentText, billAmountToIntent, paymentIdToIntent, billIdToIntent,
             plateNumber, carFinesTotalAmount, addressToIntent, pdfUrlToIntent, currentDateToIntent, extraInfoToIntent, fullNameToIntent, paymentDateToIntent,
-            previousDateToIntent, titleToIntent;
+            previousDateToIntent, titleToIntent, token, userID, encryptedToken, AesKey, dataToConfirm;
+
+    private SharedPreferences sharedpreferences;
+    private BottomSheetDialogFragment bottomSheetDialogFragment;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -79,8 +112,32 @@ public class ServiceBillsAndCarFines extends AppCompatActivity implements ZXingS
         billId = findViewById(R.id.et_bills_id);
         paymentId = findViewById(R.id.et_payment_id);
         nextStep = findViewById(R.id.btn_next_step);
+        back = findViewById(R.id.ib_back);
 
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        token = sharedpreferences.getString("Token", null);
+        userID = sharedpreferences.getString("UserID", null);
+        AesKey = sharedpreferences.getString("key", null);
+        try {
+            encryptedToken = Base64.encode((RSA.encrypt(token, publicKey)));
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         Intent intent = getIntent();
         billCode = intent.getIntExtra("BillCode", 0);
 
@@ -101,8 +158,17 @@ public class ServiceBillsAndCarFines extends AppCompatActivity implements ZXingS
         scanBarcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showBarcode.setVisibility(View.VISIBLE);
-                hideBarcode.setVisibility(View.INVISIBLE);
+                if (checkPermission()) {
+                    //main logic or main code
+
+                    showBarcode.setVisibility(View.VISIBLE);
+                    hideBarcode.setVisibility(View.INVISIBLE);
+
+                } else {
+                    requestPermission();
+                }
+
+
             }
         });
 
@@ -111,10 +177,12 @@ public class ServiceBillsAndCarFines extends AppCompatActivity implements ZXingS
             public void onClick(View view) {
                 if (billCode == 0) {
                     inputBillID = carBillCode.getText().toString();
-
-                    new trafficFinesInfo().execute();
+                    Intent intent = new Intent(getApplicationContext(), CrimesList.class);
+                    intent.putExtra("fineToken", inputBillID);
+                    startActivity(intent);
 
                 } else if (billCode == 1) {
+
                     billIdText = billId.getText().toString();
                     billPaymentText = paymentId.getText().toString();
                     new BillInfo().execute();
@@ -124,11 +192,68 @@ public class ServiceBillsAndCarFines extends AppCompatActivity implements ZXingS
 
     }
 
+    private boolean checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            return false;
+        }
+        return true;
+    }
+
+    private void requestPermission() {
+
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.CAMERA},
+                MY_CAMERA_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_CAMERA_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
+
+                    // main logic
+                } else {
+                    Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_SHORT).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            showMessageOKCancel("You need to allow access permissions",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                requestPermission();
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(ServiceBillsAndCarFines.this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
+        // Start camera on resume
+
         mScannerView.setResultHandler(this); // Register ourselves as a handler for scan results.
-        mScannerView.startCamera();          // Start camera on resume
+        mScannerView.startCamera();
+//        setupUI(findViewById(R.id.parent));
     }
 
     @Override
@@ -139,12 +264,24 @@ public class ServiceBillsAndCarFines extends AppCompatActivity implements ZXingS
 
     @Override
     public void handleResult(Result rawResult) {
-        // Do something with the result here
-        Log.v("Sori", rawResult.getText()); // Prints scan results
-        Log.v("Sori", rawResult.getBarcodeFormat().toString()); // Prints the scan format (qrcode, pdf417 etc.)
 
-        // If you would like to resume scanning, call this method below:
-        mScannerView.resumeCameraPreview(this);
+        if (carBillCode != null)
+            carBillCode.setText(rawResult.getText());
+        else
+            billId.setText(rawResult.getText());
+
+
+        // Note:
+        // * Wait 2 seconds to resume the preview.
+        // * On older devices continuously stopping and resuming camera preview can result in freezing the app.
+        // * I don't know why this is the case but I don't have the time to figure out.
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mScannerView.resumeCameraPreview(ServiceBillsAndCarFines.this);
+            }
+        }, 2000);
     }
 
     private boolean isNetworkAvailable() {
@@ -178,7 +315,7 @@ public class ServiceBillsAndCarFines extends AppCompatActivity implements ZXingS
         @Override
         protected TrafficFines doInBackground(Void... params) {
 
-            results = new Caller().getTrafficFinesInfo(inputBillID, "2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00");
+            results = new Caller().getTrafficFinesInfo(inputBillID, userID, encryptedToken);
 
             return results;
         }
@@ -280,19 +417,20 @@ public class ServiceBillsAndCarFines extends AppCompatActivity implements ZXingS
 
             switch (token) {
                 case 1:
-                    results = new Caller().getWaterBillInfo(billIdText, "2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00");
+                    results = new Caller().getWaterBillInfo(billIdText, userID, encryptedToken);
                     titleToIntent = getString(R.string.water_bill);
                     break;
                 case 2:
-                    results = new Caller().getElectricityBillInfoData(billIdText, "2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00");
+                    results = new Caller().getElectricityBillInfoData(billIdText, userID, encryptedToken);
                     titleToIntent = getString(R.string.elec_bill);
                     break;
                 case 3:
-                    results = new Caller().getGasBillInfo(billIdText, "2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00");
+                    results = new Caller().getGasBillInfo(billIdText, userID, encryptedToken);
                     titleToIntent = getString(R.string.gaz_bill);
                     break;
 
                 default:
+
                     break;
             }
 
@@ -305,7 +443,7 @@ public class ServiceBillsAndCarFines extends AppCompatActivity implements ZXingS
             //TODO we should add other items here too
 
 
-            if (serviceBillInfo != null) {
+            if (serviceBillInfo != null && serviceBillInfo.get_status() != null && serviceBillInfo.get_status().get_code() != "-1") {
                 if (serviceBillInfo.get_status().get_code().matches("G00000")) {
                     if (serviceBillInfo.get_serviceBillDetails().get_address() != null)
                         addressToIntent = serviceBillInfo.get_serviceBillDetails().get_address();
@@ -337,19 +475,33 @@ public class ServiceBillsAndCarFines extends AppCompatActivity implements ZXingS
                     if (serviceBillInfo.get_serviceBillDetails().get_previousDate() != null)
                         previousDateToIntent = serviceBillInfo.get_serviceBillDetails().get_previousDate();
 
+                    try {
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("title", titleToIntent);
+                        bundle.putString("address", addressToIntent);
+                        bundle.putString("amount", billAmountToIntent);
+                        bundle.putString("billID", billIdToIntent);
+                        bundle.putString("pdfURL", pdfUrlToIntent);
+                        bundle.putString("currentDate", currentDateToIntent);
+                        bundle.putString("extraInfo", extraInfoToIntent);
+                        bundle.putString("fullName", fullNameToIntent);
+                        bundle.putString("paymentDate", paymentDateToIntent);
+                        bundle.putString("paymentID", paymentIdToIntent);
+                        bundle.putString("previousDate", previousDateToIntent);
+                        bundle.putInt("serviceType", 3);
+
+
+                        bottomSheetDialogFragment = Payment.newInstance("Bottom Sheet Payment Dialog");
+                        bottomSheetDialogFragment.setArguments(bundle);
+                        bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+
+                    } catch (Exception e) {
+                        e.toString();
+                    }
+
                     Intent intent = new Intent(getApplicationContext(), FinalPayment.class);
-                    intent.putExtra("title", titleToIntent);
-                    intent.putExtra("address", addressToIntent);
-                    intent.putExtra("amount", billAmountToIntent);
-                    intent.putExtra("billID", billIdToIntent);
-                    intent.putExtra("pdfURL", pdfUrlToIntent);
-                    intent.putExtra("currentDate", currentDateToIntent);
-                    intent.putExtra("extraInfo", extraInfoToIntent);
-                    intent.putExtra("fullName", fullNameToIntent);
-                    intent.putExtra("paymentDate", paymentDateToIntent);
-                    intent.putExtra("paymentID", paymentIdToIntent);
-                    intent.putExtra("previousDate", previousDateToIntent);
-                    intent.putExtra("paymentType", 0);
+
 
                     startActivity(intent);
                 } else {
@@ -385,4 +537,6 @@ public class ServiceBillsAndCarFines extends AppCompatActivity implements ZXingS
 
         }
     }
+
+
 }

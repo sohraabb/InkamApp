@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".Activities.AirPlaneTickets">
+    tools:context=".Activities.AirplaneTickets">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -170,7 +170,7 @@
                         android:layout_weight="20">
 
 
-                        <EditText
+                        <AutoCompleteTextView
                             android:id="@+id/et_your_location"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -178,6 +178,8 @@
                             android:background="@drawable/edit_text_selector"
                             android:drawableEnd="@drawable/ic_airplane_gray"
                             android:drawablePadding="8dp"
+                            android:maxLines="1"
+                            android:imeOptions="actionNext"
                             android:hint="@string/choose_your_location"
                             android:padding="16dp"
                             android:textColor="@color/colorNightRider"
@@ -191,7 +193,7 @@
                         android:layout_weight="20">
 
 
-                        <EditText
+                        <AutoCompleteTextView
                             android:id="@+id/et_your_destination"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -199,6 +201,8 @@
                             android:background="@drawable/edit_text_selector"
                             android:drawableEnd="@drawable/ic_airplane_gray_return"
                             android:drawablePadding="8dp"
+                            android:maxLines="1"
+                            android:imeOptions="actionNext"
                             android:hint="@string/choose_your_destination"
                             android:padding="16dp"
                             android:textColor="@color/colorNightRider"

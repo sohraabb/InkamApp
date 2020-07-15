@@ -9,6 +9,7 @@
     tools:context=".Activities.FinalPayment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorMainBackgroundColor">
@@ -39,6 +40,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_payment">
 
             <LinearLayout
+                android:id="@+id/ll_bill_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="20"
@@ -445,10 +447,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="24dp"
-                android:background="@drawable/btn_yellow_background"
+                android:background="@drawable/button_background_disabled"
                 android:padding="16dp"
-                android:text="@string/pay"
-                android:textColor="@color/colorWhite"
+                android:text="@string/not_enough_money"
+                android:enabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_wallet_pay" />

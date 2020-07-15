@@ -70,6 +70,7 @@
             app:layout_constraintTop_toBottomOf="@+id/rl_shape">
 
             <RelativeLayout
+                android:id="@+id/rv_fix"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
@@ -79,7 +80,7 @@
                 android:padding="16dp">
 
                 <TextView
-                    android:id="@+id/tv_credit_sim"
+                    android:id="@+id/tv_fix_sim"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -89,6 +90,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rv_credit"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
@@ -98,7 +100,7 @@
                 android:padding="16dp">
 
                 <TextView
-                    android:id="@+id/tv_td_lte"
+                    android:id="@+id/tv_credit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -109,6 +111,7 @@
 
 
             <RelativeLayout
+                android:id="@+id/rl_tdl"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
@@ -118,7 +121,7 @@
                 android:padding="16dp">
 
                 <TextView
-                    android:id="@+id/tv_constant_sim"
+                    android:id="@+id/tv_tdl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -159,6 +162,7 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/ll_dataplan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -170,11 +174,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rl_net_packages_list">
 
-            <RelativeLayout
+            <!--<RelativeLayout
                 android:id="@+id/rl_package_info"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="100"
+                android:layout_height="wrap_content"
+
                 android:background="@drawable/white_rounded_background"
                 android:padding="16dp">
 
@@ -185,15 +189,12 @@
                     android:layout_alignParentEnd="true"
                     android:src="@drawable/irancell_logo_green" />
 
-                <TextView
-                    android:id="@+id/tv_price"
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:layout_toStartOf="@+id/iv_logo"
-                    android:text="۱۰,۰۰۰"
-                    android:textColor="@color/colorMainGreen"
-                    android:textSize="16sp" />
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    app:srcCompat="@drawable/ic_arrow_small_left" />
 
                 <TextView
                     android:id="@+id/tv_rial"
@@ -216,15 +217,19 @@
                     android:textColor="@color/colorBrown"
                     android:textSize="14sp" />
 
-                <ImageView
+                <TextView
+                    android:id="@+id/tv_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerInParent="true"
-                    app:srcCompat="@drawable/ic_arrow_small_left" />
+                    android:layout_marginEnd="24dp"
+                    android:layout_toStartOf="@+id/iv_logo"
+                    android:text="۱۰,۰۰۰"
+                    android:textColor="@color/colorMainGreen"
+                    android:textSize="16sp" />
 
 
-            </RelativeLayout>
+            </RelativeLayout>-->
+
 
 
             <!--<androidx.recyclerview.widget.RecyclerView-->

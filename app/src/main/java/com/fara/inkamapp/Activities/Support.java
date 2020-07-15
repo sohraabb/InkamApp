@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.fara.inkamapp.R;
 
@@ -14,6 +16,7 @@ import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 public class Support extends AppCompatActivity {
 
+    private ImageButton back;
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
@@ -32,5 +35,13 @@ public class Support extends AppCompatActivity {
                 .build());
 
         setContentView(R.layout.activity_support);
+        back = findViewById(R.id.ib_back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 }

@@ -1,15 +1,20 @@
 package com.fara.inkamapp.BottomSheetFragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,38 +22,61 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.fara.inkamapp.Activities.InternetPackageActivity;
 import com.fara.inkamapp.Activities.MainActivity;
+import com.fara.inkamapp.Helpers.AESEncyption;
+import com.fara.inkamapp.Helpers.Base64;
 import com.fara.inkamapp.Helpers.FaraNetwork;
-import com.fara.inkamapp.Models.ReserveTopupRequest;
+import com.fara.inkamapp.Helpers.Numbers;
+import com.fara.inkamapp.Helpers.RSA;
+import com.fara.inkamapp.Models.PaymentResult;
 import com.fara.inkamapp.Models.WalletCredit;
 import com.fara.inkamapp.R;
 import com.fara.inkamapp.WebServices.Caller;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.gson.Gson;
+import com.top.lib.mpl.view.PaymentInitiator;
 
 import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
+import java.security.spec.InvalidParameterSpecException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import ir.pec.mpl.pecpayment.view.PaymentInitiator;
+import static com.fara.inkamapp.Activities.CompleteProfile.MyPREFERENCES;
+import static com.fara.inkamapp.Activities.LoginInkam.publicKey;
 
-public class AddExtraCredit extends BottomSheetDialogFragment {
+public class AddExtraCredit extends BottomSheetDialogFragment implements View.OnClickListener {
 
     String string;
     private Button addCredit;
     private BottomSheetDialogFragment bottomSheetDialogFragment;
-    private TextView toastText;
+    private TextView toastText, tv_1, tv_500, tv_300, tv_20, tv_50, tv_10, tvSelected;
     public MainActivity activity;
     private Context _context;
     private String dataToConfirm, amount;
+    private EditText et_amount;
+    private SharedPreferences sharedpreferences;
+    private ItemClickListener mClickListener;
+    private String AesKey;
+    private SharedPreferences sharedPreferences;
 
 
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+
+    // parent activity will implement this method to respond to click events
+    public interface ItemClickListener {
+        void onItemClick();
+    }
 
     public static AddExtraCredit newInstance(String string) {
         AddExtraCredit addExtraCredit = new AddExtraCredit();
@@ -76,14 +104,57 @@ public class AddExtraCredit extends BottomSheetDialogFragment {
                 false);
 
         // get the views and attach the listener
+        sharedPreferences = _context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
+        AesKey = sharedPreferences.getString("key", null);
         addCredit = view.findViewById(R.id.btn_add_credit);
+        et_amount = view.findViewById(R.id.et_amount);
+        et_amount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s != null && s.length() != 0) {
+                    String str = s.toString().replace(",", "");
+                    NumberFormat formatter = new DecimalFormat("#,###");
+                    String formattedNumber = formatter.format(Double.valueOf(Numbers.ToEnglishNumbers(str)));
+                    et_amount.removeTextChangedListener(this);
+                    et_amount.setText(Numbers.ToPersianNumbers(formattedNumber));
+                    et_amount.setSelection(et_amount.length());
+                    et_amount.addTextChangedListener(this);
+                    //
+                }
+            }
+        });
+
+        tv_1 = view.findViewById(R.id.tv_1);
+        tv_500 = view.findViewById(R.id.tv_500);
+        tv_300 = view.findViewById(R.id.tv_300);
+        tv_20 = view.findViewById(R.id.tv_20);
+        tv_50 = view.findViewById(R.id.tv_50);
+        tv_10 = view.findViewById(R.id.tv_10);
+        tv_1.setOnClickListener(this);
+        tv_500.setOnClickListener(this);
+        tv_300.setOnClickListener(this);
+        tv_20.setOnClickListener(this);
+        tv_50.setOnClickListener(this);
+        tv_10.setOnClickListener(this);
+
 
 //        bottomSheetDialogFragment = TransferCredit.newInstance("Bottom Sheet Dialog");
 
         addCredit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                amount = Numbers.ToEnglishNumbers(et_amount.getText().toString().replace(",", ""));
                 new IncreaseWalletCredit().execute();
 
 //                bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
@@ -94,11 +165,23 @@ public class AddExtraCredit extends BottomSheetDialogFragment {
         return view;
     }
 
+    @Override
+    public void onClick(View v) {
+        et_amount.setText(((TextView) v).getText().toString().replace("ریال", ""));
+        amount = Numbers.ToEnglishNumbers(et_amount.getText().toString().replace(",", ""));
+//        v.setBackgroundResource(R.drawable.edittext_background_black_stroke);
+//        if (tvSelected != null) {
+//            tvSelected.setBackgroundResource(R.drawable.edittext_background_black_stroke);
+//        }
+//        tvSelected = ((TextView) v);
+
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this._context = context;
+        mClickListener=(ItemClickListener)context;
 
     }
 
@@ -106,9 +189,9 @@ public class AddExtraCredit extends BottomSheetDialogFragment {
         return FaraNetwork.isNetworkAvailable(getActivity());
     }
 
-    private class IncreaseWalletCredit extends AsyncTask<Void, Void, WalletCredit> {
+    private class IncreaseWalletCredit extends AsyncTask<Void, Void, PaymentResult> {
 
-        WalletCredit results = null;
+        PaymentResult results = null;
 
         @Override
         protected void onPreExecute() {
@@ -128,71 +211,87 @@ public class AddExtraCredit extends BottomSheetDialogFragment {
                 toast.show();
             }
 
-//            try {
-//                amount = RSA.encrypt("1000");
-//            } catch (UnsupportedEncodingException e) {
-//                e.printStackTrace();
-//            } catch (NoSuchAlgorithmException e) {
-//                e.printStackTrace();
-//            } catch (NoSuchPaddingException e) {
-//                e.printStackTrace();
-//            } catch (InvalidKeySpecException e) {
-//                e.printStackTrace();
-//            } catch (InvalidKeyException e) {
-//                e.printStackTrace();
-//            } catch (IllegalBlockSizeException e) {
-//                e.printStackTrace();
-//            } catch (BadPaddingException e) {
-//                e.printStackTrace();
-//            }
 
         }
 
         @Override
-        protected WalletCredit doInBackground(Void... params) {
+        protected PaymentResult doInBackground(Void... params) {
 
-            results = new Caller().IncreaseWalletCreditRequest("2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00", Long.parseLong("09374227117"), Long.parseLong("1000"));
+            String res = null;
+            try {
+                try {
+                    res = new Caller().IncreaseWalletCreditRequest(MainActivity._userId, MainActivity._token, Long.parseLong(MainActivity._userName.substring(1)), Base64.encode((RSA.encrypt(amount, publicKey))));
 
+                } catch (BadPaddingException e) {
+                    e.printStackTrace();
+                } catch (IllegalBlockSizeException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
+                } catch (NoSuchPaddingException e) {
+                    e.printStackTrace();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+            } catch (Exception ee) {
+                String s = ee.toString();
+            }
+            Gson gson = new Gson();
+            try {
+                results = gson.fromJson(AESEncyption.decryptMsg(res, AesKey), PaymentResult.class);
+            } catch (NoSuchPaddingException e) {
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (InvalidParameterSpecException e) {
+                e.printStackTrace();
+            } catch (InvalidAlgorithmParameterException e) {
+                e.printStackTrace();
+            } catch (InvalidKeyException e) {
+                e.printStackTrace();
+            } catch (BadPaddingException e) {
+                e.printStackTrace();
+            } catch (IllegalBlockSizeException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             return results;
         }
 
         @Override
-        protected void onPostExecute(WalletCredit walletCredit) {
+        protected void onPostExecute(PaymentResult walletCredit) {
             super.onPostExecute(walletCredit);
             //TODO we should add other items here too
 
-                if (walletCredit.get_data().get_token() != null) {
-                    String token = walletCredit.get_data().get_token();
+            if (walletCredit.getData().getToken() != null) {
+                String token = walletCredit.getData().getToken();
 
-                    // for OrderID Random Number
-                    int min = 10000;
-                    int max = 90000;
-                    Random r = new Random();
-                    int randomOrder = r.nextInt(max - min + 1) + min;
+                // for OrderID Random Number
 
-                    Intent intent = new Intent(_context, PaymentInitiator.class);
-                    intent.putExtra("Type", "1");
-                    intent.putExtra("Token", token);
-                    intent.putExtra("OrderID", randomOrder);
-                    intent.putExtra("TSPEnabled" , 1);
+                Intent intent = new Intent(_context, PaymentInitiator.class);
+                intent.putExtra("Type", "1");
+                intent.putExtra("Token", token);
+                intent.putExtra("OrderID", walletCredit.getData().getOrderId());
+                intent.putExtra("TSPEnabled", 1);
 
-                    startActivityForResult(intent, 1);
-                    //                new IncreaseWalletCreditRequestConfirm().execute();
+                startActivityForResult(intent, 1);
+                //                new IncreaseWalletCreditRequestConfirm().execute();
 
-                } else {
-                    Toast toast = Toast.makeText(getActivity(), R.string.try_again, Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toastText = toast.getView().findViewById(android.R.id.message);
-                    toast.getView().setBackgroundResource(R.drawable.toast_background);
+            } else {
+                Toast toast = Toast.makeText(getActivity(), R.string.try_again, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
 
-                    if (toastText != null) {
-                        toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
-                        toastText.setTextColor(getResources().getColor(R.color.colorBlack));
-                        toastText.setGravity(Gravity.CENTER);
-                        toastText.setTextSize(14);
-                    }
-                    toast.show();
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
                 }
+                toast.show();
+            }
         }
 
     }
@@ -225,7 +324,19 @@ public class AddExtraCredit extends BottomSheetDialogFragment {
         @Override
         protected String doInBackground(Void... params) {
 
-            results = new Caller().increaseWalletCreditRequestConfirm("2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00", dataToConfirm, Double.parseDouble(amount));
+            try {
+                results = new Caller().increaseWalletCreditRequestConfirm(MainActivity._userId, MainActivity._token, dataToConfirm, Base64.encode((RSA.encrypt(amount, publicKey))));
+            } catch (BadPaddingException e) {
+                e.printStackTrace();
+            } catch (IllegalBlockSizeException e) {
+                e.printStackTrace();
+            } catch (InvalidKeyException e) {
+                e.printStackTrace();
+            } catch (NoSuchPaddingException e) {
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
 
             return results;
         }
@@ -249,7 +360,10 @@ public class AddExtraCredit extends BottomSheetDialogFragment {
                     toastText.setTextSize(14);
                 }
                 toast.show();
-
+                if (mClickListener != null) {
+                    mClickListener.onItemClick();
+                }
+                dismiss();
             } else {
                 Toast toast = Toast.makeText(getActivity(), R.string.try_again, Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0, 0);
@@ -273,10 +387,12 @@ public class AddExtraCredit extends BottomSheetDialogFragment {
         super.onActivityResult(requestCode, resultCode, data);
         switch (resultCode) {
             case 1:
-                dataToConfirm = data.getStringExtra("enData").replace("\\","");
+                dataToConfirm = data.getStringExtra("enData").replace("\\", "");
                 String one = data.getStringExtra("message");
-                String two = String.valueOf(data.getIntExtra("status" , 0));
-                new IncreaseWalletCreditRequestConfirm().execute();
+                String sts = String.valueOf(data.getIntExtra("status", -1));
+                if (sts.equals("0")) {
+                    new IncreaseWalletCreditRequestConfirm().execute();
+                }
                 break;
         }
 

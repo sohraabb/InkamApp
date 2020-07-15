@@ -5,62 +5,62 @@ import android.util.Log;
 import org.ksoap2.serialization.SoapObject;
 
 public class BookTicket {
-    private String _id;
-    private String _paymentEndpoint;
-    private Error _error;
-    private long _orderId;
-    private String _token;
+    private String ID;
+    private String PaymentEndpoint;
+    private Error Error;
+    private long OrderID;
+    private String Token;
 
-    public void set_error(Error _error) {
-        this._error = _error;
+    public void setError(Error error) {
+        this.Error = error;
     }
 
-    public void set_token(String _token) {
-        this._token = _token;
+    public void setToken(String token) {
+        this.Token = token;
     }
 
-    public void set_orderId(long _orderId) {
-        this._orderId = _orderId;
+    public void setOrderID(long orderID) {
+        this.OrderID = orderID;
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
-    public void set_paymentEndpoint(String _paymentEndpoint) {
-        this._paymentEndpoint = _paymentEndpoint;
+    public void setPaymentEndpoint(String paymentEndpoint) {
+        this.PaymentEndpoint = paymentEndpoint;
     }
 
-    public Error get_error() {
-        return _error;
+    public Error getError() {
+        return Error;
     }
 
-    public String get_token() {
-        return _token;
+    public String getToken() {
+        return Token;
     }
 
-    public long get_orderId() {
-        return _orderId;
+    public long getOrderID() {
+        return OrderID;
     }
 
-    public String get_id() {
-        return _id;
+    public String getID() {
+        return ID;
     }
 
-    public String get_paymentEndpoint() {
-        return _paymentEndpoint;
+    public String getPaymentEndpoint() {
+        return PaymentEndpoint;
     }
 
     public BookTicket(SoapObject input) {
         try {
-            _id = input.getPropertySafelyAsString("ID");
-            _paymentEndpoint = input.getPropertySafelyAsString("PaymentEndpoint");
+            ID = input.getPropertySafelyAsString("ID");
+            PaymentEndpoint = input.getPropertySafelyAsString("PaymentEndpoint");
 
             SoapObject error = (SoapObject) input.getPropertySafely("Error");
-            _error = new Error(error);
+            Error = new Error(error);
 
-            _orderId = Long.parseLong(input.getPropertySafelyAsString("OrderID"));
-            _token = input.getPropertySafelyAsString("Token");
+            OrderID = Long.parseLong(input.getPropertySafelyAsString("OrderID"));
+            Token = input.getPropertySafelyAsString("Token");
 
         } catch (Exception e) {
             Log.e("CheckCode Soap", e.toString());

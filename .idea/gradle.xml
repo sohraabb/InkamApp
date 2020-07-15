@@ -10,8 +10,10 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/Android-ver2.3.1" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/pecpayment-release" />
+            <option value="$PROJECT_DIR$/pecpayment_release" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

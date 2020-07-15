@@ -61,6 +61,18 @@
             android:text="@string/increase_credit"
             android:textColor="@color/colorGreen"
             android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+
+            android:layout_alignParentLeft="false"
+            android:layout_centerInParent="true"
+            android:textColor="@color/colorBrown"
+            android:textSize="12sp"
+            />
     </RelativeLayout>
 
     <RelativeLayout
@@ -98,6 +110,7 @@
             android:layout_centerInParent="true"
             android:layout_toStartOf="@+id/tv_date"
             android:text="بانک ملی"
+            android:visibility="invisible"
             android:textColor="@color/colorBrown"
             android:textSize="12sp" />
     </RelativeLayout>
@@ -128,5 +141,6 @@
             android:text="۳۴۲۴۳۴۳"
             android:textColor="@color/colorBrown"
             android:textSize="12sp" />
+
     </RelativeLayout>
 </LinearLayout>

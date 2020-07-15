@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+        <item name="android:windowDisablePreview">true</item>
 
     </style>
 
@@ -15,6 +16,7 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowDisablePreview">true</item>
     </style>
 
     <style name="AppBottomSheetDialogTheme"
@@ -25,6 +27,11 @@
     <style name="AppModalStyle"
         parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/rounded_dialog</item>
+    </style>
+
+    <style name="Theme.MyTheme" parent="android:style/Theme.Holo">
+        <!-- This disables the black preview screen -->
+        <item name="android:windowDisablePreview">true</item>
     </style>
 
 </resources>

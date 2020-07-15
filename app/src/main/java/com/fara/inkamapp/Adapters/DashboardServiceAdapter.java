@@ -1,6 +1,8 @@
 package com.fara.inkamapp.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.ahmadrosid.svgloader.SvgLoader;
 import com.fara.inkamapp.Models.ProductAndService;
 import com.fara.inkamapp.R;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -46,17 +51,12 @@ public class DashboardServiceAdapter extends RecyclerView.Adapter<DashboardServi
         if (productAndService.get_name() != null)
             holder.title.setText(productAndService.get_name());
 
-//        RequestOptions defaultOption = new RequestOptions()
-//                .centerCrop()
-//                .placeholder(R.drawable.pic_default)
-//                .error(R.drawable.pic_default);
-
         if (productAndService.get_picURL() != null) {
 
-//            Glide.with(context)
-//                    .load(productAndService.get_picURL())
-//                    .apply(defaultOption)
-//                    .into(holder.icon);
+            SvgLoader.pluck()
+                    .with((Activity) context)
+                    .setPlaceHolder(R.mipmap.ic_launcher, R.drawable.ic_history_green)
+                    .load(productAndService.get_picURL(), holder.icon);
 
         } else {
 

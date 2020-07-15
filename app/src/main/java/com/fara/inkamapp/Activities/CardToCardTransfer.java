@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
+import com.fara.inkamapp.Helpers.HideKeyboard;
 import com.fara.inkamapp.R;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
@@ -15,10 +17,10 @@ import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
-public class CardToCardTransfer extends AppCompatActivity {
+public class CardToCardTransfer extends HideKeyboard {
 
     private Button nextStep;
-
+    private ImageButton back;
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
@@ -47,5 +49,20 @@ public class CardToCardTransfer extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        back = findViewById(R.id.ib_back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupUI(findViewById(R.id.parent));
     }
 }

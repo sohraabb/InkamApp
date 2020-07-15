@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.BusTicketSelectionProcess"
+    android:background="@color/colorMainBackgroundColor"
+    >
+    <RelativeLayout
+        android:id="@+id/r4_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorMainBackgroundColor"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/ib_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:padding="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/tv_title2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="8dp"
+            android:text="انتخاب صندلی"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_indicator"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/r4_header">
+
+
+        <RelativeLayout
+            android:id="@+id/rl_receipt_oval"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/white_oval_background">
+
+            <ImageView
+                android:id="@+id/iv_receipt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:srcCompat="@drawable/ic_receipt_gray" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_services_line"
+            android:layout_width="0dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center"
+            android:layout_weight="50"
+
+            android:background="@color/colorWhite"
+            android:gravity="right">
+
+            <LinearLayout
+                android:id="@+id/ll_line_2"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorMainGreen"
+                android:orientation="horizontal"
+                android:visibility="invisible"></LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_services_oval"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/white_oval_background">
+
+            <ImageView
+                android:id="@+id/iv_services"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:srcCompat="@drawable/ic_service_gray" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_passengers_line"
+            android:layout_width="0dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center"
+            android:layout_weight="50"
+
+            android:background="@color/colorWhite"
+            android:gravity="right">
+
+            <LinearLayout
+                android:id="@+id/ll_line_1"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorMainGreen"
+                android:orientation="horizontal"
+                android:visibility="invisible"></LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_passengers_oval"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/green_oval_background">
+
+            <ImageView
+                android:id="@+id/iv_passengers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:srcCompat="@drawable/ic_passengers_white" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp_progress"
+        android:layout_width="408dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:layoutDirection="rtl"
+        app:layout_constraintBottom_toTopOf="@+id/btn_continue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_indicator" />
+
+    <Button
+        android:id="@+id/btn_continue"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/button_background_green"
+        android:text="@string/next_livel"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vp_progress"
+        app:layout_constraintVertical_bias="1.0" />
+</androidx.constraintlayout.widget.ConstraintLayout>

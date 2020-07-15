@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.InvitationCode"
@@ -12,11 +13,12 @@
         android:id="@+id/tv_do_not_have_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="24dp"
+        android:layout_margin="16dp"
         android:text="@string/do_not_have_invitation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:textSize="18sp"
+        android:padding="8dp"
         android:textColor="@color/colorMainGreen"/>
 
     <TextView
@@ -56,7 +58,7 @@
 
 
         <EditText
-            android:id="@+id/et_phone_number"
+            android:id="@+id/et_presenter_code"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
@@ -79,6 +81,8 @@
         android:padding="16dp"
         android:background="@drawable/button_background_green"
         android:text="@string/submit_code"
+        android:maxLines="1"
+        android:imeOptions="actionDone"
         android:textSize="16sp"
         android:textColor="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="parent"

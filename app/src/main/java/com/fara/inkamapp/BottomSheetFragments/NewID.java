@@ -1,6 +1,5 @@
 package com.fara.inkamapp.BottomSheetFragments;
 
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,27 +14,13 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.fara.inkamapp.Activities.AirplaneTickets;
-import com.fara.inkamapp.Activities.BusTickets;
-import com.fara.inkamapp.Activities.BuyCharge;
-import com.fara.inkamapp.Activities.CardToCardTransfer;
-import com.fara.inkamapp.Activities.PhoneDebt;
-import com.fara.inkamapp.Activities.ServiceBillsAndCarFines;
-import com.fara.inkamapp.Activities.TrainTickets;
-import com.fara.inkamapp.Activities.UserDetails;
-import com.fara.inkamapp.Adapters.DashboardServiceAdapter;
 import com.fara.inkamapp.Adapters.UserDetailsAdapter;
 import com.fara.inkamapp.Helpers.FaraNetwork;
-import com.fara.inkamapp.Models.PercentageCode;
-import com.fara.inkamapp.Models.ProductAndService;
 import com.fara.inkamapp.Models.ResponseStatus;
 import com.fara.inkamapp.R;
 import com.fara.inkamapp.WebServices.Caller;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
-import java.util.ArrayList;
 
 public class NewID extends BottomSheetDialogFragment {
 

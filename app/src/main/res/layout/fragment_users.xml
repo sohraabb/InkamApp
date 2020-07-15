@@ -108,7 +108,6 @@
                     android:layout_centerInParent="true"
                     android:layout_marginStart="8dp"
                     android:layout_toEndOf="@+id/tv_your_income_rial"
-                    android:text="12000"
                     android:textColor="@color/colorMainGreen"
                     android:textSize="16sp" />
 
@@ -161,7 +160,6 @@
                     android:layout_centerInParent="true"
                     android:layout_marginStart="24dp"
                     android:layout_toEndOf="@+id/iv_users_number"
-                    android:text="12 نفر"
                     android:textColor="@color/colorNightRider"
                     android:textSize="14sp" />
 
@@ -188,7 +186,27 @@
                 android:layout_height="0dp"
                 android:layout_weight="20"
                 android:paddingTop="8dp"
-                android:paddingBottom="8dp">
+                android:paddingBottom="8dp"
+                android:visibility="invisible">
+
+                <ImageView
+                    android:id="@+id/iv_request_cash_out_credit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="16dp"
+                    app:srcCompat="@drawable/ic_arrow_small_left" />
+
+                <TextView
+                    android:id="@+id/tv_request_cash_out_credit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="24dp"
+                    android:layout_toEndOf="@+id/iv_request_cash_out_credit"
+                    android:textColor="@color/colorNightRider"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -201,26 +219,6 @@
                     android:text="@string/number_of_invites"
                     android:textColor="@color/colorNightRider"
                     android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tv_request_cash_out_credit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginStart="24dp"
-                    android:layout_toEndOf="@+id/iv_request_cash_out_credit"
-                    android:text="12 نفر"
-                    android:textColor="@color/colorNightRider"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:id="@+id/iv_request_cash_out_credit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerInParent="true"
-                    android:layout_marginStart="16dp"
-                    app:srcCompat="@drawable/ic_arrow_small_left" />
             </RelativeLayout>
         </LinearLayout>
 

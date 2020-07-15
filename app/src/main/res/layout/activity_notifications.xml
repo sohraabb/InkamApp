@@ -31,7 +31,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="35"
-            android:background="@drawable/gray_rounded_background">
+            android:background="@drawable/green_rounded_background">
 
             <TextView
                 android:id="@+id/tv_has_notif"
@@ -55,7 +55,7 @@
                 android:gravity="center"
                 android:padding="16dp"
                 android:text="@string/notify"
-                android:textColor="@color/colorBrown"
+                android:textColor="@color/colorWhite"
                 android:textSize="14sp" />
 
         </RelativeLayout>
@@ -67,7 +67,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="35"
-            android:background="@drawable/green_rounded_background">
+            android:background="@drawable/gray_rounded_background">
 
             <TextView
                 android:id="@+id/tv_has_messages"
@@ -91,7 +91,7 @@
                 android:gravity="center"
                 android:padding="16dp"
                 android:text="@string/messages"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorBrown"
                 android:textSize="14sp" />
 
         </RelativeLayout>

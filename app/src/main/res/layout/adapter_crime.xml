@@ -117,11 +117,13 @@
         android:layout_height="1dp"
         android:layout_margin="8dp"
         android:alpha="0.1"
+        android:visibility="gone"
         android:background="@android:color/black" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_violation_code_title"
@@ -172,6 +174,7 @@
         android:layout_height="1dp"
         android:layout_margin="8dp"
         android:alpha="0.1"
+        android:visibility="invisible"
         android:background="@android:color/black" />
 
     <RelativeLayout
@@ -241,7 +244,32 @@
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="45"/>
+            android:layout_weight="45">
+
+            <TextView
+                android:id="@+id/tv_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@+id/tv_amount_rial"
+
+                android:text="۳۰,۰۰۰"
+                android:textColor="@color/colorNightRider"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_amount_rial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="@string/rial"
+                android:textColor="@color/colorBrown" />
+
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rl_crime_select"

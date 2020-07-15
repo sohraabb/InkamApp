@@ -1,6 +1,8 @@
 package com.fara.inkamapp.BottomSheetFragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -14,16 +16,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.fara.inkamapp.Activities.InternetPackageActivity;
 import com.fara.inkamapp.Dialogs.SubmitShebaNumber;
+import com.fara.inkamapp.Helpers.AESEncyption;
+import com.fara.inkamapp.Helpers.Base64;
 import com.fara.inkamapp.Helpers.FaraNetwork;
 import com.fara.inkamapp.Helpers.FourDigitCardFormatWatcher;
+import com.fara.inkamapp.Helpers.RSA;
 import com.fara.inkamapp.Models.ResponseStatus;
 import com.fara.inkamapp.Models.User;
 import com.fara.inkamapp.Models.UserCard;
@@ -44,16 +52,28 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-public class SubmitNewCard extends BottomSheetDialogFragment {
+import static com.fara.inkamapp.Activities.LoginInkam.publicKey;
+import static com.fara.inkamapp.Activities.MainActivity.MyPREFERENCES;
+
+public class SubmitNewCard extends BottomSheetDialogFragment  {
 
     String string;
-    private EditText firstEditText;
+    private EditText et_card_number, et_date_month, et_date_year;
     private Button submit;
-    private String myPreviousText;
+    private String myPreviousText, cardNo, expDate, userID, token;
     private TextView toastText;
     private JSONObject postData;
+    private RelativeLayout card_background;
+    private ImageView cardLogo;
+    private SharedPreferences sharedpreferences;
+    private RefershCardListener mListener;
+    public interface RefershCardListener{
+        public void RefreshCard();
+    }
 
-
+    public void setRefershCardListener(RefershCardListener itemClickListener) {
+        this.mListener = itemClickListener;
+    }
     public static SubmitNewCard newInstance(String string) {
         SubmitNewCard submitNewCard = new SubmitNewCard();
         Bundle args = new Bundle();
@@ -70,6 +90,13 @@ public class SubmitNewCard extends BottomSheetDialogFragment {
         setStyle(DialogFragment.STYLE_NO_FRAME, 0);
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        mListener=(RefershCardListener)context;
+
+    }
 
     @Nullable
     @Override
@@ -82,27 +109,55 @@ public class SubmitNewCard extends BottomSheetDialogFragment {
 
         // get the views and attach the listener
 
-        firstEditText = view.findViewById(R.id.et_first_num);
-//        secondEditText = view.findViewById(R.id.et_second_num);
-//        thirdEditText = view.findViewById(R.id.et_third_num);
-//        fourthEditText = view.findViewById(R.id.et_fourth_num);
+        et_card_number = view.findViewById(R.id.et_card_number);
         submit = view.findViewById(R.id.btn_submit_card);
+        card_background = view.findViewById(R.id.rl_add_card);
+        cardLogo = view.findViewById(R.id.iv_bank);
+        et_date_month = view.findViewById(R.id.et_card_month_date);
+        et_date_year = view.findViewById(R.id.et_card_year_date);
+        sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        try {
+            token = Base64.encode((RSA.encrypt(sharedpreferences.getString("Token", null), publicKey)));
+            userID = sharedpreferences.getString("UserID", null);
+
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                cardNo = et_card_number.getText().toString().replaceAll("(?<=\\d) +(?=\\d)", "");
+                expDate = et_date_year.getText().toString() + et_date_month.getText().toString();
 
                 postData = new JSONObject();
                 try {
 
-//                    postData.put("CardNumber",RSA.encrypt("6219861029511317"));
-                    postData.put("BankId", "a6ad1bcd-cb42-4105-969f-1cd8ae69e7a1");
-//                    postData.put("ExpDate", RSA.encrypt("0401"));
-//                    postData.put("IBan", "IR350560086180001619619001");
+                    postData.put("CardNumber", Base64.encode(RSA.encrypt(cardNo,publicKey)));
+                    postData.put("ExpDate", Base64.encode(RSA.encrypt(expDate,publicKey)));
                     postData.put("IsDefault", "true");
 
 
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (NoSuchPaddingException e) {
+                    e.printStackTrace();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
+                } catch (IllegalBlockSizeException e) {
+                    e.printStackTrace();
+                } catch (BadPaddingException e) {
                     e.printStackTrace();
                 }
 
@@ -116,7 +171,7 @@ public class SubmitNewCard extends BottomSheetDialogFragment {
             }
         });
 
-        firstEditText.addTextChangedListener(new FourDigitCardFormatWatcher(firstEditText));
+        et_card_number.addTextChangedListener(new FourDigitCardFormatWatcher(et_card_number, card_background, cardLogo));
 
         return view;
 
@@ -152,9 +207,9 @@ public class SubmitNewCard extends BottomSheetDialogFragment {
 
         @Override
         protected ResponseStatus doInBackground(Void... params) {
-            String jsonToInsert = postData.toString().replace("\\n","");
-            String cardData = jsonToInsert.replace("\\","");
-            results = new Caller().updateUserCard("2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00", cardData);
+            String jsonToInsert = postData.toString().replace("\\n", "");
+            String cardData = jsonToInsert.replace("\\", "");
+            results = new Caller().insertUserCard(userID, token, cardData);
 
             return results;
         }
@@ -166,6 +221,7 @@ public class SubmitNewCard extends BottomSheetDialogFragment {
 
             if (responseStatus != null) {
                 if (responseStatus.get_status().equals("SUCCESS")) {
+                    mListener.RefreshCard();
 
                 } else {
 

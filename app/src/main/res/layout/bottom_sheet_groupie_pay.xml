@@ -9,6 +9,21 @@
     android:orientation="vertical"
     android:padding="8dp">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="5dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/bottom_sheet_swipe" />
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/tv_groupie_pay_title"
         android:layout_width="wrap_content"
@@ -60,6 +75,8 @@
         android:padding="16dp"
         android:textColor="@color/colorNightRider"
         android:textSize="14sp"
+        android:maxLines="1"
+        android:imeOptions="actionDone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_choose_contact" />

@@ -9,6 +9,21 @@
     android:orientation="vertical"
     android:padding="8dp">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="5dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/bottom_sheet_swipe" />
+    </RelativeLayout>
+
     <Button
         android:id="@+id/btn_accept"
         android:layout_width="match_parent"
@@ -58,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:padding="16dp"
+                android:padding="8dp"
                 android:text="@string/sheba_to_sheba"
                 android:textColor="@color/colorBrown"
                 android:textSize="14sp" />
@@ -81,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:padding="16dp"
+                android:padding="8dp"
                 android:text="@string/card_to_card"
                 android:textColor="@color/colorWhite"
                 android:textSize="14sp" />
@@ -111,6 +126,8 @@
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/iv_explain"
             android:layout_toEndOf="@+id/ib_camera"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
             android:background="@android:color/transparent"
             android:hint="@string/explanation"
             android:padding="16dp"
@@ -199,6 +216,8 @@
             android:background="@android:color/transparent"
             android:hint="@string/enter_card_destination"
             android:padding="16dp"
+            android:maxLines="1"
+            android:imeOptions="actionNext"
             android:textColor="@color/colorNightRider"
             android:textSize="16sp" />
 
