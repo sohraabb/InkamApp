@@ -8,20 +8,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BusSummary {
-    private String ID ;
-    private String Company ;
-    private OperatingCompany OperatingCompany ;
-    private BoardingPoint BoardingPoint ;
-    private List<BoardingPoint> DroppingPoints ;
+    private String ID;
+    private String Company;
+    private OperatingCompany OperatingCompany;
+    private BoardingPoint BoardingPoint;
+    private List<BoardingPoint> DroppingPoints;
 
-    private String Type ;
-    private String Price ;
-    private Financial Financial ;
-    private String DepartureDate ;
-    private String Status ;
-    private String Description ;
-    private  String AvailableSeats;
-    public BusSummary(SoapObject input){
+    private String Type;
+    private String Price;
+    private Financial Financial;
+    private String DepartureDate;
+    private String Status;
+    private String Description;
+    private String AvailableSeats;
+
+    public BusSummary(SoapObject input) {
         try {
             ID = input.getPropertySafelyAsString("ID");
             Company = input.getPropertySafelyAsString("Company");
@@ -31,13 +32,13 @@ public class BusSummary {
             Status = input.getPropertySafelyAsString("Status");
             AvailableSeats = input.getPropertySafelyAsString("AvailableSeats");
             Description = input.getPropertySafelyAsString("Description");
-            OperatingCompany= new OperatingCompany((SoapObject) input.getProperty("OperatingCompany"));
-            BoardingPoint= new BoardingPoint((SoapObject) input.getProperty("BoardingPoint"));
-            Financial= new Financial((SoapObject) input.getProperty("Financial"));
-            SoapObject dr= (SoapObject)input.getProperty("DroppingPoints");
-            DroppingPoints= new ArrayList<>();
+            OperatingCompany = new OperatingCompany((SoapObject) input.getProperty("OperatingCompany"));
+            BoardingPoint = new BoardingPoint((SoapObject) input.getProperty("BoardingPoint"));
+            Financial = new Financial((SoapObject) input.getProperty("Financial"));
+            SoapObject dr = (SoapObject) input.getProperty("DroppingPoints");
+            DroppingPoints = new ArrayList<>();
             for (int i = 0; i < dr.getPropertyCount(); i++) {
-                DroppingPoints.add( new BoardingPoint((SoapObject) dr.getProperty(i)));
+                DroppingPoints.add(new BoardingPoint((SoapObject) dr.getProperty(i)));
 
             }
 
@@ -46,6 +47,7 @@ public class BusSummary {
         }
 
     }
+
     public String getID() {
         return ID;
     }

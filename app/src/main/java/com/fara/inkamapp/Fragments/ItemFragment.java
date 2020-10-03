@@ -51,7 +51,6 @@ public class ItemFragment extends Fragment {
     private int screenWidth;
     private int screenHeight;
     public static TextView selectedDay, selectedDate;
-
     private static List<String> dateList;
     SliderItemClickListener mListener;
 
@@ -63,7 +62,7 @@ public class ItemFragment extends Fragment {
         mListener = listener;
     }
 
-    public static Fragment newInstance(BusServices context, int pos, float scale, String currentDate) throws ParseException {
+    public static Fragment newInstance(Context context, int pos, float scale, String currentDate) throws ParseException {
         Bundle b = new Bundle();
         b.putInt(POSITON, pos);
         b.putFloat(SCALE, scale);
@@ -144,13 +143,15 @@ public class ItemFragment extends Fragment {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(screenWidth / 2, screenHeight / 2);
         LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_image, container, false);
 
-        // TextView textView = (TextView) linearLayout.findViewById(R.id.text);
-        CarouselLinearLayout root = (CarouselLinearLayout) linearLayout.findViewById(R.id.root_container);
-        // ImageView imageView = (ImageView) linearLayout.findViewById(R.id.pagerImg);
-        //TextView tvPrice = (TextView) linearLayout.findViewById(R.id.tv_Price_of_date);
-        final TextView tvDayOfWeek = (TextView) linearLayout.findViewById(R.id.tv_day_of_week);
-        final TextView tvDay = (TextView) linearLayout.findViewById(R.id.tv_day1);
-        LinearLayout llCarousel = (LinearLayout) linearLayout.findViewById(R.id.ll_carouser);
+        //TextView textView = (TextView) linearLayout.findViewById(R.id.text);
+        CarouselLinearLayout root = linearLayout.findViewById(R.id.root_container);
+        /*
+         ImageView imageView = (ImageView) linearLayout.findViewById(R.id.pagerImg);
+        TextView tvPrice = (TextView) linearLayout.findViewById(R.id.tv_Price_of_date);
+        */
+        final TextView tvDayOfWeek = linearLayout.findViewById(R.id.tv_day_of_week);
+        final TextView tvDay = linearLayout.findViewById(R.id.tv_day1);
+        LinearLayout llCarousel = linearLayout.findViewById(R.id.ll_carouser);
         //  textView.setText("Carousel item: " + postion);
         llCarousel.setLayoutParams(layoutParams);
 if (postion==0){
@@ -187,10 +188,10 @@ if (postion==0){
             case "مهر":
                 month = "7";
                 break;
-            case "ابان":
+            case "آبان":
                 month = "8";
                 break;
-            case "اذر":
+            case "آذر":
                 month = "9";
                 break;
             case "دی":
@@ -215,8 +216,7 @@ if (postion==0){
                         selectedDate.setTextColor(Color.BLACK);
                         selectedDay.setTextColor(Color.BLACK);
                     }
-                  //  selectedDay=tvDayOfWeek;
-                  //  selectedDate=tvDay;
+
                     tvDay.setTextColor(ContextCompat.getColor(getContext(), R.color.colorMainGreen));
                     tvDayOfWeek.setTextColor(ContextCompat.getColor(getContext(), R.color.colorMainGreen));
 

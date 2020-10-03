@@ -63,7 +63,7 @@ import static com.fara.inkamapp.Activities.LoginInkam.publicKey;
 public class FinalPayment extends HideKeyboard {
     private String title, paymentId, billId, amount, plateNumber, address, pdfURL,
             currentDate, extraInfo, fullName, paymentDate, paymentID, previousDate,
-            token, userID, encryptedToken, AesKey, dataToConfirm,location,city,datetime,type;
+            token, userID, encryptedToken, AesKey, dataToConfirm, location, city, datetime, type;
     private SharedPreferences sharedpreferences;
     private TextView serviceTitle, serviceAmount, serviceBillID, servicePaymentID, toastText;
     private Button payWallet, payOnline;
@@ -123,15 +123,7 @@ public class FinalPayment extends HideKeyboard {
 
         try {
             encryptedToken = Base64.encode((RSA.encrypt(token, publicKey)));
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         new GetUserWallet().execute();
@@ -168,8 +160,7 @@ public class FinalPayment extends HideKeyboard {
                 servicePaymentID.setText(Numbers.ToPersianNumbers(paymentID));
                 serviceBillID.setText(Numbers.ToPersianNumbers(billId));
 
-                String formattedNumber = formatter.format(Double.valueOf( amount));
-
+                String formattedNumber = formatter.format(Double.valueOf(amount));
                 serviceAmount.setText(Numbers.ToPersianNumbers(formattedNumber));
 
                 break;
@@ -231,7 +222,6 @@ public class FinalPayment extends HideKeyboard {
                 break;
 
             case 4:
-
                 ll_phoneDebt.setVisibility(View.VISIBLE);
                 ll_netPackages.setVisibility(View.VISIBLE);
                 ll_charge.setVisibility(View.GONE);
@@ -299,6 +289,67 @@ public class FinalPayment extends HideKeyboard {
         setupUI(findViewById(R.id.parent));
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        dataToConfirm = data.getStringExtra("enData");
+        if (resultCode == 3) {
+            dataToConfirm = data.getStringExtra("enData");
+            if (dataToConfirm != null)
+                dataToConfirm = dataToConfirm.replace("\\", "");
+            String one = data.getStringExtra("message");
+            String sts = String.valueOf(data.getIntExtra("status", 0));
+            if (sts.equals("0")) {
+                if (paymentType == 0) {
+                    new BillSuccess().execute();
+                } else if (paymentType == 1) {
+                    new TrafficBillSuccess().execute();
+                }
+            }
+        } else if (resultCode == 4) {
+            Toast toast = Toast.makeText(getApplicationContext(), "خطا" +
+                    "در" +
+                    "ثبت" +
+                    "درخواست" +
+                    "پرداخت" +
+                    "قبض", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toastText = toast.getView().findViewById(android.R.id.message);
+            toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+            if (toastText != null) {
+                toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                toastText.setGravity(Gravity.CENTER);
+                toastText.setTextSize(14);
+            }
+            toast.show();
+        } else if (resultCode == 6) {
+            Toast toast = Toast.makeText(getApplicationContext(), "خطای" +
+                    "داخلی" +
+                    "کتابخانه" +
+                    "در" +
+                    "ثبت" +
+                    "پرداخت" +
+                    "قبض", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toastText = toast.getView().findViewById(android.R.id.message);
+            toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+            if (toastText != null) {
+                toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                toastText.setGravity(Gravity.CENTER);
+                toastText.setTextSize(14);
+            }
+            toast.show();
+        }
+
+        // }
+    }//
+
     private class TrafficBillPaymentFromWallet extends AsyncTask<Void, Void, String> {
 
         String results = null;
@@ -357,6 +408,7 @@ public class FinalPayment extends HideKeyboard {
 
         }
     }
+
     private class BillPaymentFromWallet extends AsyncTask<Void, Void, String> {
 
         String results = null;
@@ -395,13 +447,13 @@ public class FinalPayment extends HideKeyboard {
             //TODO we should add other items here too
 
 
-            if (response !=null) {
+            if (response != null) {
                 Intent intent = new Intent(getApplicationContext(), BuyResult.class);
-               // intent.putExtra("orderID", reserveTopUpRequest.get_reserveNumber());
+                // intent.putExtra("orderID", reserveTopUpRequest.get_reserveNumber());
                 intent.putExtra("type", "bill");
                 // intent.putExtra("operator", operator);
                 intent.putExtra("amount", amount);
-               // intent.putExtra("date", reserveTopUpRequest.get_date());
+                // intent.putExtra("date", reserveTopUpRequest.get_date());
                 /// intent.putExtra("mobile", phone);
                 //intent.putExtra("refrenceNumber", reserveTopUpRequest.get_referenceNumber());
 
@@ -534,7 +586,7 @@ public class FinalPayment extends HideKeyboard {
 
             if (userWallet != null) {
 
-                if (userWallet.get_balance() < Double.valueOf(amount)) {
+                if (userWallet.get_balance() < Double.parseDouble(amount)) {
                     payWallet.setEnabled(false);
                 } else {
                     payWallet.setEnabled(true);
@@ -590,27 +642,13 @@ public class FinalPayment extends HideKeyboard {
         protected PaymentResult doInBackground(Void... params) {
 
 
-            String res = new Caller().GetBillToken(userID, encryptedToken, Long.valueOf("9375273701"), Long.valueOf(paymentId), Long.valueOf(billId));
+            String res = new Caller().GetBillToken(userID, encryptedToken, Long.valueOf("9375273701"), Long.parseLong(paymentId), Long.parseLong(billId));
             try {
                 Gson gson = new Gson();
                 results = gson.fromJson(AESEncyption.decryptMsg(res, AesKey), PaymentResult.class);
 
 
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (InvalidParameterSpecException e) {
-                e.printStackTrace();
-            } catch (InvalidAlgorithmParameterException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
+            } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidParameterSpecException | InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
 
@@ -630,6 +668,7 @@ public class FinalPayment extends HideKeyboard {
                 Intent intent = new Intent(getApplicationContext(), PaymentInitiator.class);
                 intent.putExtra("Type", "2");
                 intent.putExtra("Token", serviceBillInfo.getData().getToken());
+
 
                 startActivityForResult(intent, 1);
 
@@ -680,9 +719,9 @@ public class FinalPayment extends HideKeyboard {
         protected PayInfo doInBackground(Void... params) {
             try {
                 String res = new Caller().BillSuccess(userID, encryptedToken, dataToConfirm, Base64.encode((RSA.encrypt(String.valueOf(orderID), publicKey))), Base64.encode((RSA.encrypt(amount, publicKey))));
-         String json=  AESEncyption.decryptMsg(res,AesKey);
-         Gson g= new Gson();
-        results= g.fromJson(json, PayInfo.class);
+                String json = AESEncyption.decryptMsg(res, AesKey);
+                Gson g = new Gson();
+                results = g.fromJson(json, PayInfo.class);
 
 
             } catch (BadPaddingException e) {
@@ -719,7 +758,6 @@ public class FinalPayment extends HideKeyboard {
             intent.putExtra("refrenceNumber", data.getTrcNo());
 
 
-
             if (data.getStatus() == 0) {
 
                 intent.putExtra("success", true);
@@ -733,6 +771,7 @@ public class FinalPayment extends HideKeyboard {
 
         }
     }
+
     private class TrafficBillSuccess extends AsyncTask<Void, Void, PayInfo> {
 
         PayInfo results = null;
@@ -760,10 +799,10 @@ public class FinalPayment extends HideKeyboard {
         @Override
         protected PayInfo doInBackground(Void... params) {
             try {
-                String res = new Caller().TrafficBillSuccess( postData.toString(),userID, encryptedToken,  Base64.encode((RSA.encrypt(String.valueOf(orderID), publicKey))), Base64.encode((RSA.encrypt(amount, publicKey))),dataToConfirm);
-                String json=  AESEncyption.decryptMsg(res,AesKey);
-                Gson g= new Gson();
-                results= g.fromJson(json, PayInfo.class);
+                String res = new Caller().TrafficBillSuccess(postData.toString(), userID, encryptedToken, Base64.encode((RSA.encrypt(String.valueOf(orderID), publicKey))), Base64.encode((RSA.encrypt(amount, publicKey))), dataToConfirm);
+                String json = AESEncyption.decryptMsg(res, AesKey);
+                Gson g = new Gson();
+                results = g.fromJson(json, PayInfo.class);
 
 
             } catch (BadPaddingException e) {
@@ -800,7 +839,6 @@ public class FinalPayment extends HideKeyboard {
             intent.putExtra("refrenceNumber", data.getTrcNo());
 
 
-
             if (data.getStatus() == 0) {
 
                 intent.putExtra("success", true);
@@ -815,66 +853,5 @@ public class FinalPayment extends HideKeyboard {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-
-        dataToConfirm = data.getStringExtra("enData");
-        if (resultCode == 3) {
-            dataToConfirm = data.getStringExtra("enData");
-            if (!dataToConfirm.equals(null))
-                dataToConfirm = dataToConfirm.replace("\\", "");
-            String one = data.getStringExtra("message");
-            String sts = String.valueOf(data.getIntExtra("status", 0));
-            if (sts.equals("0")) {
-                if(paymentType==0) {
-                    new BillSuccess().execute();
-                }
-                else if(paymentType==1){
-                    new TrafficBillSuccess().execute();
-                }
-            }
-        } else if (resultCode == 4) {
-            Toast toast = Toast.makeText(getApplicationContext(), "خطا" +
-                    "در" +
-                    "ثبت" +
-                    "درخواست" +
-                    "پرداخت" +
-                    "قبض", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toastText = toast.getView().findViewById(android.R.id.message);
-            toast.getView().setBackgroundResource(R.drawable.toast_background);
-
-            if (toastText != null) {
-                toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
-                toastText.setTextColor(getResources().getColor(R.color.colorBlack));
-                toastText.setGravity(Gravity.CENTER);
-                toastText.setTextSize(14);
-            }
-            toast.show();
-        } else if (resultCode == 6) {
-            Toast toast = Toast.makeText(getApplicationContext(), "خطای" +
-                    "داخلی" +
-                    "کتابخانه" +
-                    "در" +
-                    "ثبت" +
-                    "پرداخت" +
-                    "قبض", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toastText = toast.getView().findViewById(android.R.id.message);
-            toast.getView().setBackgroundResource(R.drawable.toast_background);
-
-            if (toastText != null) {
-                toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
-                toastText.setTextColor(getResources().getColor(R.color.colorBlack));
-                toastText.setGravity(Gravity.CENTER);
-                toastText.setTextSize(14);
-            }
-            toast.show();
-        }
-
-        // }
-    }//
 
 }

@@ -63,7 +63,7 @@ public class DepositRequest extends BottomSheetDialogFragment {
         super.onCreate(savedInstanceState);
 
         //bottom sheet round corners can be obtained but the while background appears to remove that we need to add this.
-        setStyle(DialogFragment.STYLE_NO_FRAME, 0);
+        setStyle(BottomSheetDialogFragment.STYLE_NO_FRAME, R.style.CustomBottomSheetDialogTheme);
     }
 
     @Nullable
@@ -118,7 +118,6 @@ public class DepositRequest extends BottomSheetDialogFragment {
         return view;
     }
 
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -159,15 +158,7 @@ public class DepositRequest extends BottomSheetDialogFragment {
         protected ResponseStatus doInBackground(Void... params) {
             try {
                 results = new Caller().InsertDepositTransaction(MainActivity._userId, MainActivity._token, Base64.encode((RSA.encrypt(sheba, publicKey))),name,Base64.encode((RSA.encrypt(amount, publicKey))));
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
+            } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
 
@@ -191,7 +182,7 @@ public class DepositRequest extends BottomSheetDialogFragment {
                 dismiss();
 
             } else {
-                Toast toast = Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getContext(), res.get_message(), Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toastText = toast.getView().findViewById(android.R.id.message);
                 toast.getView().setBackgroundResource(R.drawable.toast_background);

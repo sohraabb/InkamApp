@@ -60,7 +60,7 @@ import static com.fara.inkamapp.Activities.LoginInkam.publicKey;
 public class PhoneDebt extends HideKeyboard implements View.OnClickListener {
 
     private RelativeLayout mobileView, telephoneView;
-    private TextView mobileText, telephoneText, instanceText, toastText;
+    private TextView mobileText, telephoneText, instanceText, toastText, purchased;
     private EditText mobile, telephone;
     private Button inquiry;
     private Activity _context;
@@ -68,9 +68,7 @@ public class PhoneDebt extends HideKeyboard implements View.OnClickListener {
     private boolean isMobile;
     private String amount, operator, type, phone, token, userID, encryptedToken, AesKey, dataToConfirm;
     private SharedPreferences sharedpreferences;
-
     private static final int PICK_CONTACT = 856;
-
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -90,7 +88,10 @@ public class PhoneDebt extends HideKeyboard implements View.OnClickListener {
                 .build());
 
         setContentView(R.layout.activity_phone_debt);
+        initVariables();
+    }
 
+    private void initVariables(){
         mobileView = findViewById(R.id.rl_mobile);
         telephoneView = findViewById(R.id.rl_telephone);
         mobileText = findViewById(R.id.tv_mobile);
@@ -99,34 +100,7 @@ public class PhoneDebt extends HideKeyboard implements View.OnClickListener {
         mobile = findViewById(R.id.et_enter_phone_number);
         telephone = findViewById(R.id.et_enter_telephone_number);
         inquiry = findViewById(R.id.btn_inquiry);
-
-        mobile.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                final int DRAWABLE_LEFT = 0;
-                final int DRAWABLE_TOP = 1;
-                final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_BOTTOM = 3;
-
-                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    if (motionEvent.getRawX() - 118 <= (mobile.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
-                        // your action here
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-                            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
-                        }else {
-                            Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-                            startActivityForResult(intent, PICK_CONTACT);
-                        }
-                        return false;
-                    }
-                }
-                return false;
-            }
-        });
-        inquiry.setOnClickListener(this);
-        mobileView.setOnClickListener(this);
-        telephoneView.setOnClickListener(this);
-        instanceText.setText("۳۲۳۲۳۴۵ ۰۳۴");
+        purchased = findViewById(R.id.tv_purchased);
 
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         token = sharedpreferences.getString("Token", null);
@@ -135,43 +109,62 @@ public class PhoneDebt extends HideKeyboard implements View.OnClickListener {
 
         try {
             encryptedToken = Base64.encode((RSA.encrypt(token, publicKey)));
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
 
+        inquiry.setOnClickListener(this);
+        mobileView.setOnClickListener(this);
+        telephoneView.setOnClickListener(this);
+        purchased.setOnClickListener(this);
+        instanceText.setText(Numbers.ToPersianNumbers("034 3232345"));
 
+        mobile.setOnTouchListener((view, motionEvent) -> {
+            final int DRAWABLE_LEFT = 0;
+            final int DRAWABLE_TOP = 1;
+            final int DRAWABLE_RIGHT = 2;
+            final int DRAWABLE_BOTTOM = 3;
+
+            if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                if (motionEvent.getRawX() - 118 <= (mobile.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
+                    // your action here
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
+                    } else {
+                        Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                        startActivityForResult(intent, PICK_CONTACT);
+                    }
+                    return false;
+                }
+            }
+            return false;
+        });
+        telephone.setOnTouchListener((view, motionEvent) -> {
+            final int DRAWABLE_LEFT = 0;
+            final int DRAWABLE_TOP = 1;
+            final int DRAWABLE_RIGHT = 2;
+            final int DRAWABLE_BOTTOM = 3;
+
+            if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                if (motionEvent.getRawX() - 118 <= (telephone.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
+                    // your action here
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
+                    } else {
+                        Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                        startActivityForResult(intent, PICK_CONTACT);
+                    }
+                    return false;
+                }
+            }
+            return false;
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         setupUI(findViewById(R.id.parent));
-    }
-
-    private boolean isIrancell(String input) {
-        Pattern p = Pattern.compile("^09[0|3][0-9]{8}$");
-        Matcher m = p.matcher(input);
-        return m.matches();
-    }
-
-    private boolean isRightel(String input) {
-        Pattern p = Pattern.compile("^09[2][0-9]{8}$");
-        Matcher m = p.matcher(input);
-        return m.matches();
-    }
-
-    private boolean isHamrahAval(String input) {
-        Pattern p = Pattern.compile("^09[1][0-9]{8}$");
-        Matcher m = p.matcher(input);
-        return m.matches();
     }
 
     @Override
@@ -197,7 +190,7 @@ public class PhoneDebt extends HideKeyboard implements View.OnClickListener {
                 telephoneText.setTextColor(getResources().getColor(R.color.colorWhite));
                 mobileView.setBackgroundResource(R.drawable.light_rounded_background);
                 mobileText.setTextColor(getResources().getColor(R.color.colorBrown));
-                instanceText.setText("۳۲۳۲۳۴۵ ۰۳۴");
+                instanceText.setText(Numbers.ToPersianNumbers("034 3232345"));
 
                 telephone.setVisibility(View.VISIBLE);
                 mobile.setVisibility(View.INVISIBLE);
@@ -208,7 +201,7 @@ public class PhoneDebt extends HideKeyboard implements View.OnClickListener {
             case R.id.btn_inquiry:
 
                 if (isMobile) {
-                    phoneNumber = mobile.getText().toString();
+                    phoneNumber = Numbers.ToEnglishNumbers(mobile.getText().toString());
                     if (isHamrahAval(phoneNumber))
                         new GetHamrahAvalBillInfo().execute();
 
@@ -219,15 +212,93 @@ public class PhoneDebt extends HideKeyboard implements View.OnClickListener {
                         new GetIrancelBillInfo().execute();
 
                     else
-                        Toast.makeText(getApplicationContext(), "Wrong Number", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "شماره اشتباه است", Toast.LENGTH_SHORT).show();
 
 
                 } else {
-                    phoneNumber = telephone.getText().toString();
+                    phoneNumber = Numbers.ToEnglishNumbers(telephone.getText().toString());
                     new GetTelecomBillInfo().execute();
                 }
 
+                break;
+
+            case R.id.tv_purchased:
+                Intent intent = new Intent(getApplicationContext(), PurchasedItems.class);
+                intent.putExtra("purchasedType", 8);
+                startActivity(intent);
+                break;
+
         }
+    }
+
+    @Override
+    public void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+
+        switch (reqCode) {
+            case (PICK_CONTACT):
+                if (resultCode == Activity.RESULT_OK) {
+                    try {
+                        Uri contactData = data.getData();
+                        Cursor c = managedQuery(contactData, null, null, null, null);
+                        if (c.moveToFirst()) {
+                            String id = c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
+
+                            String hasPhone =
+                                    c.getString(c.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+
+                            if (hasPhone.equalsIgnoreCase("1")) {
+                                Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + id, null, null);
+                                phones.moveToFirst();
+                                String cNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                                mobile.setText(Numbers.ToPersianNumbers(cNumber.replace(" ", "").replace("+98", "0")));
+                                telephone.setText(Numbers.ToPersianNumbers(cNumber.replace(" ", "").replace("+98", "0")));
+
+                                phones.close();
+                            }
+                        }
+
+                    } catch (Exception e) {
+                        Toast.makeText(_context, e.toString(), Toast.LENGTH_LONG).show();
+                    }
+
+                }
+        }
+    }
+
+    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                startActivityForResult(intent, PICK_CONTACT);
+
+            } else {
+                Toast.makeText(this, "Until you grant the permission, we canot display the names", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private boolean isIrancell(String input) {
+        Pattern p = Pattern.compile("^09[0|3][0-9]{8}$");
+        Matcher m = p.matcher(input);
+        return m.matches();
+    }
+
+    private boolean isRightel(String input) {
+        Pattern p = Pattern.compile("^09[2][0-9]{8}$");
+        Matcher m = p.matcher(input);
+        return m.matches();
+    }
+
+    private boolean isHamrahAval(String input) {
+        Pattern p = Pattern.compile("^09[1][0-9]{8}$");
+        Matcher m = p.matcher(input);
+        return m.matches();
     }
 
     private boolean isNetworkAvailable() {
@@ -591,76 +662,4 @@ public class PhoneDebt extends HideKeyboard implements View.OnClickListener {
         finish();
     }
 
-    @Override
-    public void onActivityResult(int reqCode, int resultCode, Intent data) {
-        super.onActivityResult(reqCode, resultCode, data);
-
-        switch (reqCode) {
-            case (PICK_CONTACT):
-                if (resultCode == Activity.RESULT_OK) {
-                    try {
-
-
-                            Uri contactData = data.getData();
-                            Cursor c = managedQuery(contactData, null, null, null, null);
-                            if (c.moveToFirst()) {
-                                String id = c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
-
-                                String hasPhone =
-                                        c.getString(c.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
-
-                                if (hasPhone.equalsIgnoreCase("1")) {
-                                    Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + id, null, null);
-                                    phones.moveToFirst();
-                                    String cNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                                    mobile.setText(cNumber);
-                                    // Toast.makeText(getApplicationContext(), cNumber, Toast.LENGTH_SHORT).show();
-                                    // setCn(cNumber);
-                                }
-                            }
-
-                    } catch (Exception e) {
-                        Toast.makeText(_context, e.toString(), Toast.LENGTH_LONG).show();
-                    }
-
-                }
-        }
-    }
-    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                           int[] grantResults) {
-        if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-                startActivityForResult(intent, PICK_CONTACT);
-
-            } else {
-                Toast.makeText(this, "Until you grant the permission, we canot display the names", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private void getContactNames() {
-        Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-        String[] projection    = new String[]          {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-                ContactsContract.CommonDataKinds.Phone.NUMBER};
-
-        Cursor people = getContentResolver().query(uri, projection, null,  null, null);
-
-        int indexName = people.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
-        int indexNumber = people.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-
-        if(people.moveToFirst()) {
-            do {
-                String name   = people.getString(indexName);
-                String number = people.getString(indexNumber);
-                // add number to list
-                // Do work...
-            } while (people.moveToNext());
-        }
-        people.close();
-    }
 }

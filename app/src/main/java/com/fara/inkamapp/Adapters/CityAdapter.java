@@ -2,6 +2,7 @@ package com.fara.inkamapp.Adapters;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,6 +75,9 @@ public class CityAdapter extends ArrayAdapter<City> {
         City city = items.get(i);
         if (city != null) {
             TextView lblName = (TextView) views.findViewById(R.id.tvCityName);
+            Typeface typeface = Typeface.createFromAsset(context.getAssets(),
+                    "fonts/IRANSansMobile.ttf");
+            lblName.setTypeface(typeface);
             if (lblName != null)
                 lblName.setText(city.get_name());
         }

@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -46,6 +47,7 @@ public class WalletTransactions extends AppCompatActivity {
     private String token, userID, encryptedToken, AesKey;
     private SharedPreferences sharedpreferences;
     private RecyclerView rv_messages;
+    private GetWalletTransactionReport getWalletTransactionReport;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -65,7 +67,12 @@ public class WalletTransactions extends AppCompatActivity {
                 .build());
 
         setContentView(R.layout.activity_wallet_transactions);
+        initVariables();
 
+
+    }
+
+    private void initVariables() {
         back = findViewById(R.id.ib_back);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         token = sharedpreferences.getString("Token", null);
@@ -78,21 +85,26 @@ public class WalletTransactions extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
         try {
             encryptedToken = Base64.encode((RSA.encrypt(token, publicKey)));
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        new GetWalletTransactionReport().execute();
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getWalletTransactionReport = new GetWalletTransactionReport();
+        getWalletTransactionReport.execute();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        getWalletTransactionReport.cancel(true);
     }
 
     private class GetWalletTransactionReport extends AsyncTask<Void, Void, ArrayList<Report>> {
@@ -157,7 +169,7 @@ public class WalletTransactions extends AppCompatActivity {
                     toast.show();
                 }
             } catch (Exception e) {
-                String ss=e.toString();
+                Log.i("Wallet Income", e.toString());
             }
         }
     }
@@ -165,6 +177,5 @@ public class WalletTransactions extends AppCompatActivity {
     private boolean isNetworkAvailable() {
         return FaraNetwork.isNetworkAvailable(getApplication());
     }
-
 
 }

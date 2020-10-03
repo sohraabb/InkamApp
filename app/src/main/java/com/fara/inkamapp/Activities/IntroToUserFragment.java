@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,10 +17,13 @@ import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
+import static com.fara.inkamapp.Activities.MainActivity.MyPREFERENCES;
+
 public class IntroToUserFragment extends AppCompatActivity {
 
     private ImageButton cancel;
     private Button start;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -43,12 +47,18 @@ public class IntroToUserFragment extends AppCompatActivity {
         cancel = findViewById(R.id.ib_cancel);
         start = findViewById(R.id.btn_start);
 
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("isUserStarting", false);
+                intent.putExtra("isUserAccepted", 0);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("isUserStarting", false);
+                editor.apply();
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -56,8 +66,12 @@ public class IntroToUserFragment extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("isUserStarting", true);
+                intent.putExtra("isUserAccepted", 1);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("isUserStarting", true);
+                editor.apply();
                 startActivity(intent);
+                finish();
             }
         });
     }

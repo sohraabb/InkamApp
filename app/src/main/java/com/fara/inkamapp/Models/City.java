@@ -41,7 +41,9 @@ public class City {
     public String get_resourceID() {
         return _resourceID;
     }
-    public City(){}
+
+    public City() { }
+
     public City(SoapObject input) {
 
         try {

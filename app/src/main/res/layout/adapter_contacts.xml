@@ -29,7 +29,6 @@
             android:layout_centerInParent="true"
             android:layout_marginEnd="16dp"
             android:layout_toStartOf="@+id/iv_contact_image"
-            android:text="امین نجفی"
             android:textColor="@color/colorBrown"
             android:textSize="16sp" />
 

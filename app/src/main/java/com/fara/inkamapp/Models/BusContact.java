@@ -3,15 +3,15 @@ package com.fara.inkamapp.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class BusContact implements Parcelable{
-    private String Name ;
-    private String MobilePhone ;
-    private String Email ;
+public class BusContact implements Parcelable {
+    private String Name;
+    private String MobilePhone;
+    private String Email;
 
     public BusContact() {
     }
 
-    public BusContact(String _name, String _mobilePhone, String _email){
+    public BusContact(String _name, String _mobilePhone, String _email) {
         this.Name = _name;
         this.MobilePhone = _mobilePhone;
         this.Email = _email;
@@ -41,7 +41,7 @@ public class BusContact implements Parcelable{
         Email = email;
     }
 
-    public BusContact(Parcel in){
+    public BusContact(Parcel in) {
         String[] data = new String[2];
 
         in.readStringArray(data);

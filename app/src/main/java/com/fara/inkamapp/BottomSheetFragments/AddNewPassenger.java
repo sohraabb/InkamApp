@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,9 +32,10 @@ public class AddNewPassenger extends BottomSheetDialogFragment {
     private NewPassengerListener mListener;
     String string;
     private TextView toastText;
-    private RadioButton btn_male, btn_female;
+    private RadioButton btn_male, btn_female, radio_adult, radio_child, radio_infant;
     private EditText et_first_name_farsi, et_last_name_farsi, et_first_name_english, et_last_name_english, et_phone, et_identity_code;
     private String gender;
+    private RadioGroup radioGroup_type;
 
     public interface NewPassengerListener {
         void newPassenger(Passengers passenger);
@@ -50,19 +52,20 @@ public class AddNewPassenger extends BottomSheetDialogFragment {
         addNewPassenger.setArguments(args);
         return addNewPassenger;
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mListener = (NewPassengerListener) context;
     }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         string = getArguments().getString("string");
         // bottom sheet round corners can be obtained but the while background appears to remove that we need to add this.
-        setStyle(DialogFragment.STYLE_NO_FRAME, 0);
+        setStyle(BottomSheetDialogFragment.STYLE_NO_FRAME, R.style.CustomBottomSheetDialogTheme);
     }
-
 
     @SuppressLint("RestrictedApi")
     @Nullable
@@ -77,11 +80,14 @@ public class AddNewPassenger extends BottomSheetDialogFragment {
         // get the views and attach the listener
         btn_female = view.findViewById(R.id.radio_gender_female);
         btn_male = view.findViewById(R.id.radio_gender_male);
+        radioGroup_type = view.findViewById(R.id.radioGroup_type);
+        radio_adult = view.findViewById(R.id.radio_adult);
+        radio_child = view.findViewById(R.id.radio_child);
+        radio_infant = view.findViewById(R.id.radio_infant);
+
 
         et_first_name_farsi = view.findViewById(R.id.et_first_name_farsi);
         et_last_name_farsi = view.findViewById(R.id.et_last_name_farsi);
-        et_first_name_english = view.findViewById(R.id.et_first_name_english);
-        et_last_name_english = view.findViewById(R.id.et_last_name_english);
         et_phone = view.findViewById(R.id.et_phone_number);
         et_identity_code = view.findViewById(R.id.et_identity_code);
         Button btnAccept = view.findViewById(R.id.btn_accept);
@@ -89,15 +95,14 @@ public class AddNewPassenger extends BottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 if (mListener != null) {
-                    if (et_first_name_farsi.getText().toString().length()==0 ||
-                            et_last_name_farsi.getText().toString().length()==0||
-                            et_identity_code.getText().toString().length()==0||
-                            et_phone.getText().toString().length()==0
+                    if (et_first_name_farsi.getText().toString().length() == 0 ||
+                            et_last_name_farsi.getText().toString().length() == 0 ||
+                            et_identity_code.getText().toString().length() == 0 ||
+                            et_phone.getText().toString().length() == 0
 
-                    )
-                    {
+                    ) {
                         mListener.newPassenger(null);
-                    }else {
+                    } else {
                         Passengers pass = new Passengers();
                         pass.setFirstName(et_first_name_farsi.getText().toString());
                         pass.setLastName(et_last_name_farsi.getText().toString());

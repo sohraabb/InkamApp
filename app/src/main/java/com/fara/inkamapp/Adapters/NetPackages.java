@@ -69,6 +69,9 @@ public class NetPackages extends RecyclerView.Adapter<NetPackages.ViewHolder> {
             super(itemView);
             myTextView = itemView.findViewById(R.id.tv_packages);
             itemView.setOnClickListener(this);
+
+            Typeface iranSansReg = Typeface.createFromAsset(mContext.getAssets(), "fonts/IRANSansMobile.ttf");
+            myTextView.setTypeface(iranSansReg);
         }
 
         @Override

@@ -5,44 +5,26 @@
     android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.InvitationCode"
-    android:background="@drawable/invitation_background_p">
+    android:background="@drawable/invitation_background_p"
+    tools:context=".Activities.InvitationCode">
 
 
-    <TextView
-        android:id="@+id/tv_do_not_have_code"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/btn_submit_code"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/do_not_have_invitation"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textSize="18sp"
-        android:padding="8dp"
-        android:textColor="@color/colorMainGreen"/>
-
-    <TextView
-        android:id="@+id/tv_invitation_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="24dp"
-        android:text="@string/invitation_code"
-        android:textSize="20sp"
-        android:textColor="@color/colorNightRider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_do_not_have_code" />
-
-    <TextView
-        android:id="@+id/tv_optional"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/optional"
-        android:textColor="@color/colorNightRider"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/button_background_green"
+        android:maxLines="1"
+        android:padding="16dp"
+        android:text="@string/submit_code"
+        android:textColor="@color/colorWhite"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/tv_invitation_code"
-        app:layout_constraintTop_toBottomOf="@+id/tv_do_not_have_code" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rl_edit_invite" />
 
     <RelativeLayout
         android:id="@+id/rl_edit_invite"
@@ -62,32 +44,49 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:hint="@string/invitation_code"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:padding="8dp"
+            android:layout_marginEnd="8dp"
             android:background="@android:color/transparent"
+            android:hint="@string/invitation_code"
+            android:padding="8dp"
             android:textColor="@color/colorBrown"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/btn_submit_code"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_optional"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:padding="16dp"
-        android:background="@drawable/button_background_green"
-        android:text="@string/submit_code"
-        android:maxLines="1"
-        android:imeOptions="actionDone"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/optional"
+        android:textColor="@color/colorNightRider"
         android:textSize="16sp"
-        android:textColor="@color/colorWhite"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_invitation_code"
+        app:layout_constraintTop_toBottomOf="@+id/tv_do_not_have_code" />
+
+    <TextView
+        android:id="@+id/tv_do_not_have_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:padding="8dp"
+        android:text="@string/do_not_have_invitation"
+        android:textColor="@color/colorMainGreen"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rl_edit_invite" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_invitation_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:text="@string/invitation_code"
+        android:textColor="@color/colorNightRider"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_do_not_have_code" />
 
 
     <TextView
@@ -97,6 +96,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
+        android:gravity="center_horizontal"
         android:text="@string/explain_invitation_one"
         android:textColor="@color/colorBrown"
         android:textSize="16sp"
@@ -104,20 +104,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_submit_code" />
 
-    <TextView
-        android:id="@+id/tv_explain_invite_two"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:textColor="@color/colorBrown"
-        android:textSize="16sp"
-        android:text="@string/explain_invitation_two"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_explain_invite_one" />
-
+    <!--    <TextView-->
+    <!--        android:id="@+id/tv_explain_invite_two"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginStart="24dp"-->
+    <!--        android:layout_marginTop="8dp"-->
+    <!--        android:layout_marginEnd="24dp"-->
+    <!--        android:textColor="@color/colorBrown"-->
+    <!--        android:textSize="16sp"-->
+    <!--        android:text="@string/explain_invitation_two"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/tv_explain_invite_one" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -48,7 +48,13 @@ public class User {
     private String RegisteryDate;
     private String RegisteryDatePersian;
     private Date ExpirationDate;
+    private double totalProfit;
+    private double TotalIncome;
 
+
+    public void setTotalProfit(double totalProfit) {
+        this.totalProfit = totalProfit;
+    }
 
     public void setExpirationDate(Date expirationDate) {
         this.ExpirationDate = expirationDate;
@@ -185,6 +191,10 @@ public class User {
 
     public double getTodayProfit() {
         return TodayProfit;
+    }
+
+    public double getTotalProfit() {
+        return totalProfit;
     }
 
     public String getBankName() {
@@ -411,7 +421,8 @@ public class User {
             Income = Double.parseDouble(input.getPropertySafelyAsString("Income"));
             RegisteryDatePersian = input.getPropertySafelyAsString("RegisteryDatePersian");
             CityName = input.getPropertySafelyAsString("CityName");
-
+            TotalIncome = Double.parseDouble(input.getPropertySafelyAsString("TotalProfit"));
+            totalProfit = Double.parseDouble(input.getPropertySafelyAsString("TotalIncome"));
 
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
@@ -421,10 +432,16 @@ public class User {
             }
 
 
-
-
         } catch (Exception e) {
             Log.e("User Soap", e.toString());
         }
+    }
+
+    public double getTotalIncome() {
+        return TotalIncome;
+    }
+
+    public void setTotalIncome(double totalIncome) {
+        TotalIncome = totalIncome;
     }
 }

@@ -82,7 +82,7 @@ public class BillInfo {
         return _utilityCode;
     }
 
-    public BillInfo(SoapObject input){
+    public BillInfo(SoapObject input) {
         try {
             _amount = Long.parseLong(input.getPropertySafelyAsString("Amount"));
             _billType = input.getPropertySafelyAsString("BillType");

@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -95,8 +96,6 @@ public class BusTicketSelectionProcess extends AppCompatActivity implements
     private SharedPreferences sharedpreferences;
     double amount;
     private BottomSheetDialogFragment bottomSheetDialogFragment;
-
-
 
     @Override
     public void addSeat(List<BusSeate> seat) {
@@ -381,6 +380,7 @@ public class BusTicketSelectionProcess extends AppCompatActivity implements
             return results;
         }
 
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         protected void onPostExecute(final Bus bus) {
             super.onPostExecute(bus);
@@ -411,6 +411,7 @@ public class BusTicketSelectionProcess extends AppCompatActivity implements
                     pager.setRotationY(180);
                     pager.setAdapter(pageAdapter);
                     pager.setOnTouchListener(new View.OnTouchListener() {
+                        @SuppressLint("ClickableViewAccessibility")
                         @Override
                         public boolean onTouch(View view, MotionEvent motionEvent) {
 
@@ -538,6 +539,7 @@ public class BusTicketSelectionProcess extends AppCompatActivity implements
 
         }
     }
+
     private class BookBusTicketApprove extends AsyncTask<String, Void, WalletCredit> {
 
         WalletCredit results = null;
@@ -690,6 +692,7 @@ public class BusTicketSelectionProcess extends AppCompatActivity implements
 
         }
     }
+
     private boolean isNetworkAvailable() {
         return FaraNetwork.isNetworkAvailable(getApplicationContext());
     }
@@ -730,7 +733,8 @@ public class BusTicketSelectionProcess extends AppCompatActivity implements
         }
         // }
     }//
-    public class ResizeWidthAnimation extends Animation {
+
+    public static class ResizeWidthAnimation extends Animation {
         private int mWidth;
         private int mStartWidth;
         private View mView;

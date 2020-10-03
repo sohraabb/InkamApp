@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -63,7 +64,7 @@ public class BusTickets extends HideKeyboard implements
         com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog.OnDateSetListener {
 
     private Button search;
-    private TextView toastText,tvLeave,tvLeaveReturn;
+    private TextView toastText, tvLeave, tvLeaveReturn, purchased;
     private JSONObject postData;
     private AutoCompleteTextView sourceLocation;
     private AutoCompleteTextView destination;
@@ -98,23 +99,53 @@ public class BusTickets extends HideKeyboard implements
 
         setContentView(R.layout.activity_bus_tickets);
 
-        tvLeave=findViewById(R.id.tv_leave);
-        tvLeaveReturn=findViewById(R.id.tv_leave_return);
-        sourceLocation = (AutoCompleteTextView) findViewById(R.id.et_your_location);
-        destination = (AutoCompleteTextView) findViewById(R.id.et_your_destination);
-        et_date_leave = (EditText) findViewById(R.id.et_date_leave);
-        et_date_return = (EditText) findViewById(R.id.et_date_return);
-        ivBackForth = (ImageView) findViewById(R.id.iv_back_forth);
+        tvLeave = findViewById(R.id.tv_leave);
+        tvLeaveReturn = findViewById(R.id.tv_leave_return);
+        sourceLocation = findViewById(R.id.et_your_location);
+        destination = findViewById(R.id.et_your_destination);
+        et_date_leave = findViewById(R.id.et_date_leave);
+        et_date_return = findViewById(R.id.et_date_return);
+        ivBackForth = findViewById(R.id.iv_back_forth);
+        purchased = findViewById(R.id.tv_purchased);
+
+        purchased.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), PurchasedItems.class);
+                intent.putExtra("purchasedType", 4);
+                startActivity(intent);
+            }
+        });
 
         ivBackForth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String temp = "";
+                String tmp = "";
+                tmp = sourceID;
                 temp = sourceLocation.getText().toString();
                 sourceLocation.setText(destination.getText().toString());
                 destination.setText(temp);
+
+                sourceID = destinationID;
+                destinationID = tmp;
             }
         });
+
+        sourceLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sourceLocation.setText("");
+            }
+        });
+
+        destination.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                destination.setText("");
+            }
+        });
+
      /*   tvLeave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,15 +193,7 @@ public class BusTickets extends HideKeyboard implements
         AesKey = sharedpreferences.getString("key", null);
         try {
             encryptedToken = Base64.encode((RSA.encrypt(token, publicKey)));
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         search = findViewById(R.id.btn_search);
@@ -203,8 +226,8 @@ public class BusTickets extends HideKeyboard implements
                     intent.putExtra("date", fromDate);
 
                     startActivity(intent);
-                }catch(Exception e){
-                    e.toString();
+                } catch (Exception e) {
+                    Log.i("BusTicketIncome", e.toString());
                 }
 //                new BookBusTicket().execute();
 
@@ -215,7 +238,6 @@ public class BusTickets extends HideKeyboard implements
     private boolean isNetworkAvailable() {
         return FaraNetwork.isNetworkAvailable(getApplicationContext());
     }
-
 
     public void showCalendar() {
         //  Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf");
@@ -276,21 +298,7 @@ public class BusTickets extends HideKeyboard implements
                 Gson g = new Gson();
                 // g.fromJson(dec,)
 
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (InvalidParameterSpecException e) {
-                e.printStackTrace();
-            } catch (InvalidAlgorithmParameterException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
+            } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidParameterSpecException | InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
             return results;

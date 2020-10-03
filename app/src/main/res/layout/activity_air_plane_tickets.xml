@@ -64,6 +64,7 @@
             android:orientation="horizontal"
             android:padding="8dp"
             android:weightSum="100"
+            android:baselineAligned="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rl_shape">
@@ -108,10 +109,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
+                    android:background="@drawable/button_background_green"
                     android:gravity="center"
                     android:padding="16dp"
                     android:text="@string/leave"
-                    android:textColor="@color/colorBrown"
+                    android:textColor="@color/colorWhite"
                     android:textSize="14sp" />
             </RelativeLayout>
 
@@ -138,12 +140,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="40"
+                android:baselineAligned="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
 
                 <RelativeLayout
+                    android:id="@+id/rl_change"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="10"

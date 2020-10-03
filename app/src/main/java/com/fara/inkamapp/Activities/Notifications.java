@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -17,17 +18,25 @@ import android.widget.Toast;
 
 import com.fara.inkamapp.Adapters.ContactsAdapter;
 import com.fara.inkamapp.Adapters.NotificationAdapter;
+import com.fara.inkamapp.BottomSheetFragments.SubmitNewCard;
+import com.fara.inkamapp.Helpers.AESEncyption;
 import com.fara.inkamapp.Helpers.Base64;
 import com.fara.inkamapp.Helpers.FaraNetwork;
+import com.fara.inkamapp.Helpers.Numbers;
 import com.fara.inkamapp.Helpers.RSA;
 import com.fara.inkamapp.Models.ContactList;
 import com.fara.inkamapp.Models.NotificationList;
+import com.fara.inkamapp.Models.ResponseStatus;
 import com.fara.inkamapp.R;
 import com.fara.inkamapp.WebServices.Caller;
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -43,7 +52,7 @@ import static com.fara.inkamapp.Activities.LoginInkam.publicKey;
 
 public class Notifications extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView messages, notify, toastText;
+    private TextView messages, notify, toastText, unreadMessages, unreadNotifications, zero_size;
     private RecyclerView notifLists, msgList;
     private ImageButton back;
     private NotificationAdapter notificationAdapter, messagesAdapter;
@@ -55,6 +64,7 @@ public class Notifications extends AppCompatActivity implements View.OnClickList
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,35 +79,39 @@ public class Notifications extends AppCompatActivity implements View.OnClickList
                 .build());
 
         setContentView(R.layout.activity_notifications);
+        initVariables();
 
-        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        try {
-            _userId = sharedPreferences.getString("UserID", null);
-            _token = Base64.encode((RSA.encrypt(sharedPreferences.getString("Token", null), publicKey)));
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+        new getAllNotifications().execute();
 
+    }
+
+//    private void onBack(){
+//        mListener.RefreshCard();
+//    }
+
+    private void initVariables() {
         notifLists = findViewById(R.id.rv_notifications);
         msgList = findViewById(R.id.rv_messages);
         back = findViewById(R.id.ib_back);
-
-
+        unreadNotifications = findViewById(R.id.tv_has_notif);
+        unreadMessages = findViewById(R.id.tv_has_messages);
+        zero_size = findViewById(R.id.tv_no_msg);
         messages = findViewById(R.id.tv_messages);
         notify = findViewById(R.id.tv_notify);
+
         notify.setOnClickListener(this);
         back.setOnClickListener(this);
         messages.setOnClickListener(this);
 
-        new getAllNotifications().execute();
+
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        try {
+            _userId = sharedPreferences.getString("UserID", null);
+            _token = Base64.encode((RSA.encrypt(Objects.requireNonNull(sharedPreferences.getString("Token", null)), publicKey)));
+        } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -167,6 +181,7 @@ public class Notifications extends AppCompatActivity implements View.OnClickList
 
         }
 
+
         @Override
         protected ArrayList<NotificationList> doInBackground(Void... params) {
             results = new Caller().getAllNotifications(_userId, _token);
@@ -180,11 +195,27 @@ public class Notifications extends AppCompatActivity implements View.OnClickList
             //TODO we should add other items here too
 
             if (notifications != null) {
+                if (notifications.size() != 0) {
 
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-                notifLists.setLayoutManager(layoutManager);
-                notificationAdapter = new NotificationAdapter(getApplicationContext(), notifications);
-                notifLists.setAdapter(notificationAdapter);
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+                    notifLists.setLayoutManager(layoutManager);
+                    notificationAdapter = new NotificationAdapter(getApplicationContext(), notifications);
+                    notifLists.setAdapter(notificationAdapter);
+
+                    for (int i = 0; i < notifications.size(); i++) {
+                        if (notifications.get(i).get_unRead() > 0) {
+                            unreadNotifications.setVisibility(View.VISIBLE);
+                            unreadNotifications.setText(Numbers.ToPersianNumbers(String.valueOf(notifications.get(i).get_unRead())));
+                            new SeenAllNotifications().execute();
+                        } else {
+                            unreadNotifications.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                } else {
+                    zero_size.setText(R.string.no_notif);
+                    zero_size.setVisibility(View.VISIBLE);
+                    notifLists.setVisibility(View.GONE);
+                }
 
             } else {
                 Toast toast = Toast.makeText(getApplicationContext(), R.string.try_again, Toast.LENGTH_SHORT);
@@ -241,11 +272,114 @@ public class Notifications extends AppCompatActivity implements View.OnClickList
             //TODO we should add other items here too
 
             if (messages != null) {
+                if (messages.size() != 0) {
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+                    msgList.setLayoutManager(layoutManager);
+                    messagesAdapter = new NotificationAdapter(getApplicationContext(), messages);
+                    msgList.setAdapter(messagesAdapter);
 
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-                msgList.setLayoutManager(layoutManager);
-                messagesAdapter = new NotificationAdapter(getApplicationContext(), messages);
-                msgList.setAdapter(messagesAdapter);
+                    for (int i = 0; i < messages.size(); i++) {
+                        if (messages.get(i).get_unRead() > 0) {
+                            unreadMessages.setVisibility(View.VISIBLE);
+                            unreadMessages.setText(Numbers.ToPersianNumbers(String.valueOf(messages.get(i).get_unRead())));
+                            new SeenAllMessages().execute();
+                        } else {
+                            unreadMessages.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                } else {
+                    zero_size.setText(R.string.no_msg);
+                    zero_size.setVisibility(View.VISIBLE);
+                    msgList.setVisibility(View.GONE);
+                }
+
+            } else {
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.try_again, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+            }
+
+        }
+    }
+
+    private class SeenAllNotifications extends AsyncTask<Void, Void, ResponseStatus> {
+
+        ResponseStatus results = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected ResponseStatus doInBackground(Void... params) {
+            results = new Caller().seenAllNotifications(_userId, _token);
+
+
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(ResponseStatus responseStatus) {
+            super.onPostExecute(responseStatus);
+            //TODO we should add other items here too
+
+            if (responseStatus != null && responseStatus.get_status().equals("SUCCESS")) {
+
+                unreadNotifications.setVisibility(View.INVISIBLE);
+
+            } else {
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.try_again, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+            }
+
+        }
+    }
+
+    private class SeenAllMessages extends AsyncTask<Void, Void, ResponseStatus> {
+
+        ResponseStatus results = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected ResponseStatus doInBackground(Void... params) {
+            results = new Caller().seenAllMessages(_userId, _token);
+
+
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(ResponseStatus responseStatus) {
+            super.onPostExecute(responseStatus);
+            //TODO we should add other items here too
+
+            if (responseStatus != null && responseStatus.get_status().equals("SUCCESS")) {
+
+                unreadMessages.setVisibility(View.INVISIBLE);
 
             } else {
                 Toast toast = Toast.makeText(getApplicationContext(), R.string.try_again, Toast.LENGTH_SHORT);

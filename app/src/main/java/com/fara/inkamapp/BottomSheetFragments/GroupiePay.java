@@ -17,11 +17,14 @@ import com.fara.inkamapp.Dialogs.SuccessTransfer;
 import com.fara.inkamapp.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import org.jetbrains.annotations.NotNull;
+
 public class GroupiePay extends BottomSheetDialogFragment {
 
     String string;
     private Button nextStep;
 
+    @NotNull
     public static GroupiePay newInstance(String string) {
         GroupiePay groupiePay = new GroupiePay();
         Bundle args = new Bundle();
@@ -35,9 +38,8 @@ public class GroupiePay extends BottomSheetDialogFragment {
         super.onCreate(savedInstanceState);
         string = getArguments().getString("string");
         //bottom sheet round corners can be obtained but the while background appears to remove that we need to add this.
-        setStyle(DialogFragment.STYLE_NO_FRAME,0);
+        setStyle(BottomSheetDialogFragment.STYLE_NO_FRAME, R.style.CustomBottomSheetDialogTheme);
     }
-
 
     @Nullable
     @Override

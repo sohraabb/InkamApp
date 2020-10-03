@@ -12,10 +12,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -34,11 +38,15 @@ import com.fara.inkamapp.Models.UserList;
 import com.fara.inkamapp.Models.UserWallet;
 import com.fara.inkamapp.R;
 import com.fara.inkamapp.WebServices.Caller;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -62,13 +70,12 @@ public class CompleteProfile extends HideKeyboard {
     private Button submit;
     private TextView toastText;
     private EditText firstName, lastName, city, password;
-    private String phoneNumber, cityID, cityName;
+    private String phoneNumber, cityID, cityName, _encodeImage = "";
     private SharedPreferences sharedpreferences;
     private ImageButton back;
     private CircleImageView profilePicture;
     public static final String MyPREFERENCES = "MyPrefs";
     private static final int SELECT_PHOTO = 100;
-
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -102,6 +109,18 @@ public class CompleteProfile extends HideKeyboard {
         back = findViewById(R.id.ib_back);
         profilePicture = findViewById(R.id.choose_profile_image);
 
+        password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    if (password.getText().toString().trim().length() < 6)
+                        password.setError(getResources().getString(R.string.pass_characters));
+                    else
+                        password.setError(null);
+                }
+            }
+        });
+
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
 
@@ -129,14 +148,11 @@ public class CompleteProfile extends HideKeyboard {
         profilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (checkPermissionREAD_EXTERNAL_STORAGE(getApplicationContext())) {
+                if (checkPermissionREAD_EXTERNAL_STORAGE(CompleteProfile.this)) {
                     Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                     photoPickerIntent.setType("image/*");
                     startActivityForResult(photoPickerIntent, SELECT_PHOTO);
                 }
-
-
             }
         });
 
@@ -160,8 +176,11 @@ public class CompleteProfile extends HideKeyboard {
                 intent.putExtra("CityID", cityID);
                 intent.putExtra("Password", password.getText().toString());
                 intent.putExtra("Phone", phoneNumber);
-                intent.putExtra("ProfilePicURL", "");
                 intent.putExtra("IsUser", "true");
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("ProfilePicURL", _encodeImage);
+                editor.apply();
+
                 startActivity(intent);
                 finish();
 
@@ -169,22 +188,62 @@ public class CompleteProfile extends HideKeyboard {
         });
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
         setupUI(findViewById(R.id.parent));
     }
 
+    private String encodeImage(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] bImage = baos.toByteArray();
+        String encImage = Base64.encode(bImage);
+
+        return encImage;
+    }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                cityID = data.getStringExtra("CityID");
-                cityName = data.getStringExtra("CityName");
-                city.setBackgroundResource(R.drawable.green_stroke_background);
-                city.setText(cityName);
-            }
+        switch (requestCode) {
+            case SELECT_PHOTO:
+                if (resultCode == RESULT_OK) {
+                    try {
+
+                        Uri selectedImage = data.getData();
+                        InputStream imageStream = getContentResolver().openInputStream(selectedImage);
+                        Bitmap profilePic = BitmapFactory.decodeStream(imageStream);
+                        _encodeImage = encodeImage(profilePic);
+
+                        Picasso.with(getApplicationContext())
+                                .load(selectedImage).resize(100, 100).centerCrop().into(profilePicture, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                Log.i("Sohrab P", "Success");
+
+                            }
+
+                            @Override
+                            public void onError() {
+
+                            }
+
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    cityID = data.getStringExtra("CityID");
+                    cityName = data.getStringExtra("CityName");
+                    city.setBackgroundResource(R.drawable.green_stroke_background);
+                    city.setText(cityName);
+                }
+                break;
         }
     }
 

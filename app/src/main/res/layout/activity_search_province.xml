@@ -8,8 +8,7 @@
     tools:context=".Activities.SearchProvince">
 
 
-
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/et_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,9 +18,10 @@
         android:background="@drawable/edit_text_selector"
         android:drawableEnd="@drawable/ic_search_gray"
         android:drawablePadding="16dp"
-        android:hint="@string/your_city"
+        android:hint="@string/your_province"
         android:imeOptions="actionGo"
         android:maxLines="1"
+        android:inputType="text"
         android:padding="8dp"
         android:textColor="@color/colorBrown"
         android:textColorHint="@color/colorLightGray"

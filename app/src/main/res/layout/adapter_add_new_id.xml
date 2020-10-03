@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="30"
+        android:layout_height="match_parent"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
         android:background="@drawable/white_rounded_background"
         android:orientation="vertical">
 
@@ -15,36 +17,36 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
-            android:padding="8dp"
-            android:background="@drawable/light_rounded_background">
+            android:background="@drawable/light_rounded_background"
+            android:padding="8dp">
 
-            <TextView
-                android:id="@+id/tv_my_friend"
+            <ImageButton
+                android:id="@+id/ib_edit_phone_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:textSize="16sp"
-                android:textColor="@color/colorNightRider"
-                android:text="@string/my_friends"/>
+                android:background="@android:color/transparent"
+                android:padding="8dp"
+                app:srcCompat="@drawable/ic_pen_edit" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_my_friend"
                 android:layout_alignParentEnd="true"
                 android:layout_centerInParent="true"
-                android:layout_below="@+id/tv_my_friend"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:textSize="12sp"
+                android:text="@string/id_name"
                 android:textColor="@color/colorNightRider"
-                android:text="@string/id_name"/>
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/tv_phone_number"
@@ -53,58 +55,58 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@+id/ib_edit_phone_num"
-                android:textSize="16sp"
                 android:textColor="@color/colorMainGreen"
-                android:text="09125349255"/>
+                android:textSize="16sp" />
 
-            <ImageButton
-                android:id="@+id/ib_edit_phone_num"
+            <TextView
+                android:id="@+id/tv_my_friend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:padding="8dp"
+                android:layout_alignParentEnd="true"
                 android:layout_marginTop="8dp"
-                android:layout_marginStart="8dp"
-                app:srcCompat="@drawable/ic_pen_edit"
-                android:background="@android:color/transparent" />
+                android:layout_marginEnd="8dp"
+                android:text="@string/my_friends"
+                android:textColor="@color/colorNightRider"
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_phone_number"
-                android:layout_toEndOf="@+id/ib_edit_phone_num"
-                android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp"
-                android:textSize="12sp"
+                android:layout_marginTop="8dp"
+                android:layout_toEndOf="@+id/ib_edit_phone_num"
+                android:text="@string/moaref_code"
                 android:textColor="@color/colorNightRider"
-                android:text="@string/moaref_code"/>
+                android:textSize="12sp" />
         </RelativeLayout>
-        
+
         <RelativeLayout
             android:id="@+id/rl_users_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp">
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
 
-            <TextView
+            <ImageButton
+                android:id="@+id/ib_users_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
                 android:layout_centerInParent="true"
-                android:layout_alignParentEnd="true"
-                android:textColor="@color/colorNightRider"
-                android:textSize="16sp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/users_id"/>
+                android:layout_marginStart="8dp"
+                android:background="@android:color/transparent"
+                android:padding="8dp"
+                app:srcCompat="@drawable/ic_arrow_small_left" />
 
             <TextView
                 android:id="@+id/tv_individuals_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textColor="@color/colorNightRider"
                 android:layout_toEndOf="@+id/tv_individuals"
+                android:textColor="@color/colorNightRider"
                 android:textSize="16sp" />
 
             <TextView
@@ -112,32 +114,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textColor="@color/colorNightRider"
-                android:layout_toEndOf="@+id/ib_users_id"
                 android:layout_marginStart="16dp"
-                android:textSize="16sp"
                 android:layout_marginEnd="16dp"
-                android:text="نفر"/>
+                android:layout_toEndOf="@+id/ib_users_id"
+                android:text="نفر"
+                android:textColor="@color/colorNightRider"
+                android:textSize="16sp" />
 
 
-            <ImageButton
-                android:id="@+id/ib_users_id"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_centerInParent="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="8dp"
-                android:padding="8dp"
-                android:background="@android:color/transparent"
-                app:srcCompat="@drawable/ic_arrow_small_left"/>
+                android:layout_marginEnd="8dp"
+                android:text="@string/users_id"
+                android:textColor="@color/colorNightRider"
+                android:textSize="16sp" />
         </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="8dp"
-            android:alpha="0.1"
-            android:background="@color/colorBlack" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -147,17 +141,23 @@
                 android:id="@+id/btn_invite_friends"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/button_background_green"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
-                android:padding="16dp"
+                android:background="@drawable/button_background_green"
+                android:padding="8dp"
                 android:text="@string/invite_friends"
                 android:textColor="@color/colorWhite"
                 android:textSize="16sp" />
         </RelativeLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="8dp"
+            android:alpha="0.1"
+            android:background="@color/colorBlack" />
     </LinearLayout>
 
 </LinearLayout>

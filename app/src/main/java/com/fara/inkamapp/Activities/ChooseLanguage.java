@@ -46,42 +46,30 @@ public class ChooseLanguage extends AppCompatActivity {
         btn_select = findViewById(R.id.btn_select_lang);
 
 
-        kurdiLang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                farsiLang.setTextColor(getResources().getColor(R.color.colorNightRider));
-                kurdiLang.setTextColor(getResources().getColor(R.color.colorMainGreen));
-                turkeyLang.setTextColor(getResources().getColor(R.color.colorNightRider));
+        kurdiLang.setOnClickListener(view -> {
+            farsiLang.setTextColor(getResources().getColor(R.color.colorNightRider));
+            kurdiLang.setTextColor(getResources().getColor(R.color.colorMainGreen));
+            turkeyLang.setTextColor(getResources().getColor(R.color.colorNightRider));
 
-            }
         });
 
-        farsiLang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                farsiLang.setTextColor(getResources().getColor(R.color.colorMainGreen));
-                kurdiLang.setTextColor(getResources().getColor(R.color.colorNightRider));
-                turkeyLang.setTextColor(getResources().getColor(R.color.colorNightRider));
+        farsiLang.setOnClickListener(view -> {
+            farsiLang.setTextColor(getResources().getColor(R.color.colorMainGreen));
+            kurdiLang.setTextColor(getResources().getColor(R.color.colorNightRider));
+            turkeyLang.setTextColor(getResources().getColor(R.color.colorNightRider));
 
-            }
         });
 
-        turkeyLang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                farsiLang.setTextColor(getResources().getColor(R.color.colorNightRider));
-                kurdiLang.setTextColor(getResources().getColor(R.color.colorNightRider));
-                turkeyLang.setTextColor(getResources().getColor(R.color.colorMainGreen));
+        turkeyLang.setOnClickListener(view -> {
+            farsiLang.setTextColor(getResources().getColor(R.color.colorNightRider));
+            kurdiLang.setTextColor(getResources().getColor(R.color.colorNightRider));
+            turkeyLang.setTextColor(getResources().getColor(R.color.colorMainGreen));
 
-            }
         });
 
-        btn_select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), IntroSliders.class);
-                startActivity(intent);
-            }
+        btn_select.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), IntroSliders.class);
+            startActivity(intent);
         });
 
     }

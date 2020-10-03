@@ -14,12 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:baselineAligned="false"
         android:orientation="horizontal"
         android:padding="8dp"
         android:weightSum="60"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rl_amount">
+        app:layout_constraintTop_toBottomOf="@+id/rl_info">
+
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -62,7 +64,7 @@
         android:id="@+id/rl_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="20dp"
         android:background="@drawable/light_rounded_background"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -110,48 +112,48 @@
             android:textSize="14sp" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_amount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:background="@drawable/edittext_background_black_stroke"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rl_info">
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/rl_amount"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:background="@drawable/edittext_background_black_stroke"-->
+<!--        android:padding="16dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/rl_info">-->
 
-        <TextView
-            android:id="@+id/tv_price_tax"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:text="@string/price_with_tax"
-            android:textColor="@color/colorBrown"
-            android:textSize="12sp" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_price_tax"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_centerInParent="true"-->
+<!--            android:text="@string/price_with_tax"-->
+<!--            android:textColor="@color/colorBrown"-->
+<!--            android:textSize="12sp" />-->
 
-        <TextView
-            android:id="@+id/tv_rial"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerInParent="true"
-            android:text="@string/rial"
-            android:textColor="@color/colorBrown"
-            android:textSize="12sp" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_rial"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentStart="true"-->
+<!--            android:layout_centerInParent="true"-->
+<!--            android:text="@string/rial"-->
+<!--            android:textColor="@color/colorBrown"-->
+<!--            android:textSize="12sp" />-->
 
-        <TextView
-            android:id="@+id/tv_price_tax_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_toEndOf="@+id/tv_rial"
-            android:textColor="@color/colorBrown"
-            android:textSize="14sp" />
-    </RelativeLayout>
+<!--        <TextView-->
+<!--            android:id="@+id/tv_price_tax_value"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerInParent="true"-->
+<!--            android:layout_marginStart="8dp"-->
+<!--            android:layout_marginEnd="8dp"-->
+<!--            android:layout_toEndOf="@+id/tv_rial"-->
+<!--            android:textColor="@color/colorBrown"-->
+<!--            android:textSize="14sp" />-->
+<!--    </RelativeLayout>-->
 
 
     <RelativeLayout

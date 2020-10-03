@@ -35,6 +35,7 @@ public class CarFinesParameters {
     public ArrayList<TrafficFinesDetails> get_trafficFinesDetails() {
         return _trafficFinesDetails;
     }
+
     public CarFinesParameters(SoapObject input) {
         try {
             _trafficFinesDetails = new ArrayList<>();

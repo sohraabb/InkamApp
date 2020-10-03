@@ -12,10 +12,13 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fara.inkamapp.Adapters.AutoProvinceAdapter;
 import com.fara.inkamapp.Adapters.CityAdapter;
 import com.fara.inkamapp.Adapters.DashboardServiceAdapter;
 import com.fara.inkamapp.Adapters.ProvinceAdapter;
@@ -28,6 +31,7 @@ import com.fara.inkamapp.R;
 import com.fara.inkamapp.WebServices.Caller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
@@ -41,6 +45,10 @@ public class SearchProvince extends HideKeyboard {
     private RecyclerView rvProvince;
     private String _cityID, _cityName, _provinceID;
     private ProgressBar loadingProgress;
+    private AutoCompleteTextView search;
+    private String sourceID;
+    private AutoProvinceAdapter autoProvinceAdapter;
+    private CityAdapter cityAdapter;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -59,13 +67,22 @@ public class SearchProvince extends HideKeyboard {
                 .build());
 
         setContentView(R.layout.activity_search_province);
-
-        rvProvince = findViewById(R.id.rv_province);
-        loadingProgress = findViewById(R.id.progress_loader);
-
+        initVariables();
 
         new GetProvince().execute();
 
+    }
+
+    private void initVariables() {
+        rvProvince = findViewById(R.id.rv_province);
+        loadingProgress = findViewById(R.id.progress_loader);
+        search = findViewById(R.id.et_search);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupUI(findViewById(R.id.parent));
     }
 
     private boolean isNetworkAvailable() {
@@ -109,6 +126,24 @@ public class SearchProvince extends HideKeyboard {
             //TODO we should add other items here too
 
             if (provinces != null) {
+
+                List<String> list = new ArrayList<>();
+                for (Province obj : provinces) {
+                    list.add(obj.get_name());
+                }
+                autoProvinceAdapter = new AutoProvinceAdapter(getApplicationContext(), provinces);
+                search.setAdapter(autoProvinceAdapter);
+                search.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Province city = autoProvinceAdapter.getItem(i);
+                        _provinceID = city.get_id();
+                        search.setText("");
+                        search.setHint(R.string.your_city);
+                        new GetCityByProvinceId().execute();
+                    }
+                });
+
                 pAdapter = new ProvinceAdapter(getApplicationContext(), provinces);
                 rvProvince.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 rvProvince.setAdapter(pAdapter);
@@ -117,6 +152,7 @@ public class SearchProvince extends HideKeyboard {
                     public void onItemClick(View view, int position) {
                         _provinceID = pAdapter.getItem(position).get_id();
                         new GetCityByProvinceId().execute();
+                        search.setHint(R.string.your_city);
                     }
                 });
             } else {
@@ -176,6 +212,32 @@ public class SearchProvince extends HideKeyboard {
             //TODO we should add other items here too
 
             if (cities != null) {
+
+
+                List<String> list = new ArrayList<>();
+                for (City obj : cities) {
+                    list.add(obj.get_name());
+                }
+                cityAdapter = new CityAdapter(getApplicationContext(), cities);
+                search.setAdapter(cityAdapter);
+                search.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        City city = (City) cityAdapter.getItem(i);
+                        if (city != null) {
+                            _cityID = city.get_id();
+                            _cityName = city.get_name();
+
+                            Intent intent = new Intent();
+                            intent.putExtra("CityID", _cityID);
+                            intent.putExtra("CityName", _cityName);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }
+                    }
+                });
+
+
                 cAdapter = new ProvinceByCityAdapter(getApplicationContext(), cities);
                 rvProvince.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 rvProvince.setAdapter(cAdapter);
@@ -209,14 +271,5 @@ public class SearchProvince extends HideKeyboard {
             loadingProgress.setActivated(false);
             loadingProgress.setVisibility(View.GONE);
         }
-
-
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setupUI(findViewById(R.id.parent));
     }
 }

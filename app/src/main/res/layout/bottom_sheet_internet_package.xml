@@ -48,6 +48,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:baselineAligned="false"
         android:orientation="horizontal"
         android:padding="8dp"
         android:weightSum="90"
@@ -63,7 +64,6 @@
             android:layout_marginEnd="8dp"
             android:layout_weight="30"
             android:background="@drawable/edittext_background_black_stroke"
-            android:onClick="onClick"
             android:padding="8dp">
 
             <ImageView
@@ -95,7 +95,6 @@
             android:layout_marginEnd="8dp"
             android:layout_weight="30"
             android:background="@drawable/edittext_background_black_stroke"
-            android:onClick="onClick"
             android:padding="8dp">
 
             <ImageView
@@ -127,7 +126,6 @@
             android:layout_height="match_parent"
             android:layout_weight="30"
             android:background="@drawable/edittext_background_black_stroke"
-            android:onClick="onClick"
             android:padding="8dp">
 
             <ImageView
@@ -172,11 +170,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/iv_user_name"
-            android:layout_toEndOf="@+id/ib_cancel"
+            android:layout_toEndOf="@+id/ib_contact"
             android:background="@android:color/transparent"
             android:hint="@string/enter_contact_phone"
             android:padding="16dp"
             android:maxLines="1"
+            android:inputType="phone"
             android:imeOptions="actionDone"
             android:textColor="@color/colorNightRider"
             android:textSize="16sp" />

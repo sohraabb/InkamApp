@@ -5,7 +5,8 @@ public enum OperatorType {
 
 
     private final int value;
-    private OperatorType(int value) {
+
+    OperatorType(int value) {
         this.value = value;
     }
 

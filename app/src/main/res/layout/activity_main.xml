@@ -36,6 +36,7 @@
         app:itemIconTint="@color/color_selector"
         app:itemTextColor="@color/color_selector"
         app:itemIconSize="18dp"
+        android:theme="@style/Widget.BottomNavigationView"
         app:menu="@menu/bottom_nav_menu" />
 
 

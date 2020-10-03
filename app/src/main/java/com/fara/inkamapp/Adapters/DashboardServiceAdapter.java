@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -60,11 +61,20 @@ public class DashboardServiceAdapter extends RecyclerView.Adapter<DashboardServi
 
         } else {
 
+
 //            Glide.with(context)
 //                    .load(productAndService.get_picURL())
 //                    .apply(defaultOption)
 //                    .into(holder.icon);
         }
+
+        if (holder.getAdapterPosition() == 1)
+            holder.background.setBackgroundResource(R.drawable.gray_very_rounded_background);
+        else if (holder.getAdapterPosition() == 4)
+            holder.background.setBackgroundResource(R.drawable.gray_very_rounded_background);
+        else if (holder.getAdapterPosition() == 5)
+            holder.background.setBackgroundResource(R.drawable.gray_very_rounded_background);
+
     }
 
 
@@ -80,11 +90,13 @@ public class DashboardServiceAdapter extends RecyclerView.Adapter<DashboardServi
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView title;
         private ImageView icon;
+        private RelativeLayout background;
 
         ViewHolder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.tv_title);
             icon = itemView.findViewById(R.id.iv_icon);
+            background = itemView.findViewById(R.id.rl_plane);
 
             itemView.setOnClickListener(this);
         }

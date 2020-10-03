@@ -104,15 +104,7 @@ public class BuyCharge2 extends HideKeyboard {
         amount = Numbers.ToEnglishNumbers(amount.replace(",", ""));
         try {
             encryptedToken = Base64.encode((RSA.encrypt(token, publicKey)));
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         new GetUserWallet().execute();
@@ -129,17 +121,7 @@ public class BuyCharge2 extends HideKeyboard {
                     postData.put("DeviceType", "59");
                     postData.put("Operator", operator);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (NoSuchPaddingException e) {
-                    e.printStackTrace();
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                } catch (InvalidKeyException e) {
-                    e.printStackTrace();
-                } catch (IllegalBlockSizeException e) {
-                    e.printStackTrace();
-                } catch (BadPaddingException e) {
+                } catch (JSONException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
                     e.printStackTrace();
                 }
 
@@ -188,6 +170,37 @@ public class BuyCharge2 extends HideKeyboard {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+       /* dataToConfirm ="{\"PayInfo\":\"e51sG3Rg1s4vftpps9lO0WIP8EEnBZy82HNMVO66Lyq8K4ApX01DHxZGE0yW1SUkjDGSJbyg+vcqNTI2Gd3IpwoAcoIO7xUuJFh8MDIqhCEaVt2E0lMDqNqz7hPXcgPoz3bNb5RH8c63Bd+Nuj4fvHR2MWg5zf9dueSFi+D0+SQ=\",\"PayData\":\"dXySBeJSHxeNucG0HHu5nkuTC+Q\\/nYDvZ8Lam4LAtgs0ZM54onSPd1JqrNlb8qwjZHvsQLgKAQKyj1C0B\\/OxZjaStQW4VxTQj68OjhJ\\/Gmk3LX7o8FhxJgXRf6SdI0QVG7B\\/umquZ4wCye5Sj0v+jUQGimgxiFQEJzM5F3uqIao=\",\"DataSign\":\"D3jRnsTH3wpQJmj8ONcYcQOu9ByJ09sItU3BNryi\\/BPiW8V6d6fKarl3+ImzJ3JpTFN4tVjA2+ZRRs4X4rFSh3Yq4Wh8LQkdImZ3HvvZcTGDz32SBvoUOmQBA1Jf6YBGhl99tXRFr42L6NvxfJ3fj\\/9DXh4wPUfAcRKlM5UpueE=\",\"AutoConfirm\":false}";// data.getStringExtra("enData");
+        if(!dataToConfirm.equals(null))
+            dataToConfirm=    dataToConfirm.replace("\\", "");
+        String one = data.getStringExtra("message");
+        String two = String.valueOf(data.getIntExtra("status", 0));
+        new approveTopUpRequest().execute();
+*/
+        // if (requestCode == LAUNCH_SECOND_ACTIVITY) {
+        if (resultCode == 1) {
+            dataToConfirm = data.getStringExtra("enData");
+            if(!dataToConfirm.equals(null))
+                dataToConfirm=    dataToConfirm.replace("\\", "");
+            String one = data.getStringExtra("message");
+            String two = String.valueOf(data.getIntExtra("status", 0));
+            new approveTopUpRequest().execute();
+        }
+        if (resultCode == Activity.RESULT_CANCELED) {
+            //Write your code if there's no result
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupUI(findViewById(R.id.parent));
+    }
 
     private boolean isNetworkAvailable() {
         return FaraNetwork.isNetworkAvailable(getApplicationContext());
@@ -504,35 +517,5 @@ public class BuyCharge2 extends HideKeyboard {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-       /* dataToConfirm ="{\"PayInfo\":\"e51sG3Rg1s4vftpps9lO0WIP8EEnBZy82HNMVO66Lyq8K4ApX01DHxZGE0yW1SUkjDGSJbyg+vcqNTI2Gd3IpwoAcoIO7xUuJFh8MDIqhCEaVt2E0lMDqNqz7hPXcgPoz3bNb5RH8c63Bd+Nuj4fvHR2MWg5zf9dueSFi+D0+SQ=\",\"PayData\":\"dXySBeJSHxeNucG0HHu5nkuTC+Q\\/nYDvZ8Lam4LAtgs0ZM54onSPd1JqrNlb8qwjZHvsQLgKAQKyj1C0B\\/OxZjaStQW4VxTQj68OjhJ\\/Gmk3LX7o8FhxJgXRf6SdI0QVG7B\\/umquZ4wCye5Sj0v+jUQGimgxiFQEJzM5F3uqIao=\",\"DataSign\":\"D3jRnsTH3wpQJmj8ONcYcQOu9ByJ09sItU3BNryi\\/BPiW8V6d6fKarl3+ImzJ3JpTFN4tVjA2+ZRRs4X4rFSh3Yq4Wh8LQkdImZ3HvvZcTGDz32SBvoUOmQBA1Jf6YBGhl99tXRFr42L6NvxfJ3fj\\/9DXh4wPUfAcRKlM5UpueE=\",\"AutoConfirm\":false}";// data.getStringExtra("enData");
-        if(!dataToConfirm.equals(null))
-            dataToConfirm=    dataToConfirm.replace("\\", "");
-        String one = data.getStringExtra("message");
-        String two = String.valueOf(data.getIntExtra("status", 0));
-        new approveTopUpRequest().execute();
-*/
-        // if (requestCode == LAUNCH_SECOND_ACTIVITY) {
-        if (resultCode == 1) {
-            dataToConfirm = data.getStringExtra("enData");
-            if(!dataToConfirm.equals(null))
-                dataToConfirm=    dataToConfirm.replace("\\", "");
-            String one = data.getStringExtra("message");
-            String two = String.valueOf(data.getIntExtra("status", 0));
-            new approveTopUpRequest().execute();
-        }
-        if (resultCode == Activity.RESULT_CANCELED) {
-            //Write your code if there's no result
-        }
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setupUI(findViewById(R.id.parent));
-    }
 }

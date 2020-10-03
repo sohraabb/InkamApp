@@ -24,7 +24,7 @@ public class BoardingAndDroppingPoint {
         return _terminal;
     }
 
-    public BoardingAndDroppingPoint(SoapObject input){
+    public BoardingAndDroppingPoint(SoapObject input) {
         try {
             _city = input.getPropertySafelyAsString("City");
             _terminal = input.getPropertySafelyAsString("Terminal");

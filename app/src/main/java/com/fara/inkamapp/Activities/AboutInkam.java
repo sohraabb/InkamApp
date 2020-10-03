@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Debug;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -16,7 +17,7 @@ import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 public class AboutInkam extends AppCompatActivity {
 
-    private ImageButton back;
+    private ImageButton back, twitter, instagram, telegram, aparat;
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
@@ -35,8 +36,12 @@ public class AboutInkam extends AppCompatActivity {
                     .build());
 
         setContentView(R.layout.activity_about_inkam);
-        back = findViewById(R.id.ib_back);
+        initVariables();
 
+    }
+
+    private void initVariables() {
+        back = findViewById(R.id.ib_back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

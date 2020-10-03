@@ -25,18 +25,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/ic_back"
-            android:onClick="onBackClicked"/>
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/crimes_list"
-            android:textColor="@color/colorNightRider"
-            android:textSize="18sp" />
-
+            android:onClick="onBackClicked"
+            app:srcCompat="@drawable/ic_back" />
 
         <ImageButton
             android:layout_width="44dp"
@@ -47,80 +37,29 @@
             android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
             app:srcCompat="@drawable/ic_menu_dots" />
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/crimes_list"
+            android:textColor="@color/colorNightRider"
+            android:textSize="18sp" />
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/btn_pay_crime"
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_crimes"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/green_rounded_background"
-        android:padding="16dp"
-        android:text="@string/pay_crime"
-        android:textColor="@color/colorWhite"
-        android:textSize="16sp"
-        android:onClick="payFine"
+        android:layout_margin="16dp"
+        android:visibility="visible"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rl_header" />
-
-    <LinearLayout
-        android:id="@+id/ll_crime_list"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="16dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/rl_separator"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_pay_crime">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_crimes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_separator"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:alpha="0.1"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="24dp"
-        android:background="@android:color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/btn_bottom_pay_crime"/>
-
-
-    <Button
-        android:id="@+id/btn_bottom_pay_crime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:background="@drawable/green_rounded_background"
-        android:padding="16dp"
-        android:text="@string/pay_crime"
-        android:textColor="@color/colorWhite"
-        android:textSize="16sp"
-        android:onClick="payFine"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_select_all"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:layout_margin="16dp"
-        android:textColor="@color/colorBrown"
-        android:text="@string/select_all"
-        android:drawableEnd="@drawable/ic_select"
-        android:drawablePadding="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="onAllSelect"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

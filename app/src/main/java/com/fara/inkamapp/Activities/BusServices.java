@@ -94,15 +94,15 @@ public class BusServices extends HideKeyboard implements ItemFragment.SliderItem
                 .build());
 
         setContentView(R.layout.activity_bus_services);
-        listView = (RecyclerView) findViewById(R.id.rv_services);
+        listView = findViewById(R.id.rv_services);
         sourceID = getIntent().getStringExtra("from");
         destinationID = getIntent().getStringExtra("to");
         fromDate = getIntent().getStringExtra("date");
         toName = getIntent().getStringExtra("toName");
         fromName = getIntent().getStringExtra("fromName");
 
-        tv_current_location = (TextView) findViewById(R.id.tv_current_location);
-        tv_destination = (TextView) findViewById(R.id.tv_destination);
+        tv_current_location = findViewById(R.id.tv_current_location);
+        tv_destination = findViewById(R.id.tv_destination);
         tvDate = findViewById(R.id.tv_date);
         tvDay = findViewById(R.id.tv_day);
         tv_current_location.setText(fromName);
@@ -120,7 +120,7 @@ public class BusServices extends HideKeyboard implements ItemFragment.SliderItem
         /////////
 
 
-        pager = (ViewPager) findViewById(R.id.vp_date);
+        pager = findViewById(R.id.vp_date);
 
         //set page margin between pages for viewpager
         DisplayMetrics metrics = new DisplayMetrics();
@@ -128,34 +128,28 @@ public class BusServices extends HideKeyboard implements ItemFragment.SliderItem
         int pageMargin = ((metrics.widthPixels / 3) * 2) + 60;
         pager.setPageMargin(-pageMargin);
 
-        adapter = new CarouselPagerAdapter(this, getSupportFragmentManager(), fromDate);
+        adapter = new CarouselPagerAdapter(this, getSupportFragmentManager(), fromDate,count);
         pager.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
         pager.addOnPageChangeListener(adapter);
 
-        // Set current item to the middle page so we can fling to both
-        // directions left and right
+        /*
+         Set current item to the middle page so we can fling to both
+         directions left and right
+        */
+
         pager.setCurrentItem(FIRST_PAGE);
         pager.setOffscreenPageLimit(5);
 
 
-        //////
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         token = sharedpreferences.getString("Token", null);
         userID = sharedpreferences.getString("UserID", null);
         AesKey = sharedpreferences.getString("key", null);
         try {
             encryptedToken = Base64.encode((RSA.encrypt(token, publicKey)));
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         new AvailableServices().execute();
@@ -241,7 +235,6 @@ public class BusServices extends HideKeyboard implements ItemFragment.SliderItem
                 toast.show();
             } else {
                 try {
-                    List<String> list = new ArrayList<>();
                     final BusSearchIinfoAdapter adapter = new BusSearchIinfoAdapter(getApplicationContext(), busList);
                     listView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     listView.setAdapter(adapter);
@@ -282,6 +275,7 @@ public class BusServices extends HideKeyboard implements ItemFragment.SliderItem
     private boolean isNetworkAvailable() {
         return FaraNetwork.isNetworkAvailable(getApplicationContext());
     }
+
     public void backClicked(View v){
         finish();
     }

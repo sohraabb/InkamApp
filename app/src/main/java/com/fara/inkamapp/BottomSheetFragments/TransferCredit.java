@@ -56,7 +56,7 @@ import static com.fara.inkamapp.Activities.LoginInkam.publicKey;
 
 public class TransferCredit extends BottomSheetDialogFragment {
 
-    String string,amount,phone;
+    String string, amount, phone;
     private TextView toastText;
     private Button transfer;
     private AutoCompleteTextView et_contact;
@@ -72,6 +72,7 @@ public class TransferCredit extends BottomSheetDialogFragment {
     public interface TransferItemClickListener {
         void onTransferItemClick();
     }
+
     public static TransferCredit newInstance(String string) {
         TransferCredit transferCredit = new TransferCredit();
         Bundle args = new Bundle();
@@ -87,9 +88,8 @@ public class TransferCredit extends BottomSheetDialogFragment {
         string = getArguments().getString("string");
 
         //bottom sheet round corners can be obtained but the while background appears to remove that we need to add this.
-        setStyle(DialogFragment.STYLE_NO_FRAME, 0);
+        setStyle(BottomSheetDialogFragment.STYLE_NO_FRAME, R.style.CustomBottomSheetDialogTheme);
     }
-
 
     @Nullable
     @Override
@@ -107,9 +107,9 @@ public class TransferCredit extends BottomSheetDialogFragment {
         transfer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                amount=Numbers.ToEnglishNumbers( et_amount.getText().toString().replace(",",""));
+                amount = Numbers.ToEnglishNumbers(et_amount.getText().toString().replace(",", ""));
 
-                if (balance<Double.valueOf(amount)){
+                if (balance < Double.valueOf(amount)) {
                     Toast toast = Toast.makeText(getContext(), R.string.not_enough_money, Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toastText = toast.getView().findViewById(android.R.id.message);
@@ -122,15 +122,15 @@ public class TransferCredit extends BottomSheetDialogFragment {
                         toastText.setTextSize(14);
                     }
                     toast.show();
-                }else {
+                } else {
                     new TransferCredits().execute();
                 }
 
 
             }
         });
-        et_contact=view.findViewById(R.id.et_contact);
-        et_amount= view.findViewById(R.id.et_amount);
+        et_contact = view.findViewById(R.id.et_contact);
+        et_amount = view.findViewById(R.id.et_amount);
         et_amount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -156,7 +156,7 @@ public class TransferCredit extends BottomSheetDialogFragment {
                 }
             }
         });
-        mClickListener=(TransferItemClickListener)getContext();
+        mClickListener = (TransferItemClickListener) getContext();
         new GetAllContacts().execute();
         new GetUserWallet().execute();
         return view;
@@ -206,8 +206,8 @@ public class TransferCredit extends BottomSheetDialogFragment {
                 et_contact.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        ContactList co=  (ContactList) sourceAdapter.getItem(position);
-                        phone=co.get_phone();
+                        ContactList co = sourceAdapter.getItem(position);
+                        phone = co.get_phone();
                     }
                 });
 
@@ -228,6 +228,7 @@ public class TransferCredit extends BottomSheetDialogFragment {
 
         }
     }
+
     private class TransferCredits extends AsyncTask<Void, Void, ResponseStatus> {
 
         ResponseStatus results = null;
@@ -235,6 +236,8 @@ public class TransferCredit extends BottomSheetDialogFragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if (phone == null)
+                phone = et_contact.getText().toString();
 
             if (!isNetworkAvailable()) {
                 Toast toast = Toast.makeText(getContext(), R.string.error_net, Toast.LENGTH_SHORT);
@@ -255,16 +258,9 @@ public class TransferCredit extends BottomSheetDialogFragment {
         @Override
         protected ResponseStatus doInBackground(Void... params) {
             try {
-                results = new Caller().TransferCredit(MainActivity._userId, MainActivity._token, Base64.encode((RSA.encrypt(phone, publicKey))),Base64.encode((RSA.encrypt(amount, publicKey))));
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
+                results = new Caller().TransferCredit(MainActivity._userId, MainActivity._token, Base64.encode((RSA.encrypt(phone, publicKey))), Base64.encode((RSA.encrypt(amount, publicKey))));
+            } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException |
+                    NoSuchPaddingException | NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
 
@@ -276,7 +272,7 @@ public class TransferCredit extends BottomSheetDialogFragment {
             super.onPostExecute(res);
             //TODO we should add other items here too
 
-            if (res != null&&res.get_status().equals("SUCCESS")) {
+            if (res != null && res.get_status().equals("SUCCESS")) {
 
                 SuccessTransfer successTransfer = new SuccessTransfer(getActivity());
                 successTransfer.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -303,6 +299,7 @@ public class TransferCredit extends BottomSheetDialogFragment {
 
         }
     }
+
     private class GetUserWallet extends AsyncTask<Void, Void, UserWallet> {
 
         UserWallet results = null;
@@ -339,10 +336,10 @@ public class TransferCredit extends BottomSheetDialogFragment {
             super.onPostExecute(userWallet);
             //TODO we should add other items here too
 
-            balance=0;
+            balance = 0;
             if (userWallet != null) {
 
-                balance=userWallet.get_balance();
+                balance = userWallet.get_balance();
 
 
             } else {
@@ -352,7 +349,7 @@ public class TransferCredit extends BottomSheetDialogFragment {
                 toast.getView().setBackgroundResource(R.drawable.toast_background);
 
                 if (toastText != null) {
-                    toastText.setTypeface(Typeface.createFromAsset(getActivity(). getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
                     toastText.setTextColor(getResources().getColor(R.color.colorBlack));
                     toastText.setGravity(Gravity.CENTER);
                     toastText.setTextSize(14);
@@ -362,7 +359,9 @@ public class TransferCredit extends BottomSheetDialogFragment {
 
         }
     }
+
     private boolean isNetworkAvailable() {
         return FaraNetwork.isNetworkAvailable(getContext());
     }
+
 }

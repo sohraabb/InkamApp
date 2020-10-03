@@ -55,8 +55,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="15"
+                android:layout_height="wrap_content"
                 android:padding="8dp">
 
                 <ImageView
@@ -69,8 +68,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="45"
+                android:layout_height="wrap_content"
                 android:padding="8dp">
 
                 <TextView
@@ -79,15 +77,17 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginEnd="8dp"
-                    android:text="ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد."
+                    android:text="@string/about_inkam_full"
                     android:textColor="@color/colorBrown"
                     android:textSize="16sp" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="10">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -102,9 +102,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="15"
+                android:layout_height="wrap_content"
                 android:gravity="center">
+
 
                 <ImageButton
                     android:id="@+id/ib_twitter"
@@ -112,44 +112,46 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="16dp"
+                    android:padding="8dp"
                     android:background="@android:color/transparent"
                     app:srcCompat="@drawable/ic_twitter_logo" />
 
                 <ImageButton
-                    android:id="@+id/ib_linkedin"
+                    android:id="@+id/ib_instagram"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
+                    android:padding="8dp"
                     android:layout_toEndOf="@+id/ib_twitter"
                     android:background="@android:color/transparent"
                     app:srcCompat="@drawable/ic_linkedin_logo" />
 
                 <ImageButton
-                    android:id="@+id/ib_google"
+                    android:id="@+id/ib_telegram"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:layout_toEndOf="@+id/ib_linkedin"
+                    android:padding="8dp"
+                    android:layout_toEndOf="@+id/ib_instagram"
                     android:background="@android:color/transparent"
                     app:srcCompat="@drawable/ic_google_logo" />
 
                 <ImageButton
-                    android:id="@+id/ib_facebook"
+                    android:id="@+id/ib_aprat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:layout_toEndOf="@+id/ib_google"
+                    android:padding="8dp"
+                    android:layout_toEndOf="@+id/ib_telegram"
                     android:background="@android:color/transparent"
                     app:srcCompat="@drawable/ic_facebook_logo" />
             </RelativeLayout>
-
-
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

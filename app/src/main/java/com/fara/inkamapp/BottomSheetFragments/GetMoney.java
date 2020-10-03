@@ -36,7 +36,7 @@ public class GetMoney extends BottomSheetDialogFragment {
         super.onCreate(savedInstanceState);
         string = getArguments().getString("string");
         //bottom sheet round corners can be obtained but the while background appears to remove that we need to add this.
-        setStyle(DialogFragment.STYLE_NO_FRAME,0);
+        setStyle(BottomSheetDialogFragment.STYLE_NO_FRAME, R.style.CustomBottomSheetDialogTheme);
     }
 
 

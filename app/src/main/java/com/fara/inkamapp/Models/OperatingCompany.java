@@ -5,9 +5,10 @@ import android.util.Log;
 import org.ksoap2.serialization.SoapObject;
 
 public class OperatingCompany {
-    private String Code ;
-    private String Name ;
-    public OperatingCompany(SoapObject input){
+    private String Code;
+    private String Name;
+
+    public OperatingCompany(SoapObject input) {
         try {
             Code = input.getPropertySafelyAsString("Code");
             Name = input.getPropertySafelyAsString("Name");
@@ -18,6 +19,7 @@ public class OperatingCompany {
         }
 
     }
+
     public String getCode() {
         return Code;
     }

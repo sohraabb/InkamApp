@@ -10,11 +10,11 @@ import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 public class RSAUtil {
-	public static PublicKey getPublicKey(String base64PublicKey){
+    public static PublicKey getPublicKey(String base64PublicKey) {
         PublicKey publicKey = null;
-        try{
+        try {
             //X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(base64PublicKey.getBytes()));
-        	X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.decode(base64PublicKey));
+            X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.decode(base64PublicKey));
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             publicKey = keyFactory.generatePublic(keySpec);
             return publicKey;
@@ -25,12 +25,12 @@ public class RSAUtil {
         }
         return publicKey;
     }
-	
-	public static PrivateKey getPrivateKey(String base64PrivateKey){
+
+    public static PrivateKey getPrivateKey(String base64PrivateKey) {
         PrivateKey privateKey = null;
         // PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(base64PrivateKey.getBytes()));
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(Base64.decode(base64PrivateKey));
-       // RSAPrivateKeySpec keySpec = new RSAPrivateKeySpec()
+        // RSAPrivateKeySpec keySpec = new RSAPrivateKeySpec()
         KeyFactory keyFactory = null;
         try {
             keyFactory = KeyFactory.getInstance("RSA");
@@ -44,7 +44,6 @@ public class RSAUtil {
         }
         return privateKey;
     }
-	
-	
-	
+
+
 }

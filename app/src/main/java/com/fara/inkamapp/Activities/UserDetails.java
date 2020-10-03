@@ -54,6 +54,12 @@ public class UserDetails extends AppCompatActivity {
                 .build());
 
         setContentView(R.layout.activity_user_details);
+        initVariables();
+
+        new GetUserByPresentageCode().execute();
+    }
+
+    private void initVariables() {
         rc_users = findViewById(R.id.rc_users);
         tv_details_phone = findViewById(R.id.tv_details_phone);
         tv_details_my_friend = findViewById(R.id.tv_details_my_friend);
@@ -65,14 +71,11 @@ public class UserDetails extends AppCompatActivity {
         tv_users_number.setText(userCount);
         tv_details_my_friend.setText(name);
         tv_details_phone.setText(code);
-        new GetUserByPresentageCode().execute();
     }
-
 
     private boolean isNetworkAvailable() {
         return FaraNetwork.isNetworkAvailable(getApplicationContext());
     }
-
 
     private class GetUserByPresentageCode extends AsyncTask<Void, Void, List<User>> {
 
@@ -135,7 +138,7 @@ public class UserDetails extends AppCompatActivity {
                     toast.show();
                 }
             } catch (Exception e) {
-                String s=e.toString();
+                String s = e.toString();
             }
         }
     }

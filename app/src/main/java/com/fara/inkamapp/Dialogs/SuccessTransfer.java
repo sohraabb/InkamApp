@@ -30,6 +30,7 @@ public class SuccessTransfer extends Dialog {
         variz=isVariz;
         this.activity = a;
     }
+
     public SuccessTransfer(Activity a) {
         super(a);
         // TODO Auto-generated constructor stub

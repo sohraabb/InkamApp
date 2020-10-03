@@ -19,10 +19,11 @@
             android:layout_centerInParent="true"
             android:text="درآمد از خرید مستقیم"
             android:layout_alignParentEnd="true"
-            android:drawableEnd="@drawable/ic_green_oval"
+            android:layout_toEndOf="@+id/tv_price"
             android:drawablePadding="8dp"
             android:textColor="@color/colorNightRider"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:drawableEndCompat="@drawable/ic_green_oval" />
 
         <TextView
             android:id="@+id/tv_rial"
@@ -42,7 +43,6 @@
             android:layout_centerInParent="true"
             android:layout_toEndOf="@+id/tv_rial"
             android:textColor="@color/colorGreen"
-            android:text="+۳۰,۰۰۰"
             android:textSize="18sp" />
     </RelativeLayout>
 
@@ -67,8 +67,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-
-            android:layout_alignParentLeft="false"
             android:layout_centerInParent="true"
             android:textColor="@color/colorBrown"
             android:textSize="12sp"
@@ -87,7 +85,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
-            android:text="۰۴:۳۲"
             android:textColor="@color/colorBrown"
             android:textSize="12sp" />
 
@@ -97,7 +94,6 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_toStartOf="@+id/tv_time"
-            android:text="۱۳۹۷/۰۹/۱۳"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:textColor="@color/colorBrown"
@@ -109,7 +105,6 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_toStartOf="@+id/tv_date"
-            android:text="بانک ملی"
             android:visibility="invisible"
             android:textColor="@color/colorBrown"
             android:textSize="12sp" />
@@ -138,7 +133,6 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_toStartOf="@+id/tv_bank_code_title"
-            android:text="۳۴۲۴۳۴۳"
             android:textColor="@color/colorBrown"
             android:textSize="12sp" />
 

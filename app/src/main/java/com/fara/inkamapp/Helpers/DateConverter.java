@@ -83,7 +83,24 @@ public class DateConverter implements Serializable {
         JavaSource_Calendar c1 = new JavaSource_Calendar();
         c1.setGregorianDate(year, month, day);
 
-        String PersianDate = c1.getIranianDate() + "  " + str2[1];
+        String PersianDate = c1.getIranianDate() + "  " + (str2.length > 1 ? str2[1] : "");
+
+        return Numbers.ToEnglishNumbers(PersianDate);
+    }
+
+    public static String Convert_Miladi_To_Shamsi_Date_ByTime_Sohrab(
+            String GeorgianDate) {
+
+        String[] str = GeorgianDate.split(" ");
+        int year = Integer.valueOf(str[0].trim());
+        int month = Integer.valueOf(str[1].trim());
+        String[] str2 = str[2].split(" ");
+        int day = Integer.valueOf(str2[0].trim());
+
+        JavaSource_Calendar c1 = new JavaSource_Calendar();
+        c1.setGregorianDate(year, month, day);
+
+        String PersianDate = c1.getIranianDate() + "  " + (str2.length > 1 ? str2[1] : "");
 
         return Numbers.ToEnglishNumbers(PersianDate);
     }

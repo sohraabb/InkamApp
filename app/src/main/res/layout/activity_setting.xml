@@ -75,7 +75,7 @@
             android:layout_toEndOf="@+id/go_to_lang"
             android:layout_centerInParent="true"
             android:layout_marginStart="16dp"
-            android:text="@string/setting"/>
+            android:text="@string/farsi"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -90,41 +90,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rl_change_lang" />
 
-    <TextView
-        android:id="@+id/tv_access"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="32dp"
-        android:textSize="16sp"
-        android:textColor="@color/colorBrown"
-        android:text="@string/access"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_access"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="24dp"-->
+<!--        android:layout_marginEnd="32dp"-->
+<!--        android:textSize="16sp"-->
+<!--        android:textColor="@color/colorBrown"-->
+<!--        android:text="@string/access"-->
+<!--        android:padding="16dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />-->
 
-    <TextView
-        android:id="@+id/tv_contacts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/contacts"
-        android:textSize="16sp"
-        android:padding="16dp"
-        android:textColor="@color/colorBrown"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_access" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_contacts"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginEnd="32dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:text="@string/contacts"-->
+<!--        android:textSize="16sp"-->
+<!--        android:padding="16dp"-->
+<!--        android:textColor="@color/colorBrown"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tv_access" />-->
 
-    <Switch
-        android:id="@+id/switch_contacts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:padding="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_access" />
+<!--    <Switch-->
+<!--        android:id="@+id/switch_contacts"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="24dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:padding="16dp"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tv_access" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

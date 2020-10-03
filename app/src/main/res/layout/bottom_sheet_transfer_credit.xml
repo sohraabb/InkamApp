@@ -66,6 +66,7 @@
             android:background="@android:color/transparent"
             android:maxLines="1"
             android:imeOptions="actionDone"
+            android:inputType="text"
             android:padding="16dp"
             android:textColor="@color/colorNightRider"
             android:textSize="16sp" />

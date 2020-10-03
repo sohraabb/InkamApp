@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ import com.fara.inkamapp.Activities.AboutInkam;
 import com.fara.inkamapp.Activities.EditUserProfile;
 import com.fara.inkamapp.Activities.LoginInkam;
 import com.fara.inkamapp.Activities.MainActivity;
+import com.fara.inkamapp.Activities.PurchasedItems;
 import com.fara.inkamapp.Activities.Setting;
 import com.fara.inkamapp.Activities.Support;
 import com.fara.inkamapp.Activities.TermsAndConditions;
@@ -38,9 +40,9 @@ public class UserProfile extends BottomSheetDialogFragment {
 
     String string;
     private RelativeLayout editProfile, support, termsConditions, about, settings;
-    private TextView logout, toastText, name, phoneNumber;
+    private TextView logout, toastText, name, phoneNumber, version;
     private CircleImageView profilePic;
-
+    private Button purchasedBtn;
 
     public static UserProfile newInstance(String string) {
         UserProfile userProfile = new UserProfile();
@@ -55,7 +57,7 @@ public class UserProfile extends BottomSheetDialogFragment {
         super.onCreate(savedInstanceState);
         string = getArguments().getString("string");
         //bottom sheet round corners can be obtained but the while background appears to remove that we need to add this.
-        setStyle(DialogFragment.STYLE_NO_FRAME, 0);
+        setStyle(BottomSheetDialogFragment.STYLE_NO_FRAME, R.style.CustomBottomSheetDialogTheme);
     }
 
     @Nullable
@@ -76,45 +78,46 @@ public class UserProfile extends BottomSheetDialogFragment {
         profilePic = view.findViewById(R.id.iv_user_profile);
         name = view.findViewById(R.id.tv_user_name);
         phoneNumber = view.findViewById(R.id.tv_user_phone_number);
+        version = view.findViewById(R.id.tv_app_version);
+        purchasedBtn = view.findViewById(R.id.btn_purchased);
 
-        editProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), EditUserProfile.class);
-                startActivity(intent);
-            }
+        version.setText(Numbers.ToPersianNumbers("ورژن : " + "1.7"));
+
+        initVariables();
+        new GetUserById().execute();
+
+        return view;
+    }
+
+    private void initVariables() {
+        editProfile.setOnClickListener(view -> {
+            Intent intent = new Intent(getActivity(), EditUserProfile.class);
+            startActivity(intent);
+            dismiss();
         });
 
-        support.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Support.class);
-                startActivity(intent);
-            }
+        support.setOnClickListener(view -> {
+            Intent intent = new Intent(getActivity(), Support.class);
+            startActivity(intent);
+            dismiss();
         });
 
-        termsConditions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), TermsAndConditions.class);
-                startActivity(intent);
-            }
+        termsConditions.setOnClickListener(view -> {
+            Intent intent = new Intent(getActivity(), TermsAndConditions.class);
+            startActivity(intent);
+            dismiss();
         });
 
-        about.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), AboutInkam.class);
-                startActivity(intent);
-            }
+        about.setOnClickListener(view -> {
+            Intent intent = new Intent(getActivity(), AboutInkam.class);
+            startActivity(intent);
+            dismiss();
         });
 
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Setting.class);
-                startActivity(intent);
-            }
+        settings.setOnClickListener(view -> {
+            Intent intent = new Intent(getActivity(), Setting.class);
+            startActivity(intent);
+            dismiss();
         });
 
         logout.setOnClickListener(new View.OnClickListener() {
@@ -128,17 +131,25 @@ public class UserProfile extends BottomSheetDialogFragment {
                 settings.edit().remove("key").apply();
                 settings.edit().remove("expDate").apply();
 
-
                 Intent intent = new Intent(getActivity(), LoginInkam.class);
                 startActivity(intent);
                 getActivity().finish();
+                dismiss();
             }
         });
 
-        new GetUserById().execute();
+        purchasedBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), PurchasedItems.class);
+                intent.putExtra("purchasedType", 1);
+                startActivity(intent);
+                dismiss();
+            }
+        });
 
-        return view;
     }
+
 
     private class GetUserById extends AsyncTask<Void, Void, User> {
 
@@ -169,30 +180,26 @@ public class UserProfile extends BottomSheetDialogFragment {
                 else if (!user.getLastName().equals("anyType{}") && user.getLastName() != null)
                     name.setText(user.getLastName());
 
-                if (!user.getFirstName().equals("anyType{}") && user.getFirstName() != null && !user.getLastName().equals("anyType{}") && user.getLastName() != null) {
+                if (!user.getFirstName().equals("anyType{}") && user.getFirstName() != null && !user.getLastName().equals("anyType{}") && user.getLastName() != null)
                     name.setText(user.getFirstName() + " " + user.getLastName());
-                }
 
                 if (!user.getUserName().equals("anyType{}") && user.getUserName() != null)
                     phoneNumber.setText(Numbers.ToPersianNumbers(user.getUserName()));
 
                 if (user.getProfilePicURL() != null && !user.getProfilePicURL().equals("anyType{}")) {
                     Picasso.with(getContext())
-                            .load("http://"+user.getProfilePicURL()).resize(100, 100).centerCrop().into(profilePic, new Callback() {
+                            .load("https://" + user.getProfilePicURL()).resize(100, 100).centerCrop().into(profilePic, new Callback() {
                         @Override
                         public void onSuccess() {
                             Log.i("Sohrab P", "Success");
-
                         }
 
                         @Override
                         public void onError() {
-
                         }
 
                     });
                 }
-
 
             }
         }

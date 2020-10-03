@@ -129,7 +129,7 @@ public class InquiryDebt extends Dialog implements View.OnClickListener {
                 try {
 
                     Bundle bundle = new Bundle();
-                    bundle.putString("billAmount", amountToPayment);
+                    bundle.putString("billAmount", Numbers.ToEnglishNumbers(amountToPayment));
                     bundle.putString("billID", billIdToPayment);
                     bundle.putString("paymentID", paymentIdToPayment);
                     bundle.putString("phoneNumber", _phoneNumber);

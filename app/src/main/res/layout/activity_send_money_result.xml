@@ -378,6 +378,7 @@
         android:background="@color/colorWhite"
         android:orientation="horizontal"
         android:padding="8dp"
+        android:baselineAligned="false"
         android:weightSum="100"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

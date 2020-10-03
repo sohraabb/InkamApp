@@ -4,12 +4,15 @@ import android.util.Log;
 
 import org.ksoap2.serialization.SoapObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Report {
 
     private String _mobile;
     private String _refrenceNumber;
     private String _transactionNumber;
-    private String _dateTime;
+    private Date _dateTime;
     private double _amount;
     private String _statusName;
     private String _toName;
@@ -39,9 +42,6 @@ public class Report {
         this._billID = _billID;
     }
 
-    public void set_dateTime(String _dateTime) {
-        this._dateTime = _dateTime;
-    }
 
     public void set_fromName(String _fromName) {
         this._fromName = _fromName;
@@ -65,6 +65,10 @@ public class Report {
 
     public void set_refrenceNumber(String _refrenceNumber) {
         this._refrenceNumber = _refrenceNumber;
+    }
+
+    public void set_dateTime(Date _dateTime) {
+        this._dateTime = _dateTime;
     }
 
     public void set_statusName(String _statusName) {
@@ -103,7 +107,7 @@ public class Report {
         return _billID;
     }
 
-    public String get_dateTime() {
+    public Date get_dateTime() {
         return _dateTime;
     }
 
@@ -157,7 +161,6 @@ public class Report {
             _mobile = input.getPropertySafelyAsString("Mobile");
             _refrenceNumber = input.getPropertySafelyAsString("RefrenceNumber");
             _transactionNumber = input.getPropertySafelyAsString("TransactionNumber");
-            _dateTime = input.getPropertySafelyAsString("DateTime");
             _amount = Double.parseDouble(input.getPropertySafelyAsString("Amount"));
             _statusName = input.getPropertySafelyAsString("StatusName");
             _toName = input.getPropertySafelyAsString("toName");
@@ -170,6 +173,13 @@ public class Report {
             _packageDescription = input.getPropertySafelyAsString("PackageDescription");
             _description = input.getPropertySafelyAsString("Description");
             _persianDateTime = input.getPropertySafelyAsString("PersianDateTime");
+
+            try {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                _dateTime = formatter.parse(input.getPropertySafelyAsString("DateTime"));
+            } catch (Exception ex) {
+                _dateTime = new Date();
+            }
 
         } catch (Exception e) {
             Log.e("CheckCode Soap", e.toString());

@@ -19,6 +19,7 @@ public class PercentageCode {
     public void set_name(String _name) {
         this._name = _name;
     }
+
     public void set_id(String _id) {
         this._id = _id;
     }
@@ -58,7 +59,8 @@ public class PercentageCode {
     public String get_userCount() {
         return _userCount;
     }
-    public PercentageCode(SoapObject input){
+
+    public PercentageCode(SoapObject input) {
         try {
             _id = input.getPropertySafelyAsString("ID");
             _userId = input.getPropertySafelyAsString("UserID");

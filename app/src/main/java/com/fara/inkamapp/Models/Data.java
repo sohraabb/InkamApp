@@ -46,7 +46,7 @@ public class Data {
          return _expireDate;
      }
  */
-    public Data(SoapObject input){
+    public Data(SoapObject input) {
 
         try {
             Status = input.getPropertySafelyAsString("Status");
@@ -61,7 +61,8 @@ public class Data {
         }
 
     }
-    public Data(SoapObject input, String expireDate, String status, String message){
+
+    public Data(SoapObject input, String expireDate, String status, String message) {
         ExpireDate = expireDate;
         Status = status;
         Message = message;

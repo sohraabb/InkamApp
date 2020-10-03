@@ -52,16 +52,14 @@ import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 import static com.fara.inkamapp.Activities.CompleteProfile.MyPREFERENCES;
 import static com.fara.inkamapp.Activities.LoginInkam.publicKey;
 
-public class CrimesList extends AppCompatActivity  {
+public class CrimesList extends AppCompatActivity {
     private String token, userID, encryptedToken, AesKey, dataToConfirm, fineToken;
-    private TextView scanBarcode, toastText;
+    private TextView toastText;
     private SharedPreferences sharedpreferences;
     private RecyclerView rv_crimes;
-    private List<TrafficFinesDetails> selectedFine;
     private TrafficFines fines;
     private CrimeAdapter adapter;
     private ImageButton back;
-    private Boolean allSelected;
     private BottomSheetDialogFragment bottomSheetDialogFragment;
 
     public CrimesList() {
@@ -85,9 +83,7 @@ public class CrimesList extends AppCompatActivity  {
                 .build());
 
         setContentView(R.layout.activity_crimes_list);
-        allSelected = false;
         back = findViewById(R.id.ib_back);
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,7 +91,6 @@ public class CrimesList extends AppCompatActivity  {
             }
         });
 
-        selectedFine = new ArrayList<>();
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         token = sharedpreferences.getString("Token", null);
         userID = sharedpreferences.getString("UserID", null);
@@ -104,15 +99,8 @@ public class CrimesList extends AppCompatActivity  {
         rv_crimes = findViewById(R.id.rv_crimes);
         try {
             encryptedToken = Base64.encode((RSA.encrypt(token, publicKey)));
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (BadPaddingException | IllegalBlockSizeException |
+                InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         new trafficFinesInfo().execute();
@@ -167,10 +155,27 @@ public class CrimesList extends AppCompatActivity  {
                             @Override
                             public void onItemClick(View view, int position) {
                                 TrafficFinesDetails fine = fines.get_carFinesParameters().get_trafficFinesDetails().get(position);
-                                if (selectedFine.contains(fine)) {
-                                    selectedFine.remove(fine);
-                                } else {
-                                    selectedFine.add(fine);
+                                try {
+
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("title", getResources().getString(R.string.car_fines));
+                                    bundle.putString("plateNumber", fines.get_carFinesParameters().get_plateNumber());
+                                    bundle.putString("amount", String.valueOf(fine.get_amount()));
+                                    bundle.putString("paymentID", fine.get_paymentId());
+                                    bundle.putString("billID", fine.get_billId());
+                                    bundle.putString("city", fine.get_city());
+                                    bundle.putString("location", fine.get_location());
+                                    bundle.putString("datetime", fine.get_dateTime());
+                                    bundle.putString("type", fine.get_type());
+                                    bundle.putInt("serviceType", 2);
+
+
+                                    bottomSheetDialogFragment = Payment.newInstance("Bottom Sheet Payment Dialog");
+                                    bottomSheetDialogFragment.setArguments(bundle);
+                                    bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+
+                                } catch (Exception e) {
+                                    e.toString();
                                 }
                             }
                         });
@@ -215,58 +220,10 @@ public class CrimesList extends AppCompatActivity  {
     private boolean isNetworkAvailable() {
         return FaraNetwork.isNetworkAvailable(getApplicationContext());
     }
-    public void onBackClicked(View v){
+
+    public void onBackClicked(View v) {
         finish();
     }
 
-
-    public void onAllSelect(View v) {
-        try {
-
-
-            selectedFine.clear();
-
-            if (!allSelected) {
-                //selectedFine = fines.get_carFinesParameters().get_trafficFinesDetails();
-                for (TrafficFinesDetails det :
-                        fines.get_carFinesParameters().get_trafficFinesDetails()) {
-                    selectedFine.add(det);
-                }
-            }
-
-            adapter.selectAll(allSelected);
-            allSelected = !allSelected;
-        } catch (Exception e) {
-            e.toString();
-        }
-
-    }
-
-    public  void payFine(View v){
-
-        try {
-
-            Bundle bundle = new Bundle();
-            bundle.putString("title", getResources().getString(R.string.car_fines));
-            bundle.putString("plateNumber", fines.get_carFinesParameters().get_plateNumber());
-            bundle.putString("amount",String.valueOf( selectedFine.get(0).get_amount()));
-            bundle.putString("paymentID", selectedFine.get(0).get_paymentId());
-            bundle.putString("billID", selectedFine.get(0).get_billId());
-            bundle.putString("city", selectedFine.get(0).get_city());
-            bundle.putString("location", selectedFine.get(0).get_location());
-            bundle.putString("datetime", selectedFine.get(0).get_dateTime());
-            bundle.putString("type", selectedFine.get(0).get_type());
-            bundle.putInt("serviceType", 2);
-
-
-            bottomSheetDialogFragment = Payment.newInstance("Bottom Sheet Payment Dialog");
-            bottomSheetDialogFragment.setArguments(bundle);
-            bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
-
-        } catch (Exception e) {
-            e.toString();
-        }
-
-    }
 
 }

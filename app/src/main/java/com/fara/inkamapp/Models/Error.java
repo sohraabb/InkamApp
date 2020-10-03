@@ -42,7 +42,7 @@ public class Error {
         return _Message;
     }
 
-    public Error(SoapObject input){
+    public Error(SoapObject input) {
         try {
             _Code = input.getPropertySafelyAsString("Code");
             _Message = input.getPropertySafelyAsString("Message");

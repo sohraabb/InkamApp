@@ -30,14 +30,13 @@ import java.util.List;
  * Use the {@link AddPassenger#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddPassenger extends Fragment   {
-    List<Passengers> passengersList;
+public class AddPassenger extends Fragment {
+    private List<Passengers> passengersList;
     private BottomSheetDialogFragment bottomSheetDialogFragment;
 
     public AddPassenger() {
         // Required empty public constructor
     }
-
 
     public AddPassenger newInstance(List<Passengers> passengers) {
         this.passengersList = passengers;
@@ -65,7 +64,7 @@ public class AddPassenger extends Fragment   {
         ImageButton imgBtnAddPassenger = (ImageButton) v.findViewById(R.id.imgBtnAddPassenger);
         imgBtnAddPassenger.setOnClickListener(onClickListener);
         RecyclerView rv = (RecyclerView) v.findViewById(R.id.rc_passenger);
-        passengersList= new ArrayList<>();
+        passengersList = new ArrayList<>();
 
         final PassengersAdapter adapter = new PassengersAdapter(getContext(), passengersList);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -76,19 +75,19 @@ public class AddPassenger extends Fragment   {
 
             }
         });
-        ( (BusTicketSelectionProcess) getActivity()).setOnPassengerListNotifyListener(new BusTicketSelectionProcess.PassengerListNotifyListener() {
+        ((BusTicketSelectionProcess) getActivity()).setOnPassengerListNotifyListener(new BusTicketSelectionProcess.PassengerListNotifyListener() {
             @Override
             public void addToList(Passengers passenger) {
-                if (passengersList == null){
-                    passengersList=new ArrayList<>();
+                if (passengersList == null) {
+                    passengersList = new ArrayList<>();
                 }
                 passengersList.add(passenger);
                 try {
-                   // adapter.setValue(passenger);
+                    // adapter.setValue(passenger);
 
-                   adapter.notifyItemInserted(passengersList.size()-1);
-                }catch (Exception ex){
-                    String s= ex.toString();
+                    adapter.notifyItemInserted(passengersList.size() - 1);
+                } catch (Exception ex) {
+                    String s = ex.toString();
                 }
 
 
@@ -103,10 +102,23 @@ public class AddPassenger extends Fragment   {
             bottomSheetDialogFragment = AddNewPassenger.newInstance("Bottom Sheet Get Money Dialog");
             bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
 
-
         }
     };
 
-
+    public boolean chekNationalCode(String code) {
+        char[] chArray = code.toCharArray();
+        int[] numArray = new int[chArray.length];
+        for (int i = 0; i < chArray.length; i++) {
+            numArray[i] = (int) Character.getNumericValue(chArray[i]);
+        }
+        int num2 = numArray[9];
+        int num3 = ((((((((numArray[0] * 10) + (numArray[1] * 9)) + (numArray[2] * 8)) + (numArray[3] * 7)) + (numArray[4] * 6)) + (numArray[5] * 5)) + (numArray[6] * 4)) + (numArray[7] * 3)) + (numArray[8] * 2);
+        int num4 = num3 - ((num3 / 11) * 11);
+        if ((((num4 == 0) && (num2 == num4)) || ((num4 == 1) && (num2 == 1))) || ((num4 > 1) && (num2 == Math.abs((int) (num4 - 11))))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }

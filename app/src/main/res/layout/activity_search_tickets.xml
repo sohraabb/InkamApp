@@ -45,6 +45,7 @@
             android:background="@drawable/white_rounded_background"
             android:orientation="horizontal"
             android:padding="16dp"
+            android:baselineAligned="false"
             android:weightSum="100"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +57,8 @@
                 android:layout_weight="25">
 
                 <TextView
-                    android:id="@+id/tv_current_location"
+                    android:id="@+id/tv_destination"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -130,7 +132,8 @@
                         android:layout_centerInParent="true"
                         android:text="۲ مسافر "
                         android:textColor="@color/colorBrown"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:visibility="invisible" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -141,7 +144,7 @@
 
 
                 <TextView
-                    android:id="@+id/tv_destination"
+                    android:id="@+id/tv_current_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -155,17 +158,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"
-            android:background="@color/colorWhite"
-            android:visibility="invisible"
+            android:background="@color/colorRed"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ll_ticket_info">
 
-            <androidx.recyclerview.widget.RecyclerView
+            <androidx.viewpager.widget.ViewPager
                 android:id="@+id/rv_time_days"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone" />
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:background="@color/colorWhite" />
         </LinearLayout>
 
 

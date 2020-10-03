@@ -91,6 +91,7 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:layout_margin="8dp"
+            android:maxLength="11"
             android:inputType="phone"
             android:layout_toEndOf="@+id/tv_code_number"
             android:background="@android:color/transparent"

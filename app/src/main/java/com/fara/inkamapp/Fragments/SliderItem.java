@@ -22,28 +22,30 @@ public class SliderItem extends Fragment {
     // prepare all title ids arrays
     @StringRes
     private static final int[] PAGE_TITLES =
-            new int[] { R.string.intro_title_one, R.string.intro_title_two, R.string.intro_title_three};
+            new int[]{R.string.intro_title_one, R.string.intro_title_two, R.string.intro_title_three};
     // prepare all subtitle ids arrays
     @StringRes
     private static final int[] PAGE_TEXT =
-            new int[] {
-                     R.string.empty,R.string.intro_title_two_text, R.string.intro_title_three_text
+            new int[]{
+                    R.string.empty, R.string.intro_title_two_text, R.string.intro_title_three_text
             };
     // prepare all subtitle images arrays
     @StringRes
     private static final int[] PAGE_IMAGE =
-            new int[] {
+            new int[]{
                     R.drawable.logo_text_p, R.drawable.intro_two_p, R.drawable.intro_three_p
             };
     // prepare all background images arrays
     @StringRes
-    private static final int[] BG_IMAGE = new int[] {
+    private static final int[] BG_IMAGE = new int[]{
             Color.WHITE, Color.WHITE, Color.WHITE
     };
     private int position;
+
     public SliderItem() {
         // Required empty public constructor
     }
+
     /**
      * Use this factory method to create a new instance of
      *
@@ -56,6 +58,7 @@ public class SliderItem extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,13 +66,16 @@ public class SliderItem extends Fragment {
             position = getArguments().getInt(ARG_POSITION);
         }
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_slider_items, container, false);
     }
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP) @Override
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // set page background

@@ -16,6 +16,7 @@ public class NotificationList {
     private boolean _status;
     private Date _dateTime;
     private String _persianDateTIme;
+    private int _unRead;
 
 
     public void set_id(String _id) {
@@ -74,6 +75,15 @@ public class NotificationList {
         return _status;
     }
 
+    public void set_unRead(int _unRead) {
+        this._unRead = _unRead;
+    }
+
+    public int get_unRead() {
+        return _unRead;
+    }
+
+
     public NotificationList(SoapObject input) {
         try {
             _id = input.getPropertySafelyAsString("ID");
@@ -90,6 +100,7 @@ public class NotificationList {
             }
 
             _persianDateTIme = input.getPropertySafelyAsString("DatetimePersian");
+            _unRead = Integer.parseInt(input.getPropertySafelyAsString("UnRead"));
 
         } catch (Exception e) {
             Log.e("CheckCode Soap", e.toString());

@@ -40,11 +40,11 @@
         <RelativeLayout
             android:id="@+id/rl_add_card"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_height="220dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:background="@drawable/gray_rounded_background"
+            android:layout_marginEnd="16dp"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_wallet">
@@ -53,15 +53,18 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_percentage_code"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:visibility="visible" />
 
             <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
                 android:id="@+id/indicator"
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_below="@+id/rv_percentage_code"
+                android:layout_alignParentBottom="true"
+                app:spi_dotSelectedColor="@color/colorDotGray"
+                app:spi_dotColor="@color/colorMainGreen"
+                android:layout_marginTop="8dp"
                 android:visibility="visible"/>
 
         </RelativeLayout>

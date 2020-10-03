@@ -118,11 +118,16 @@ public class FourDigitCardFormatWatcher implements TextWatcher {
             } else if (BankRegix.isGharzolHasaneMehrIran(et_filed.getText().toString().replaceAll("(?<=\\d) +(?=\\d)", ""))) {
                 card_background.setBackgroundResource(R.drawable.gharzol_hasane_mehr_iran_bank_back);
                 bank_logo.setImageResource(R.drawable.ic_gharzol_hasane_mehr_bank_logo);
+
+//            else if (BankRegix.isTaat(et_filed.getText().toString().replaceAll("(?<=\\d) +(?=\\d)", ""))) {
+//                card_background.setBackgroundResource(R.drawable.gharzol_hasane_mehr_iran_bank_back);
+//                bank_logo.setImageResource(R.drawable.bank_tat_pec);
             } else {
                 card_background.setBackgroundResource(R.drawable.gray_rounded_background);
                 bank_logo.setImageResource(R.drawable.empty_oval);
             }
         }
+
 
     }
 

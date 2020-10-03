@@ -33,7 +33,7 @@ public class BusCities {
         return _englishName;
     }
 
-    public BusCities(SoapObject input){
+    public BusCities(SoapObject input) {
         try {
             _id = input.getPropertySafelyAsString("ID");
             _name = input.getPropertySafelyAsString("Name");

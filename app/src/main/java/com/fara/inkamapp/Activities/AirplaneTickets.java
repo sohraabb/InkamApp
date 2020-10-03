@@ -17,6 +17,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,7 +56,7 @@ import static com.fara.inkamapp.Activities.LoginInkam.publicKey;
 
 public class AirplaneTickets extends AppCompatActivity implements
         com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog.OnDateSetListener,
-AirportCityAdapter.CityCustomListener{
+        AirportCityAdapter.CityCustomListener {
 
     private Button search;
     private TextView toastText;
@@ -63,7 +64,7 @@ AirportCityAdapter.CityCustomListener{
     private AutoCompleteTextView sourceLocation;
     private AutoCompleteTextView destination;
     private String destinationID;
-    private String sourceID;
+    private String sourceID, fightType;
     private CityAdapter sourceAdapter;
     private CityAdapter destinationAdapter;
     private EditText et_date_leave;
@@ -73,6 +74,7 @@ AirportCityAdapter.CityCustomListener{
     private ImageView ivBackForth;
     private String token, userID, encryptedToken, AesKey, dataToConfirm;
     private SharedPreferences sharedpreferences;
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -92,24 +94,73 @@ AirportCityAdapter.CityCustomListener{
                 .build());
 
         setContentView(R.layout.activity_air_plane_tickets);
+        initVariables();
 
+        new GetCities().execute();
 
-        sourceLocation = (AutoCompleteTextView) findViewById(R.id.et_your_location);
-        destination = (AutoCompleteTextView) findViewById(R.id.et_your_destination);
-        et_date_leave = (EditText) findViewById(R.id.et_date_leave);
-        et_date_return = (EditText) findViewById(R.id.et_date_return);
-        ivBackForth = (ImageView) findViewById(R.id.iv_back_forth);
-        ivBackForth.setOnClickListener(new View.OnClickListener() {
+    }
+
+    private void initVariables() {
+        sourceLocation = findViewById(R.id.et_your_location);
+        destination = findViewById(R.id.et_your_destination);
+        et_date_leave = findViewById(R.id.et_date_leave);
+        et_date_return = findViewById(R.id.et_date_return);
+        ivBackForth = findViewById(R.id.iv_back_forth);
+        search = findViewById(R.id.btn_search);
+        RelativeLayout rlChange = findViewById(R.id.rl_change);
+        final TextView tvLeaveReturn = findViewById(R.id.tv_leave_return);
+        final TextView tvLeave = findViewById(R.id.tv_leave);
+
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        token = sharedpreferences.getString("Token", null);
+        userID = sharedpreferences.getString("UserID", null);
+        AesKey = sharedpreferences.getString("key", null);
+        try {
+            encryptedToken = Base64.encode((RSA.encrypt(token, publicKey)));
+        } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        fightType = "1";
+        et_date_leave.setInputType(InputType.TYPE_NULL);
+
+        tvLeaveReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tvLeaveReturn.setBackgroundResource(R.drawable.button_background_green);
+                tvLeave.setTextColor(getResources().getColor(R.color.colorBrown));
+                tvLeave.setBackgroundResource(0);
+                tvLeaveReturn.setTextColor(getResources().getColor(R.color.colorWhite));
+                et_date_return.setVisibility(View.VISIBLE);
+                fightType = "2";
+            }
+        });
+        et_date_return.setVisibility(View.INVISIBLE);
+        tvLeave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tvLeave.setBackgroundResource(R.drawable.button_background_green);
+                tvLeave.setTextColor(getResources().getColor(R.color.colorWhite));
+                tvLeaveReturn.setTextColor(getResources().getColor(R.color.colorBrown));
+                tvLeaveReturn.setBackgroundResource(0);
+                fightType = "1";
+                et_date_return.setVisibility(View.INVISIBLE);
+            }
+        });
+        rlChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String temp = "";
+                String tmp = "";
+                tmp = sourceID;
                 temp = sourceLocation.getText().toString();
                 sourceLocation.setText(destination.getText().toString());
                 destination.setText(temp);
+
+                sourceID = destinationID;
+                destinationID = tmp;
             }
         });
-        et_date_leave.setInputType(InputType.TYPE_NULL);
-
 
         et_date_leave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,25 +180,7 @@ AirportCityAdapter.CityCustomListener{
 
             }
         });
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        token = sharedpreferences.getString("Token", null);
-        userID = sharedpreferences.getString("UserID", null);
-        AesKey = sharedpreferences.getString("key", null);
-        try {
-            encryptedToken = Base64.encode((RSA.encrypt(token, publicKey)));
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        search = findViewById(R.id.btn_search);
-        new GetCities().execute();
+
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -171,19 +204,25 @@ AirportCityAdapter.CityCustomListener{
                 intent.putExtra("to", destinationID);
                 intent.putExtra("fromName", sourceLocation.getText().toString());
                 intent.putExtra("toName", destination.getText().toString());
-                intent.putExtra("date", fromDate);
+                intent.putExtra("date", fromDate.split(" ")[0]);
+                if (fightType.equals("2")) {
+                    String returnDate = DateConverter.Convert_Shamsi_To_Miladi_Date(et_date_return.getText().toString(), 0, 0);
+                    intent.putExtra("returnDate", returnDate.split(" ")[0]);
+                }
+
+                intent.putExtra("flightType", fightType);
 
                 startActivity(intent);
 //                new BookBusTicket().execute();
 
             }
         });
+
     }
 
     private boolean isNetworkAvailable() {
         return FaraNetwork.isNetworkAvailable(getApplicationContext());
     }
-
 
     public void showCalendar() {
         //  Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/IRANYekanRegular.ttf");
@@ -213,7 +252,7 @@ AirportCityAdapter.CityCustomListener{
 
     @Override
     public void customOnItemClick(String key) {
-        sourceID=key;
+        sourceID = key;
     }
 
     private class GetCities extends AsyncTask<Void, Void, Map<String, String>> {
@@ -251,7 +290,7 @@ AirportCityAdapter.CityCustomListener{
         protected void onPostExecute(Map<String, String> cityList) {
             super.onPostExecute(cityList);
             //TODO we should add other items here too
-            if (cityList !=null&&cityList.isEmpty()) {
+            if (cityList != null && cityList.isEmpty()) {
 
                 Toast toast = Toast.makeText(getApplicationContext(), R.string.try_again, Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0, 0);
@@ -267,25 +306,24 @@ AirportCityAdapter.CityCustomListener{
                 toast.show();
             } else {
                 try {
-List<City> list= new ArrayList<>();
+                    List<City> list = new ArrayList<>();
 
-                    for (String items:cityList.keySet()) {
-                        City city= new City();
+                    for (String items : cityList.keySet()) {
+                        City city = new City();
                         city.set_id(items);
                         city.set_name(cityList.get(items));
                         list.add(city);
                     }
 
-                    sourceAdapter = new CityAdapter(getApplicationContext(),  list);
+                    sourceAdapter = new CityAdapter(getApplicationContext(), list);
                     sourceLocation.setAdapter(sourceAdapter);
                     sourceLocation.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-
-
-                            City city = (City) sourceAdapter.getItem(i);
-                            sourceID = city.get_id();
+                            City city = sourceAdapter.getItem(i);
+                            if (city != null)
+                                sourceID = city.get_id();
 
                         }
                     });
@@ -294,8 +332,9 @@ List<City> list= new ArrayList<>();
                     destination.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            City city = (City) sourceAdapter.getItem(i);
-                            destinationID = city.get_id();
+                            City city = sourceAdapter.getItem(i);
+                            if (city != null)
+                                destinationID = city.get_id();
                         }
                     });
                 } catch (Exception e) {

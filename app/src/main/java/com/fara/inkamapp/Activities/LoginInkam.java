@@ -51,7 +51,6 @@ public class LoginInkam extends HideKeyboard {
     private loginVerification _loginVerification;
     private ProgressBar loadingProgress;
 
-
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
@@ -73,6 +72,26 @@ public class LoginInkam extends HideKeyboard {
         initVariables();
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupUI(findViewById(R.id.parent));
+        phoneNumber.setText("");
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (_checkUsername != null) {
+            _checkUsername.cancel(true);
+        }
+        if (_loginVerification != null) {
+            _loginVerification.cancel(true);
+        }
     }
 
     private void initVariables() {
@@ -151,13 +170,12 @@ public class LoginInkam extends HideKeyboard {
 
             // Sohrab : please check this with RegularExpression Later
 
-//            !phone.matches("(\\+98|0)?9\\d{9}")
+            // !phone.matches("(\\+98|0)?9\\d{9}")
 
             if (phoneNumber.getText().toString().startsWith("0"))
                 phone = phoneNumber.getText().toString();
             else if (!phoneNumber.getText().toString().startsWith("0"))
                 phone = preCodeNumber + phoneNumber.getText().toString();
-
         }
 
         @Override
@@ -268,23 +286,5 @@ public class LoginInkam extends HideKeyboard {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setupUI(findViewById(R.id.parent));
-        phoneNumber.setText("");
 
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (_checkUsername != null) {
-            _checkUsername.cancel(true);
-        }
-        if (_loginVerification != null) {
-            _loginVerification.cancel(true);
-        }
-    }
 }

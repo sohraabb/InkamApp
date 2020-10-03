@@ -13,7 +13,10 @@ import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import android.os.CountDownTimer;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -36,7 +39,7 @@ public class SmsVerification extends AppCompatActivity {
 
     private static final String LOG_TAG = "Agha_Sori";
     private VerificationCodeView smsCodeView;
-    private TextView toastText, sendCode;
+    private TextView toastText, sendCode, timer;
     private String phoneNumber, code;
 
 
@@ -59,14 +62,33 @@ public class SmsVerification extends AppCompatActivity {
 
         setContentView(R.layout.activity_sms_verification);
 
+        initVariables();
+
+    }
+
+    private void initVariables() {
         smsCodeView = findViewById(R.id.et_sms_verification);
         sendCode = findViewById(R.id.btn_send_code_again);
+        timer = findViewById(R.id.tv_send_code_again);
 
         smsCodeView.setmEtWidth(100);
 
         Bundle intent = getIntent().getExtras();
 
         phoneNumber = intent.getString("phoneNumber");
+
+        new CountDownTimer(60000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                timer.setText(Numbers.ToPersianNumbers(String.valueOf(millisUntilFinished / 1000)));
+                timer.setEnabled(false);
+            }
+
+            public void onFinish() {
+
+            }
+
+        }.start();
 
         sendCode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +125,20 @@ public class SmsVerification extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 100:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //Permission Granted
+                } else {
+                    //Permission Not Granted
+                    Toast.makeText(getApplicationContext(), "Permission not granted", Toast.LENGTH_SHORT).show();
+                }
+        }
+    }
+
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -110,7 +146,7 @@ public class SmsVerification extends AppCompatActivity {
                 final String message = intent.getStringExtra("message");
                 // message is the fetching OTP
                 if (message.length() == 4) {
-                    smsCodeView.onTextChanged(message,0,0,4);
+                    smsCodeView.onTextChanged(message, 0, 0, 4);
 
 //                    smsCodeView.setText(message);
 //                    checkButton.performClick();
@@ -146,10 +182,10 @@ public class SmsVerification extends AppCompatActivity {
 
             if (isCorrect != null) {
 //                if (isCorrect) {
-                    Intent intent = new Intent(getApplicationContext(), CompleteProfile.class);
-                    intent.putExtra("phone", phoneNumber);
-                    startActivity(intent);
-                    finish();
+                Intent intent = new Intent(getApplicationContext(), CompleteProfile.class);
+                intent.putExtra("phone", phoneNumber);
+                startActivity(intent);
+                finish();
 
 //                }
 //            else {
@@ -246,18 +282,5 @@ public class SmsVerification extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case 100:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //Permission Granted
-                } else {
-                    //Permission Not Granted
-                    Toast.makeText(getApplicationContext(), "Permission not granted", Toast.LENGTH_SHORT).show();
-                }
-        }
-    }
 
 }

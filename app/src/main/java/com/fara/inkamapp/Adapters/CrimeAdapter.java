@@ -1,6 +1,7 @@
 package com.fara.inkamapp.Adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,16 +39,13 @@ public class CrimeAdapter extends RecyclerView.Adapter<CrimeAdapter.ViewHolder> 
     private CarFinesParameters _CarFinesParameters;
     private LayoutInflater mInflater;
 
-    private List<RelativeLayout> allView;
     private ItemClickListener mClickListener;
     private Context context;
-    private static boolean getAll;
 
     public CrimeAdapter(Context _context, CarFinesParameters _CarFinesParameters) {
         this.mInflater = LayoutInflater.from(_context);
         this._CarFinesParameters = _CarFinesParameters;
         this.context = _context;
-        allView = new ArrayList<>();
 
     }
 
@@ -102,7 +100,10 @@ public class CrimeAdapter extends RecyclerView.Adapter<CrimeAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView tv_crime_time, tv_crime_select, tv_crime_date, tv_crime_type_value, tv_crime_city, tv_place_violation, tv_violation_code, tv_crime_serial, tv_plate_number, tv_explain_violation, tv_amount;
+        private TextView tv_crime_time, tv_crime_select, tv_crime_date, tv_crime_type_value, tv_crime_city,
+                tv_place_violation, tv_violation_code, tv_crime_serial, tv_plate_number, tv_explain_violation, tv_amount,
+                tv_crime_type_title, tv_crime_city_title, tv_place_violation_title,tv_plate_number_title,tv_explain_violation_title, tv_amount_rial,
+                tv_violation_code_title, tv_crime_serial_title;
         private RelativeLayout rl_crime_select;
 
 
@@ -115,22 +116,47 @@ public class CrimeAdapter extends RecyclerView.Adapter<CrimeAdapter.ViewHolder> 
                 tv_place_violation = itemView.findViewById(R.id.tv_place_violation);
                 tv_violation_code = itemView.findViewById(R.id.tv_violation_code);
                 tv_crime_serial = itemView.findViewById(R.id.tv_crime_serial);
-
                 tv_plate_number = itemView.findViewById(R.id.tv_plate_number);
                 tv_explain_violation = itemView.findViewById(R.id.tv_explain_violation);
                 rl_crime_select = itemView.findViewById(R.id.rl_crime_select);
                 tv_amount = itemView.findViewById(R.id.tv_amount);
                 tv_crime_select = itemView.findViewById(R.id.tv_crime_select);
                 tv_crime_time = itemView.findViewById(R.id.tv_crime_time);
+                tv_crime_type_title = itemView.findViewById(R.id.tv_crime_type_title);
+                tv_crime_city_title = itemView.findViewById(R.id.tv_crime_city_title);
+                tv_place_violation_title = itemView.findViewById(R.id.tv_place_violation_title);
+                tv_plate_number_title = itemView.findViewById(R.id.tv_plate_number_title);
+                tv_explain_violation_title = itemView.findViewById(R.id.tv_explain_violation_title);
+                tv_amount_rial = itemView.findViewById(R.id.tv_amount_rial);
+                tv_violation_code_title = itemView.findViewById(R.id.tv_violation_code_title);
+                tv_crime_serial_title = itemView.findViewById(R.id.tv_crime_serial_title);
 
-                rl_crime_select.setBackgroundResource(R.drawable.green_stroke_background);
-                tv_crime_select.setTextColor(context.getResources().getColor(R.color.colorMainGreen));
-                if (getAll) {
-                    rl_crime_select.setBackgroundResource(R.drawable.green_rounded_background);
-                    tv_crime_select.setTextColor(context.getResources().getColor(R.color.colorWhite));
+                Typeface typeface = Typeface.createFromAsset(context.getAssets(),
+                        "fonts/IRANSansMobile.ttf");
+                tv_crime_type_value.setTypeface(typeface);
+                tv_crime_date.setTypeface(typeface);
+                tv_crime_city.setTypeface(typeface);
+                tv_place_violation.setTypeface(typeface);
+                tv_violation_code.setTypeface(typeface);
+                tv_crime_serial.setTypeface(typeface);
+                tv_plate_number.setTypeface(typeface);
+                tv_explain_violation.setTypeface(typeface);
+                tv_amount.setTypeface(typeface);
+                tv_crime_select.setTypeface(typeface);
+                tv_crime_time.setTypeface(typeface);
+                tv_crime_type_title.setTypeface(typeface);
+                tv_crime_city_title.setTypeface(typeface);
+                tv_place_violation_title.setTypeface(typeface);
+                tv_plate_number_title.setTypeface(typeface);
+                tv_explain_violation_title.setTypeface(typeface);
+                tv_amount_rial.setTypeface(typeface);
+                tv_crime_serial_title.setTypeface(typeface);
 
-                }
-                allView.add(rl_crime_select);
+
+
+//                rl_crime_select.setBackgroundResource(R.drawable.green_stroke_background);
+//                tv_crime_select.setTextColor(context.getResources().getColor(R.color.colorMainGreen));
+
                 rl_crime_select.setOnClickListener(this);
             } catch (Exception e) {
                 e.toString();
@@ -140,15 +166,15 @@ public class CrimeAdapter extends RecyclerView.Adapter<CrimeAdapter.ViewHolder> 
         @Override
         public void onClick(View view) {
 
-            if (rl_crime_select.getTag()!=null&&(int)rl_crime_select.getTag()==1) {
-                rl_crime_select.setBackgroundResource(R.drawable.green_stroke_background);
-                tv_crime_select.setTextColor(context.getResources().getColor(R.color.colorMainGreen));
-                rl_crime_select.setTag(-1);
-            } else {
-                rl_crime_select.setBackgroundResource(R.drawable.green_rounded_background);
-                tv_crime_select.setTextColor(context.getResources().getColor(R.color.colorWhite));
-                rl_crime_select.setTag(1);
-            }
+//            if (rl_crime_select.getTag()!=null&&(int)rl_crime_select.getTag()==1) {
+//                rl_crime_select.setBackgroundResource(R.drawable.green_stroke_background);
+//                tv_crime_select.setTextColor(context.getResources().getColor(R.color.colorMainGreen));
+//                rl_crime_select.setTag(-1);
+//            } else {
+//                rl_crime_select.setBackgroundResource(R.drawable.green_rounded_background);
+//                tv_crime_select.setTextColor(context.getResources().getColor(R.color.colorWhite));
+//                rl_crime_select.setTag(1);
+//            }
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
     }
@@ -161,29 +187,7 @@ public class CrimeAdapter extends RecyclerView.Adapter<CrimeAdapter.ViewHolder> 
         this.mClickListener = itemClickListener;
     }
 
-    public void selectAll(Boolean all) {
-        try {
 
 
-
-            for (int i = 0; i < allView.size(); i++) {
-                if (all) {
-                    getAll=false;
-                    allView.get(i).setTag(-1);
-                    allView.get(i).setBackgroundResource(R.drawable.green_stroke_background);
-                    ((TextView) allView.get(i).getChildAt(1)).setTextColor(context.getResources().getColor(R.color.colorMainGreen));
-
-                }else {
-                    getAll = true;
-                    allView.get(i).setTag(1);
-                    allView.get(i).setBackgroundResource(R.drawable.green_rounded_background);
-                    ((TextView) allView.get(i).getChildAt(1)).setTextColor(context.getResources().getColor(R.color.colorWhite));
-                }
-            }
-            notifyDataSetChanged();
-        } catch (Exception e) {
-            e.toString();
-        }
-    }
 
 }

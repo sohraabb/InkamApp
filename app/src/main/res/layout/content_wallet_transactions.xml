@@ -79,6 +79,7 @@ tools:context=".Activities.WalletTransactions">
         android:background="@android:color/transparent"
         android:hint="@string/search"
         android:maxLines="1"
+        android:inputType="text"
         android:imeOptions="actionDone"
         android:padding="16dp"
         android:textColor="@color/colorBrown"

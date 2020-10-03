@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.InvalidParameterSpecException;
 import java.util.Random;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -16,8 +17,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class AESEncyption {
 
-    public static byte[] sohrabGeneratesAESKey(int keyLength){
-        byte [] key = new byte[keyLength];
+    public static byte[] sohrabGeneratesAESKey(int keyLength) {
+        byte[] key = new byte[keyLength];
         Random rd = new Random();
 
         rd.nextBytes(key);

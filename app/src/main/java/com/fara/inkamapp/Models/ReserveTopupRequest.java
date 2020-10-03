@@ -359,11 +359,12 @@ public class ReserveTopupRequest {
             _token = input.getPropertySafelyAsString("Token");
             _pinList = input.getPropertySafelyAsString("PinList");
             _date = input.getPropertySafelyAsString("Date");
+
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-               // _date = formatter.parse(input.getPropertySafelyAsString("Date"));
+                // _date = formatter.parse(input.getPropertySafelyAsString("Date"));
             } catch (Exception ex) {
-               // _date = new Date();
+                // _date = new Date();
             }
         } catch (Exception e) {
             Log.e("Charge Soap", e.toString());

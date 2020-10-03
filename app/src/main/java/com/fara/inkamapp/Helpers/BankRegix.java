@@ -95,16 +95,20 @@ public class BankRegix {
         return m.matches();
     }
 
-    public static boolean isTaat(String input) {
-        Pattern p = Pattern.compile("[6][3][6][2][1][4]");
-        Matcher m = p.matcher(input);
-        return m.matches();
-    }
+//    public static boolean isTaat(String input) {
+//        Pattern p = Pattern.compile("[6][3][6][2][1][4]");
+//        Matcher m = p.matcher(input);
+//        return m.matches();
+//    }
 
     public static boolean isShahr(String input) {
         Pattern p = Pattern.compile("[5][0][2][8][0][6]");
+        Pattern p2 = Pattern.compile("[5][0][4][7][0][6]");
+
         Matcher m = p.matcher(input);
-        return m.matches();
+        Matcher m2 = p2.matcher(input);
+
+        return m.matches() || m2.matches();
     }
 
     public static boolean isDey(String input) {

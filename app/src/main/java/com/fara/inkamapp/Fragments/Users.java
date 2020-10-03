@@ -1,5 +1,6 @@
 package com.fara.inkamapp.Fragments;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fara.inkamapp.Activities.MainActivity;
+import com.fara.inkamapp.Activities.UsersList;
+import com.fara.inkamapp.Adapters.AllUserCardsAdapter;
 import com.fara.inkamapp.Adapters.UserDetailsAdapter;
 import com.fara.inkamapp.BottomSheetFragments.NewID;
 import com.fara.inkamapp.Helpers.FaraNetwork;
@@ -34,11 +38,13 @@ import ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator;
 
 public class Users extends Fragment {
 
-    private TextView new_ID, toastText,tv_your_income_from_users,tv_users_number;
+    private TextView new_ID, toastText, tv_your_income_from_users, tv_users_number;
     private BottomSheetDialogFragment bottomSheetDialogFragment;
     private UserDetailsAdapter mAdapter;
     private RecyclerView allUsersRecycler;
     private ScrollingPagerIndicator scrollingPagerIndicator;
+    private RelativeLayout users;
+    private int countUsers = 0;
 
     public Users() {
         // Required empty public constructor
@@ -52,8 +58,9 @@ public class Users extends Fragment {
         new_ID = view.findViewById(R.id.tv_id);
         allUsersRecycler = view.findViewById(R.id.rv_percentage_code);
         scrollingPagerIndicator = view.findViewById(R.id.indicator);
-        tv_your_income_from_users=view.findViewById(R.id.tv_your_income_from_users);
-        tv_users_number=view.findViewById(R.id.tv_users_number);
+        tv_your_income_from_users = view.findViewById(R.id.tv_your_income_from_users);
+        tv_users_number = view.findViewById(R.id.tv_users_number);
+        users = view.findViewById(R.id.users_number);
         bottomSheetDialogFragment = NewID.newInstance("Bottom Sheet Dialog");
 
         new_ID.setOnClickListener(new View.OnClickListener() {
@@ -65,16 +72,31 @@ public class Users extends Fragment {
             }
         });
 
+        users.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (countUsers > 0) {
+                    Intent intent = new Intent(getActivity(), UsersList.class);
+                    startActivity(intent);
+                }
+            }
+        });
+
 
         new getAllPercentageCodes().execute();
         new getUserWallet().execute();
         return view;
     }
 
+    public void RefreshID() {
+
+        new getAllPercentageCodes().execute();
+    }
+
     private boolean isNetworkAvailable() {
         return FaraNetwork.isNetworkAvailable(getActivity());
     }
-
 
     private class getAllPercentageCodes extends AsyncTask<Void, Void, ArrayList<PercentageCode>> {
 
@@ -120,7 +142,7 @@ public class Users extends Fragment {
                 mAdapter = new UserDetailsAdapter(getActivity(), percentageCodes);
                 allUsersRecycler.setAdapter(mAdapter);
 
-                scrollingPagerIndicator.attachToRecyclerView(allUsersRecycler);
+                scrollingPagerIndicator.attachToRecyclerView(allUsersRecycler, percentageCodes.size());
 
             } else {
                 Toast toast = Toast.makeText(getActivity(), R.string.try_again, Toast.LENGTH_SHORT);
@@ -139,6 +161,7 @@ public class Users extends Fragment {
 
         }
     }
+
     private class getUserWallet extends AsyncTask<Void, Void, User> {
 
         User results = null;
@@ -179,7 +202,9 @@ public class Users extends Fragment {
                 NumberFormat formatter = new DecimalFormat("#,###");
                 String formattedNumber = formatter.format(Double.valueOf(userWallet.getIncome()));
                 tv_your_income_from_users.setText(Numbers.ToPersianNumbers(String.valueOf(formattedNumber)));
-                tv_users_number.setText(Numbers.ToPersianNumbers(String.valueOf(formatter.format(userWallet.getUserCount())))+" نفر ");
+                tv_users_number.setText(Numbers.ToPersianNumbers(String.valueOf(formatter.format(userWallet.getUserCount()))) + " نفر ");
+
+                countUsers = userWallet.getUserCount();
                 //tvIncom.setText(Numbers.ToPersianNumbers(String.valueOf(formatter.format(userWallet.get_income()))));
 
             } else {

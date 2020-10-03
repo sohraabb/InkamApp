@@ -5,10 +5,11 @@ import android.util.Log;
 import org.ksoap2.serialization.SoapObject;
 
 public class BoardingPoint {
-    private String City ;
-    private String Terminal ;
-    private AdditionalInfo AdditionalInfo ;
-    public BoardingPoint(SoapObject input){
+    private String City;
+    private String Terminal;
+    private AdditionalInfo AdditionalInfo;
+
+    public BoardingPoint(SoapObject input) {
         try {
             City = input.getPropertySafelyAsString("City");
             Terminal = input.getPropertySafelyAsString("Terminal");
@@ -19,6 +20,7 @@ public class BoardingPoint {
         }
 
     }
+
     public String getCity() {
         return City;
     }

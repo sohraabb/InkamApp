@@ -56,15 +56,15 @@ public class Contacts extends AppCompatActivity {
         setContentView(R.layout.activity_contacts);
 
         contactsRecycler = findViewById(R.id.rv_contacts);
-
         back = findViewById(R.id.ib_back);
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
             }
         });
+
+        new GetAllContacts().execute();
 
     }
 
@@ -98,7 +98,7 @@ public class Contacts extends AppCompatActivity {
 
         @Override
         protected ArrayList<ContactList> doInBackground(Void... params) {
-            results = new Caller().getAllContacts("2A78AB62-53C9-48B3-9D20-D7EE33337E86", "9368FD3E-7650-4C43-8245-EF33F4743A00");
+            results = new Caller().getAllContacts(MainActivity._userId, MainActivity._token);
 
             return results;
         }
@@ -132,6 +132,5 @@ public class Contacts extends AppCompatActivity {
 
         }
     }
-
 
 }

@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.BusTicketSelectionProcess"
-    android:background="@color/colorMainBackgroundColor"
-    >
+    android:background="@color/colorMainBackgroundColor">
     <RelativeLayout
         android:id="@+id/r4_header"
         android:layout_width="match_parent"
@@ -46,6 +45,7 @@
         android:layout_height="70dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
+        android:baselineAligned="false"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

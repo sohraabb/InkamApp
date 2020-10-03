@@ -8,22 +8,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Financial {
-    private int Price ;
-    private float MaxApplicableDiscountPercentage ;
-    private List<String> AvailablePaymentMethods ;
-    private float CommissionPercentage ;
-    public Financial(SoapObject input){
+    private int Price;
+    private float MaxApplicableDiscountPercentage;
+    private List<String> AvailablePaymentMethods;
+    private float CommissionPercentage;
+
+    public Financial(SoapObject input) {
         try {
-            AvailablePaymentMethods=new ArrayList<>();
-            Price = Integer.parseInt( input.getPropertySafelyAsString("Price"));
-            MaxApplicableDiscountPercentage =Float.valueOf( input.getPropertySafelyAsString("MaxApplicableDiscountPercentage"));
-            CommissionPercentage =Float.valueOf( input.getPropertySafelyAsString("CommissionPercentage"));
+            AvailablePaymentMethods = new ArrayList<>();
+            Price = Integer.parseInt(input.getPropertySafelyAsString("Price"));
+            MaxApplicableDiscountPercentage = Float.valueOf(input.getPropertySafelyAsString("MaxApplicableDiscountPercentage"));
+            CommissionPercentage = Float.valueOf(input.getPropertySafelyAsString("CommissionPercentage"));
             AvailablePaymentMethods.add(input.getPropertySafelyAsString("AvailablePaymentMethods"));
         } catch (Exception e) {
             Log.e("CheckCode Soap", e.toString());
         }
 
     }
+
     public int getPrice() {
         return Price;
     }

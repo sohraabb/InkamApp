@@ -5,16 +5,20 @@ import com.fara.inkamapp.WebServices.Soap;
 import org.ksoap2.serialization.SoapObject;
 
 public class BusSeate {
-    private String Number ;
-    private String Column ;
-    private String Row ;
-    private String Status ;
+    private String Number;
+    private String Column;
+    private String Row;
+    private String Status;
 
     public BusSeate(SoapObject input) {
-        Number = input.getPropertySafelyAsString("Number");;
-        Column = input.getPropertySafelyAsString("Column");;
-        Row = input.getPropertySafelyAsString("Row");;
-        Status = input.getPropertySafelyAsString("Status");;
+        Number = input.getPropertySafelyAsString("Number");
+        ;
+        Column = input.getPropertySafelyAsString("Column");
+        ;
+        Row = input.getPropertySafelyAsString("Row");
+        ;
+        Status = input.getPropertySafelyAsString("Status");
+        ;
     }
 
     public String getNumber() {

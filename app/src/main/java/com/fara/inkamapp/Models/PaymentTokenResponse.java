@@ -3,8 +3,8 @@ package com.fara.inkamapp.Models;
 import java.util.Date;
 
 public class PaymentTokenResponse {
-    public String Token ;
-    public Date ExpireDate ;
+    public String Token;
+    public Date ExpireDate;
 
     public void setExpireDate(Date expireDate) {
         ExpireDate = expireDate;

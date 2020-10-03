@@ -39,8 +39,7 @@ public class PackagesDataPlan {
     }
 
     public void set_priceWithoutTax(double _priceWithoutTax) {
-        this._priceWithoutTax = _priceWithoutTax;
-    }
+        this._priceWithoutTax = _priceWithoutTax; }
 
     public void set_priceWithTax(double _priceWithTax) {
         this._priceWithTax = _priceWithTax;

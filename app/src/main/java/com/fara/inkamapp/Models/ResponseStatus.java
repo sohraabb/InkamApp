@@ -4,11 +4,14 @@ import android.util.Log;
 
 import org.ksoap2.serialization.SoapObject;
 
+import java.util.List;
+
 public class ResponseStatus {
 
     private String _id;
     private String _message;
     private String _status;
+    private List<Integer> userID, userID2;
 
     public void set_id(String _id) {
         this._id = _id;
@@ -33,6 +36,8 @@ public class ResponseStatus {
     public String get_status() {
         return _status;
     }
+
+
 
     public ResponseStatus(SoapObject input) {
 

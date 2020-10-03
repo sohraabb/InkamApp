@@ -5,9 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -22,26 +20,23 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.fara.inkamapp.Activities.BusTicketSelectionProcess;
-import com.fara.inkamapp.Activities.BuyCharge2;
-import com.fara.inkamapp.Activities.BuyPackages;
 import com.fara.inkamapp.Activities.BuyResult;
-import com.fara.inkamapp.Activities.FinalPayment;
-import com.fara.inkamapp.Activities.PhoneDebtPayment;
-import com.fara.inkamapp.Dialogs.SubmitShebaNumber;
-import com.fara.inkamapp.Dialogs.SuccessTransfer;
 import com.fara.inkamapp.Helpers.AESEncyption;
 import com.fara.inkamapp.Helpers.Base64;
 import com.fara.inkamapp.Helpers.FaraNetwork;
+import com.fara.inkamapp.Helpers.JalaliCalendar;
+import com.fara.inkamapp.Helpers.JavaSource_Calendar;
 import com.fara.inkamapp.Helpers.Numbers;
 import com.fara.inkamapp.Helpers.RSA;
+import com.fara.inkamapp.Models.AirplainModels.AirReservation;
+import com.fara.inkamapp.Models.AirplainModels.AirReservationRequest;
+import com.fara.inkamapp.Models.ApproveInternetPackage;
 import com.fara.inkamapp.Models.BookTicket;
 import com.fara.inkamapp.Models.BusContact;
 import com.fara.inkamapp.Models.Passengers;
 import com.fara.inkamapp.Models.PayInfo;
 import com.fara.inkamapp.Models.PaymentResult;
 import com.fara.inkamapp.Models.ReserveTopupRequest;
-import com.fara.inkamapp.Models.ServiceBillInfo;
 import com.fara.inkamapp.Models.TicketToBook;
 import com.fara.inkamapp.Models.UserWallet;
 import com.fara.inkamapp.Models.WalletCredit;
@@ -49,6 +44,7 @@ import com.fara.inkamapp.R;
 import com.fara.inkamapp.WebServices.Caller;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.gson.Gson;
+import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianDateParser;
 import com.top.lib.mpl.view.PaymentInitiator;
 
 import org.json.JSONException;
@@ -59,6 +55,8 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidParameterSpecException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import javax.crypto.BadPaddingException;
@@ -72,19 +70,19 @@ public class Payment extends BottomSheetDialogFragment {
 
     String string;
     private Button walletPay, pay;
-    private String _amountWithTax, _amountWithoutTax, _operator, _type, _phone, _token, _userID, _aesKey, encryptedToken, _orderID, _dataToConfirm,
-            _billID, _paymentID, _term, _plateNumber, _username, _describe, _city, _location, _datetime, _busID, _destinationID, _departureDate, _sourceID;
+    private String _amountWithTax, _amountWithoutTax, _operator, _type, _phone, _token, _userID, _aesKey, encryptedToken, _orderID, _dataToConfirm, amount,
+            _billID, _paymentID, _term, _plateNumber, _username, _describe, _city, _location, _datetime, _busID, _destinationID, _departureDate, _sourceID, dataToConfirm, _dataPlanType;
     private Float _busSummary;
     private ArrayList<Passengers> _passengers;
     private Double _amount;
     private BusContact _contact;
     private ImageView logo;
-    private TextView priceWithTax, price, phoneNumber, toastText;
+    private TextView price, phoneNumber, toastText;
     private SharedPreferences sharedPreferences;
     private JSONObject walletData, payData;
-    private int serviceType;
+    private int serviceType, approveType, chargeKind;
     private long orderID;
-
+    private long mLastClickTime = 0;
 
     public static Payment newInstance(String string) {
         Payment paymentDialog = new Payment();
@@ -99,7 +97,7 @@ public class Payment extends BottomSheetDialogFragment {
         super.onCreate(savedInstanceState);
         string = getArguments().getString("string");
         //bottom sheet round corners can be obtained but the while background appears to remove that we need to add this.
-        setStyle(DialogFragment.STYLE_NO_FRAME, 0);
+        setStyle(BottomSheetDialogFragment.STYLE_NO_FRAME, R.style.CustomBottomSheetDialogTheme);
     }
 
 
@@ -113,7 +111,7 @@ public class Payment extends BottomSheetDialogFragment {
                 false);
 
         price = view.findViewById(R.id.tv_price);
-        priceWithTax = view.findViewById(R.id.tv_price_tax_value);
+//        priceWithTax = view.findViewById(R.id.tv_price_tax_value);
         logo = view.findViewById(R.id.iv_logo);
         phoneNumber = view.findViewById(R.id.tv_phone_number);
         walletPay = view.findViewById(R.id.btn_pay_wallet);
@@ -127,19 +125,25 @@ public class Payment extends BottomSheetDialogFragment {
         pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 switch (serviceType) {
                     case 0:
                         payData = new JSONObject();
                         try {
                             payData.put("Amount", _amountWithTax);
                             payData.put("CellNumbers", Base64.encode(RSA.encrypt(_phone, publicKey)));
-                            payData.put("CellNumber", _phone);
+                            payData.put("CellNumber", _username);
                             payData.put("ChargeType", _type);
                             payData.put("BankId", "08");
                             payData.put("DeviceType", "59");
                             payData.put("Operator", _operator);
+                            payData.put("Merchant", "اینکام");
+                            approveType = 0;
 
-                        } catch (JSONException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+
+                        } catch (JSONException | NoSuchPaddingException | NoSuchAlgorithmException |
+                                InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+
                             e.printStackTrace();
                         }
                         new TopUpRequest().execute();
@@ -157,7 +161,7 @@ public class Payment extends BottomSheetDialogFragment {
                             payData.put("Location", _location);
                             payData.put("PaymentID", _paymentID);
                             payData.put("Type", _type);
-
+                            payData.put("Merchant", "اینکام");
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -170,11 +174,13 @@ public class Payment extends BottomSheetDialogFragment {
                         try {
                             payData.put("Amount", _amountWithTax);
                             payData.put("CellNumbers", Base64.encode(RSA.encrypt(_phone, publicKey)));
-                            payData.put("CellNumber", _phone);
+                            payData.put("CellNumber", _username);
                             payData.put("ChargeType", _type);
                             payData.put("BankId", "08");
                             payData.put("DeviceType", "59");
                             payData.put("Operator", _operator);
+                            payData.put("Merchant", "اینکام");
+                            approveType = 1;
 
                         } catch (JSONException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
                             e.printStackTrace();
@@ -197,6 +203,8 @@ public class Payment extends BottomSheetDialogFragment {
 
                         break;
                     case 6:
+                        //airplane
+                        new AirplaneTicketRequestForApp().execute(getArguments().getString("airplane"));
                         break;
                     case 7:
                         break;
@@ -205,30 +213,32 @@ public class Payment extends BottomSheetDialogFragment {
                         break;
                 }
 
-
             }
         });
 
         walletPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                walletPay.setEnabled(false);
+
                 switch (serviceType) {
                     case 0:
                         walletData = new JSONObject();
                         try {
                             walletData.put("Amount", _amountWithTax);
                             walletData.put("CellNumbers", Base64.encode(RSA.encrypt(_phone, publicKey)));
-                            walletData.put("CellNumber", _phone);
+                            walletData.put("CellNumber", _username);
                             walletData.put("ChargeType", _type);
                             walletData.put("BankId", "08");
                             walletData.put("DeviceType", "59");
                             walletData.put("Operator", _operator);
+                            walletData.put("Merchant", "اینکام");
 
                         } catch (JSONException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
                             e.printStackTrace();
                         }
 
-                        new TopUpRequestForWallet(0).execute();
+                        new TopUpRequestForWallet(chargeKind).execute();
 
                         break;
                     case 1:
@@ -242,6 +252,7 @@ public class Payment extends BottomSheetDialogFragment {
                             walletData.put("Location", _location);
                             walletData.put("PaymentID", _paymentID);
                             walletData.put("Type", _type);
+                            walletData.put("Merchant", "اینکام");
 
 
                         } catch (JSONException e) {
@@ -260,6 +271,7 @@ public class Payment extends BottomSheetDialogFragment {
                             walletData.put("Location", _location);
                             walletData.put("PaymentID", _paymentID);
                             walletData.put("Type", _type);
+                            walletData.put("Merchant", "اینکام");
 
 
                         } catch (JSONException e) {
@@ -274,11 +286,12 @@ public class Payment extends BottomSheetDialogFragment {
                         try {
                             walletData.put("Amount", _amountWithTax);
                             walletData.put("CellNumbers", Base64.encode(RSA.encrypt(_phone, publicKey)));
-                            walletData.put("CellNumber", _phone);
+                            walletData.put("CellNumber", _username);
                             walletData.put("ChargeType", _type);
                             walletData.put("BankId", "08");
                             walletData.put("DeviceType", "59");
                             walletData.put("Operator", _operator);
+                            walletData.put("Merchant", "اینکام");
 
                         } catch (JSONException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
                             e.printStackTrace();
@@ -301,6 +314,10 @@ public class Payment extends BottomSheetDialogFragment {
 
                         break;
                     case 6:
+
+                        //airplane
+
+                        new BookAirplaneTicketFromWallet().execute(getArguments().getString("airplane"));
                         break;
                     case 7:
                         break;
@@ -316,13 +333,15 @@ public class Payment extends BottomSheetDialogFragment {
     }
 
     private void initProduct() {
-
+        NumberFormat formatter = new DecimalFormat("#,###");
+        walletPay.setEnabled(true);
         sharedPreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         _token = sharedPreferences.getString("Token", null);
         _userID = sharedPreferences.getString("UserID", null);
         _aesKey = sharedPreferences.getString("key", null);
         _username = sharedPreferences.getString("UserName", null);
-
+        amount = getArguments().getString("amount");
+        _amountWithTax = amount;
         if (getArguments() != null) {
             serviceType = getArguments().getInt("serviceType");
             switch (serviceType) {
@@ -331,6 +350,10 @@ public class Payment extends BottomSheetDialogFragment {
                     _operator = getArguments().getString("operator");
                     _type = getArguments().getString("type");
                     _phone = getArguments().getString("phone");
+                    chargeKind = getArguments().getInt("chargeKind");
+
+                    if (chargeKind == 2)
+                        _type = "1";
 
                     switch (_operator) {
                         case "0":
@@ -345,8 +368,8 @@ public class Payment extends BottomSheetDialogFragment {
                     }
 
                     phoneNumber.setText(Numbers.ToPersianNumbers(_phone));
-                    price.setText(Numbers.ToPersianNumbers(_amountWithTax));
-                    priceWithTax.setText(Numbers.ToPersianNumbers(_amountWithoutTax));
+                    price.setText(Numbers.ToPersianNumbers(formatter.format(Double.parseDouble(_amountWithTax))));
+//                    priceWithTax.setText(Numbers.ToPersianNumbers(_amountWithoutTax));
                     logo.setVisibility(View.INVISIBLE);
 
                     break;
@@ -358,8 +381,8 @@ public class Payment extends BottomSheetDialogFragment {
                     _term = getArguments().getString("termTitle");
 
                     phoneNumber.setText(Numbers.ToPersianNumbers(_phone));
-                    price.setText(Numbers.ToPersianNumbers(_amountWithTax));
-                    priceWithTax.setText(Numbers.ToPersianNumbers(_amountWithoutTax));
+                    price.setText(Numbers.ToPersianNumbers(formatter.format(Double.parseDouble(_amountWithTax))));
+//                    priceWithTax.setText(Numbers.ToPersianNumbers(_amountWithoutTax));
                     logo.setVisibility(View.INVISIBLE);
 
                     break;
@@ -374,8 +397,8 @@ public class Payment extends BottomSheetDialogFragment {
                     _type = getArguments().getString("type");
 
 
-                    price.setText(Numbers.ToPersianNumbers(_amountWithTax));
-                    priceWithTax.setText(Numbers.ToPersianNumbers(_amountWithoutTax));
+                    price.setText(Numbers.ToPersianNumbers(formatter.format(Double.parseDouble(_amountWithTax))));
+//                    priceWithTax.setText(Numbers.ToPersianNumbers(_amountWithoutTax));
                     logo.setVisibility(View.INVISIBLE);
 
                     break;
@@ -388,9 +411,8 @@ public class Payment extends BottomSheetDialogFragment {
                     _paymentID = getArguments().getString("PaymentID");
                     _type = getArguments().getString("Type");
 
-
-                    price.setText(Numbers.ToPersianNumbers(_amountWithTax));
-                    priceWithTax.setText(Numbers.ToPersianNumbers(_amountWithTax));
+                    price.setText(Numbers.ToPersianNumbers(formatter.format(Double.parseDouble(_amountWithTax))));
+//                    priceWithTax.setText(Numbers.ToPersianNumbers(_amountWithTax));
                     logo.setVisibility(View.INVISIBLE);
                     break;
                 case 4:
@@ -401,6 +423,7 @@ public class Payment extends BottomSheetDialogFragment {
                     _type = getArguments().getString("type");
                     _phone = getArguments().getString("phone");
                     _describe = getArguments().getString("describe");
+                    _dataPlanType = getArguments().getString("dataPlanType");
 
                     switch (_operator) {
                         case "0":
@@ -415,8 +438,8 @@ public class Payment extends BottomSheetDialogFragment {
                     }
 
                     phoneNumber.setText(Numbers.ToPersianNumbers(_phone));
-                    price.setText(Numbers.ToPersianNumbers(_amountWithoutTax));
-                    priceWithTax.setText(Numbers.ToPersianNumbers(_amountWithTax));
+                    price.setText(Numbers.ToPersianNumbers(formatter.format(Double.parseDouble(_amountWithTax))));
+//                    priceWithTax.setText(Numbers.ToPersianNumbers(_amountWithTax));
 
                     break;
                 case 5:
@@ -430,8 +453,8 @@ public class Payment extends BottomSheetDialogFragment {
                     _departureDate = getArguments().getString("departureDate");
                     _phone = getArguments().getString("mobile");
 
-                    price.setText(Numbers.ToPersianNumbers(_amountWithTax));
-                    priceWithTax.setText(Numbers.ToPersianNumbers(_amountWithTax));
+                    price.setText(Numbers.ToPersianNumbers(formatter.format(Double.valueOf(_amountWithTax))));
+//                    priceWithTax.setText(Numbers.ToPersianNumbers(_amountWithTax));
                     phoneNumber.setText(Numbers.ToPersianNumbers(_phone));
                     logo.setVisibility(View.INVISIBLE);
                     break;
@@ -442,7 +465,7 @@ public class Payment extends BottomSheetDialogFragment {
 
             }
 
-            _amountWithTax = Numbers.ToEnglishNumbers(_amountWithTax.replace(",", ""));
+            _amountWithTax = _amountWithTax != null ? Numbers.ToEnglishNumbers(_amountWithTax.replace(",", "")) : "";
             try {
                 encryptedToken = Base64.encode((RSA.encrypt(_token, publicKey)));
             } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
@@ -510,6 +533,7 @@ public class Payment extends BottomSheetDialogFragment {
                     toastText.setTextSize(14);
                 }
                 toast.show();
+                walletPay.setEnabled(true);
             }
 
         }
@@ -554,7 +578,7 @@ public class Payment extends BottomSheetDialogFragment {
 
             if (userWallet != null) {
 
-                if (userWallet.get_balance() > Double.parseDouble(_amountWithTax)) {
+                if (userWallet.get_balance() >= Double.parseDouble(_amountWithTax)) {
                     walletPay.setBackgroundResource(R.drawable.btn_yellow_background);
                     walletPay.setEnabled(true);
                 } else {
@@ -624,7 +648,7 @@ public class Payment extends BottomSheetDialogFragment {
             intent.putExtra("amount", _amountWithTax);
             intent.putExtra("date", reserveTopUpRequest.get_date());
             intent.putExtra("mobile", _phone);
-            intent.putExtra("refrenceNumber", reserveTopUpRequest.get_referenceNumber());
+            intent.putExtra("refrenceNumber", String.valueOf(reserveTopUpRequest.get_referenceNumber()));
 
 
             if (reserveTopUpRequest.get_reserveNumber() > 0) {
@@ -666,7 +690,7 @@ public class Payment extends BottomSheetDialogFragment {
 
         @Override
         protected ReserveTopupRequest doInBackground(Void... params) {
-            results = new Caller().topupServiceReserve(_userID, encryptedToken, payData.toString(), 0);
+            results = new Caller().topupServiceReserve(_userID, encryptedToken, payData.toString(), Integer.parseInt(_type));
 
             return results;
         }
@@ -686,21 +710,10 @@ public class Payment extends BottomSheetDialogFragment {
                     intent.putExtra("OrderID", _orderID);
 
                     startActivityForResult(intent, 1);
-                } catch (NoSuchPaddingException e) {
-                    e.printStackTrace();
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                } catch (InvalidParameterSpecException e) {
-                    e.printStackTrace();
-                } catch (InvalidAlgorithmParameterException e) {
-                    e.printStackTrace();
-                } catch (InvalidKeyException e) {
-                    e.printStackTrace();
-                } catch (BadPaddingException e) {
-                    e.printStackTrace();
-                } catch (IllegalBlockSizeException e) {
-                    e.printStackTrace();
-                } catch (UnsupportedEncodingException e) {
+                } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidParameterSpecException |
+                        InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException |
+                        IllegalBlockSizeException | UnsupportedEncodingException e) {
+
                     e.printStackTrace();
                 }
 
@@ -750,7 +763,7 @@ public class Payment extends BottomSheetDialogFragment {
         @Override
         protected ReserveTopupRequest doInBackground(Void... params) {
             try {
-                results = new Caller().approveTopupServiceReserve(_userID, encryptedToken, _dataToConfirm, Base64.encode((RSA.encrypt(_orderID, publicKey))), Base64.encode((RSA.encrypt(_amountWithTax, publicKey))), 0);
+                results = new Caller().approveTopupServiceReserve(_userID, encryptedToken, _dataToConfirm, Base64.encode((RSA.encrypt(_orderID, publicKey))), Base64.encode((RSA.encrypt(_amountWithTax, publicKey))), Integer.parseInt(_type));
             } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
@@ -764,25 +777,90 @@ public class Payment extends BottomSheetDialogFragment {
             //TODO we should add other items here too
             Intent intent = new Intent(getActivity(), BuyResult.class);
             intent.putExtra("orderID", reserveTopUpRequest.get_reserveNumber());
-            intent.putExtra("type", reserveTopUpRequest.get_chargeType());
+            intent.putExtra("type", "charge");
             intent.putExtra("operator", _operator);
             intent.putExtra("amount", _amountWithTax);
             intent.putExtra("date", reserveTopUpRequest.get_date());
             intent.putExtra("mobile", _phone);
-            intent.putExtra("refrenceNumber", reserveTopUpRequest.get_referenceNumber());
+            intent.putExtra("refrenceNumber", String.valueOf(reserveTopUpRequest.get_referenceNumber()));
+            intent.putExtra("chargeType", _type);
 
 
-            if (reserveTopUpRequest.get_reserveNumber() > 0) {
-
+            if (reserveTopUpRequest.get_reserveNumber() > 0)
                 intent.putExtra("success", true);
-
-
-            } else {
+            else
                 intent.putExtra("success", false);
 
-            }
             startActivity(intent);
 
+        }
+    }
+
+    private class approveInternetTopUpRequest extends AsyncTask<Void, Void, ApproveInternetPackage> {
+
+        ApproveInternetPackage results = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            if (!isNetworkAvailable()) {
+                Toast toast = Toast.makeText(getActivity(), R.string.error_net, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+            }
+
+        }
+
+        @Override
+        protected ApproveInternetPackage doInBackground(Void... params) {
+            try {
+                results = new Caller().InternetPackageApprove(_userID, encryptedToken, _dataToConfirm, Base64.encode((RSA.encrypt(_orderID, publicKey))), Base64.encode((RSA.encrypt(_amountWithTax, publicKey))));
+            } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException |
+                    NoSuchPaddingException | NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(ApproveInternetPackage reserveTopUpRequest) {
+            super.onPostExecute(reserveTopUpRequest);
+            //TODO we should add other items here too
+            try {
+                JavaSource_Calendar javaSource_calendar = new JavaSource_Calendar();
+
+                Intent intent = new Intent(getActivity(), BuyResult.class);
+                intent.putExtra("orderID", reserveTopUpRequest.get_orderId());
+                intent.putExtra("type", "internet");
+                intent.putExtra("operator", _operator);
+                intent.putExtra("amount", _amountWithTax);
+                intent.putExtra("date", javaSource_calendar.getIranianDate());
+                intent.putExtra("describe", _describe);
+                intent.putExtra("dataplanType", _dataPlanType);
+                intent.putExtra("mobile", _phone);
+                intent.putExtra("refrenceNumber", String.valueOf(reserveTopUpRequest.get_refrenceNumber()));
+                intent.putExtra("chargeType", "internet");
+
+
+                if (reserveTopUpRequest.get_Message().equals("تراکنش موفق"))
+                    intent.putExtra("success", true);
+                else
+                    intent.putExtra("success", false);
+
+                startActivity(intent);
+            } catch (Exception ignored) {
+                String s = ignored.toString();
+            }
         }
     }
 
@@ -820,7 +898,9 @@ public class Payment extends BottomSheetDialogFragment {
                 results = gson.fromJson(AESEncyption.decryptMsg(res, _aesKey), PaymentResult.class);
 
 
-            } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidParameterSpecException | InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | UnsupportedEncodingException e) {
+            } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidParameterSpecException |
+                    InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException |
+                    IllegalBlockSizeException | UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
 
@@ -858,7 +938,6 @@ public class Payment extends BottomSheetDialogFragment {
                 }
                 toast.show();
             }
-
         }
     }
 
@@ -894,8 +973,10 @@ public class Payment extends BottomSheetDialogFragment {
                 postData.put("Amount", _amountWithTax);
                 postData.put("BillID", _billID);
                 postData.put("PayId", _paymentID);
-            } catch (Exception e) {
+                postData.put("OrderId", "0");
 
+            } catch (Exception e) {
+                e.toString();
             }
             results = new Caller().BillPaymentFromWallet(postData.toString(), _userID, encryptedToken);
 
@@ -909,22 +990,25 @@ public class Payment extends BottomSheetDialogFragment {
 
 
             if (response != null) {
+                JavaSource_Calendar javaSource_calendar = new JavaSource_Calendar();
                 Intent intent = new Intent(getActivity(), BuyResult.class);
 
                 intent.putExtra("type", "bill");
-
                 intent.putExtra("amount", _amountWithTax);
+                intent.putExtra("billID", _billID);
+                if (_datetime != null)
+                    intent.putExtra("date", _datetime);
+                else
+                    intent.putExtra("date", javaSource_calendar.getIranianDate());
 
-                if (response.equals("تراکنش موفق")) {
+                if (_phone != null && _phone.equals(""))
+                    intent.putExtra("phoneNum", _phone);
 
+                if (response.equals("تراکنش موفق"))
                     intent.putExtra("success", true);
-
-
-                } else {
+                else
                     intent.putExtra("success", false);
 
-
-                }
                 startActivity(intent);
 
             } else {
@@ -940,6 +1024,7 @@ public class Payment extends BottomSheetDialogFragment {
                     toastText.setTextSize(14);
                 }
                 toast.show();
+                walletPay.setEnabled(true);
             }
 
         }
@@ -993,7 +1078,6 @@ public class Payment extends BottomSheetDialogFragment {
                 }
 
                 intent.putExtra("OrderID", _orderID);
-
                 intent.putExtra("TSPEnabled", 1);
 
                 startActivityForResult(intent, 1);
@@ -1059,28 +1143,43 @@ public class Payment extends BottomSheetDialogFragment {
 
 
             if (reserveTopUpRequest != null) {
+                JavaSource_Calendar javaSource_calendar = new JavaSource_Calendar();
                 Intent intent = new Intent(getActivity(), BuyResult.class);
 
-                intent.putExtra("type", "internet");
+                if (typeCharge == 1)
+                    intent.putExtra("type", "internet");
+                else
+                    intent.putExtra("type", "charge");
+
                 intent.putExtra("operator", _operator);
                 intent.putExtra("amount", _amountWithTax);
                 intent.putExtra("describe", _describe);
                 intent.putExtra("mobile", _phone);
-                intent.putExtra("date", reserveTopUpRequest.get_date());
-                intent.putExtra("refrenceNumber", reserveTopUpRequest.get_referenceNumber());
-
+                intent.putExtra("date", javaSource_calendar.getIranianDate());
+                intent.putExtra("refrenceNumber", String.valueOf(reserveTopUpRequest.get_referenceNumber()));
+                intent.putExtra("dataPlanType", _dataPlanType);
 
                 if (reserveTopUpRequest.get_referenceNumber() > 0 && reserveTopUpRequest.get_responseCode() == 0) {
-
                     intent.putExtra("success", true);
-
 
                 } else {
                     intent.putExtra("success", false);
-
-
                 }
                 startActivity(intent);
+            } else {
+                Toast toast = Toast.makeText(getActivity(), R.string.try_again, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+                walletPay.setEnabled(true);
             }
         }
     }
@@ -1118,7 +1217,10 @@ public class Payment extends BottomSheetDialogFragment {
                 results = g.fromJson(json, PayInfo.class);
 
 
-            } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException | UnsupportedEncodingException | InvalidAlgorithmParameterException | InvalidParameterSpecException e) {
+            } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException |
+                    NoSuchAlgorithmException | UnsupportedEncodingException | InvalidAlgorithmParameterException |
+                    InvalidParameterSpecException e) {
+
                 e.printStackTrace();
             }
             return results;
@@ -1134,17 +1236,13 @@ public class Payment extends BottomSheetDialogFragment {
             intent.putExtra("amount", _amountWithTax);
             intent.putExtra("date", data.getPayDTime());
             intent.putExtra("refrenceNumber", String.valueOf(data.getTrcNo()));
+            intent.putExtra("phoneNum", _phone);
 
-
-            if (data.getStatus() == 0) {
-
+            if (data.getStatus() == 0)
                 intent.putExtra("success", true);
-
-
-            } else {
+            else
                 intent.putExtra("success", false);
 
-            }
             startActivity(intent);
 
         }
@@ -1175,6 +1273,7 @@ public class Payment extends BottomSheetDialogFragment {
 
         }
 
+
         @Override
         protected BookTicket doInBackground(String... params) {
             String res = new Caller().bookTicketFromWallet(_userID, encryptedToken, params[0]);
@@ -1182,21 +1281,7 @@ public class Payment extends BottomSheetDialogFragment {
                 String dec = AESEncyption.decryptMsg(res, _aesKey);
                 Gson g = new Gson();
                 results = g.fromJson(dec, BookTicket.class);
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (InvalidParameterSpecException e) {
-                e.printStackTrace();
-            } catch (InvalidAlgorithmParameterException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
+            } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidParameterSpecException | InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
 
@@ -1225,6 +1310,7 @@ public class Payment extends BottomSheetDialogFragment {
                     toastText.setTextSize(14);
                 }
                 toast.show();
+                walletPay.setEnabled(true);
             }
 
         }
@@ -1262,21 +1348,8 @@ public class Payment extends BottomSheetDialogFragment {
                 String dec = AESEncyption.decryptMsg(res, _aesKey);
                 Gson g = new Gson();
                 results = g.fromJson(dec, BookTicket.class);
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (InvalidParameterSpecException e) {
-                e.printStackTrace();
-            } catch (InvalidAlgorithmParameterException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
+            } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidParameterSpecException |
+                    InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
 
@@ -1320,30 +1393,328 @@ public class Payment extends BottomSheetDialogFragment {
         }
     }
 
+    /*private class BookBusTicketApprove extends AsyncTask<String, Void, WalletCredit> {
+
+        WalletCredit results = null;
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            if (!isNetworkAvailable()) {
+                Toast toast = Toast.makeText(getContext(), R.string.error_net, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+            }
+
+        }
+
+        @Override
+        protected WalletCredit doInBackground(String... params) {
+            try {
+                results = new Caller().busTicketSuccess(_userID, encryptedToken,dataToConfirm,Base64.encode((RSA.encrypt(token, orderId))), Base64.encode((RSA.encrypt(token,String.valueOf( amount)))));
+            } catch (BadPaddingException e) {
+                e.printStackTrace();
+            } catch (IllegalBlockSizeException e) {
+                e.printStackTrace();
+            } catch (InvalidKeyException e) {
+                e.printStackTrace();
+            } catch (NoSuchPaddingException e) {
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(WalletCredit bookTicket) {
+            super.onPostExecute(bookTicket);
+            //TODO we should add other items here too
+
+
+            if (bookTicket.get_status() != null && bookTicket.get_status().equals("0")) {
+
+
+
+            } else {
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.try_again, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+            }
+
+        }
+    }*/
+    private class BookAirplaneTicketFromWallet extends AsyncTask<String, Void, String> {
+
+        String results = null;
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            if (!isNetworkAvailable()) {
+                Toast toast = Toast.makeText(getActivity(), R.string.error_net, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+            }
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            return new Caller().airplainTicketRequestFromWallet(_userID, encryptedToken, params[0], Long.parseLong(amount.replace(".0", "")));
+           /* try {
+            // return AESEncyption.decryptMsg(res, _aesKey);
+               // Gson g = new Gson();
+              //  results = g.fromJson(dec, BookTicket.class);
+            } catch (NoSuchPaddingException e) {
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (InvalidParameterSpecException e) {
+                e.printStackTrace();
+            } catch (InvalidAlgorithmParameterException e) {
+                e.printStackTrace();
+            } catch (InvalidKeyException e) {
+                e.printStackTrace();
+            } catch (BadPaddingException e) {
+                e.printStackTrace();
+            } catch (IllegalBlockSizeException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }*/
+
+            //return results;
+        }
+
+        @Override
+        protected void onPostExecute(String bookTicket) {
+            super.onPostExecute(bookTicket);
+            //TODO we should add other items here too
+
+            Toast toast = Toast.makeText(getActivity(), bookTicket, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toastText = toast.getView().findViewById(android.R.id.message);
+            toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+            if (toastText != null) {
+                toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
+                toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                toastText.setGravity(Gravity.CENTER);
+                toastText.setTextSize(14);
+            }
+            toast.show();
+
+
+        }
+    }
+
+    private class AirplaneTicketRequestForApp extends AsyncTask<String, Void, AirReservation> {
+
+        AirReservation results = null;
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            if (!isNetworkAvailable()) {
+                Toast toast = Toast.makeText(getActivity(), R.string.error_net, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+            }
+
+        }
+
+        @Override
+        protected AirReservation doInBackground(String... params) {
+            String res = new Caller().airplaneTicketRequestForApp(_userID, encryptedToken, params[0], Long.parseLong(amount.replace(".0", "")));
+            try {
+                String dec = AESEncyption.decryptMsg(res, _aesKey);
+                Gson g = new Gson();
+                results = g.fromJson(dec, AirReservation.class);
+            } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidParameterSpecException |
+                    InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException |
+                    IllegalBlockSizeException | UnsupportedEncodingException e) {
+
+                e.printStackTrace();
+            }
+
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(AirReservation bookTicket) {
+            super.onPostExecute(bookTicket);
+            //TODO we should add other items here too
+
+
+            if (bookTicket != null && bookTicket.token != null) {
+
+                _orderID = String.valueOf(bookTicket.orderID);
+                Intent intent = new Intent(getActivity(), PaymentInitiator.class);
+                intent.putExtra("Type", "1");
+                intent.putExtra("Token", bookTicket.token);
+                intent.putExtra("OrderID", _orderID);
+
+
+                startActivityForResult(intent, 10);
+
+
+            } else {
+                Toast toast = Toast.makeText(getActivity(), R.string.try_again, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+            }
+
+        }
+    }
+
+    private class BookAirplaneTicketApprove extends AsyncTask<String, Void, WalletCredit> {
+
+        WalletCredit results = null;
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            if (!isNetworkAvailable()) {
+                Toast toast = Toast.makeText(getContext(), R.string.error_net, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+            }
+
+        }
+
+        @Override
+        protected WalletCredit doInBackground(String... params) {
+            try {
+                results = new Caller().airplaneTicketSuccess(_userID, encryptedToken, dataToConfirm, Base64.encode((RSA.encrypt(_token, _orderID))),
+                        Base64.encode((RSA.encrypt(_token, String.valueOf(amount)))));
+
+            } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException |
+                    NoSuchPaddingException | NoSuchAlgorithmException e) {
+
+                e.printStackTrace();
+            }
+
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(WalletCredit bookTicket) {
+            super.onPostExecute(bookTicket);
+            //TODO we should add other items here too
+
+
+            if (bookTicket.get_status() != null && bookTicket.get_status().equals("0")) {
+
+
+            } else {
+                Toast toast = Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+            }
+
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (resultCode) {
+
             case 1:
                 // for successful response in payment
 //                Toast.makeText(getActivity() , "In Merchant Side " +  data.getStringExtra("enData") + "\n\n" +  data.getStringExtra("message") + "\n" +  String.valueOf(data.getIntExtra("status" , 0)), Toast.LENGTH_LONG  ).show();
                 _dataToConfirm = data.getStringExtra("enData");
-                if (!_dataToConfirm.equals(null))
+                if (_dataToConfirm != null)
                     _dataToConfirm = _dataToConfirm.replace("\\", "");
                 String one = data.getStringExtra("message");
                 String two = String.valueOf(data.getIntExtra("status", 0));
-                new approveTopUpRequest().execute();
+                if (approveType == 0)
+                    new approveTopUpRequest().execute();
+                else
+                    new approveInternetTopUpRequest().execute();
+
                 break;
             case 2:
+            case 5:
+                // for Library Internal Error in Payment
                 // for Error response in payment
-                Toast.makeText(getActivity(), "In Merchant Side " + String.valueOf(data.getIntExtra("errorType", 0)) + "\n\n" + String.valueOf(data.getIntExtra("OrderID", 0)), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getActivity(), "In Merchant Side " + String.valueOf(data.getIntExtra("errorType", 0)) + "\n\n" + String.valueOf(data.getIntExtra("OrderID", 0)), Toast.LENGTH_LONG).show();
                 break;
             case 3:
                 // for successful response in Bill Payment
 //                Toast.makeText(getActivity() , "In Merchant Side " +  data.getStringExtra("enData") + "\n\n" +  data.getStringExtra("message") + "\n" +   String.valueOf(data.getIntExtra("status" , 0)), Toast.LENGTH_LONG  ).show();
                 _dataToConfirm = data.getStringExtra("enData");
-                if (!_dataToConfirm.equals(null))
+                if (_dataToConfirm != null)
                     _dataToConfirm = _dataToConfirm.replace("\\", "");
                 String msg = data.getStringExtra("message");
                 String sts = String.valueOf(data.getIntExtra("status", 0));
@@ -1355,10 +1726,15 @@ public class Payment extends BottomSheetDialogFragment {
                 // for Error response in Bill Payment
 //                Toast.makeText(getActivity() , "In Merchant Side " +  String.valueOf( data.getIntExtra("errorType" , 0) ) + "\n\n" , Toast.LENGTH_LONG  ).show();
                 Toast toast = Toast.makeText(getActivity(), "خطا" +
+                        " " +
                         "در" +
+                        " " +
                         "ثبت" +
+                        " " +
                         "درخواست" +
+                        " " +
                         "پرداخت" +
+                        " " +
                         "قبض", Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toastText = toast.getView().findViewById(android.R.id.message);
@@ -1372,19 +1748,21 @@ public class Payment extends BottomSheetDialogFragment {
                 }
                 toast.show();
                 break;
-            case 5:
-                // for Library Internal Error in Payment
-                Toast.makeText(getActivity(), "In Merchant Side " + String.valueOf(data.getIntExtra("errorType", 0)) + "\n\n" + String.valueOf(data.getIntExtra("OrderID", 0)), Toast.LENGTH_LONG).show();
-                break;
             case 6:
                 // for Library Internal Error in Bill Payment
 //                Toast.makeText(getActivity() , "In Merchant Side " +  String.valueOf( data.getIntExtra("errorType" , 0) ) + "\n\n" , Toast.LENGTH_LONG  ).show();
                 Toast toast6 = Toast.makeText(getActivity(), "خطای" +
+                        " " +
                         "داخلی" +
+                        " " +
                         "کتابخانه" +
+                        " " +
                         "در" +
+                        " " +
                         "ثبت" +
+                        " " +
                         "پرداخت" +
+                        " " +
                         "قبض", Toast.LENGTH_SHORT);
                 toast6.setGravity(Gravity.CENTER, 0, 0);
                 toastText = toast6.getView().findViewById(android.R.id.message);
@@ -1401,15 +1779,22 @@ public class Payment extends BottomSheetDialogFragment {
                 break;
             case 7:
                 // for Library Successfull topup
-                Toast.makeText(getActivity(), "In Merchant Side " + data.getStringExtra("enData") + "\n\n" + data.getStringExtra("message") + "\n" + String.valueOf(data.getIntExtra("status", 0)), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getActivity(), "In Merchant Side " + data.getStringExtra("enData") + "\n\n" + data.getStringExtra("message") + "\n" + data.getIntExtra("status", 0), Toast.LENGTH_LONG).show();
                 break;
             case 8:
-                // for  Error in Topup Payment
-                Toast.makeText(getActivity(), "In Merchant Side " + String.valueOf(data.getIntExtra("errorType", 0)) + "\n\n", Toast.LENGTH_LONG).show();
-                break;
             case 9:
                 // for Library Internal Error in Topup Payment
-                Toast.makeText(getActivity(), "In Merchant Side " + String.valueOf(data.getIntExtra("errorType", 0)) + "\n\n", Toast.LENGTH_LONG).show();
+                // for  Error in Topup Payment
+//                Toast.makeText(getActivity(), "In Merchant Side " + data.getIntExtra("errorType", 0) + "\n\n", Toast.LENGTH_LONG).show();
+                break;
+            case 10:
+                // for airplane success payment
+                _dataToConfirm = data.getStringExtra("enData");
+                if (_dataToConfirm != null)
+                    _dataToConfirm = _dataToConfirm.replace("\\", "");
+
+                new BookAirplaneTicketApprove().execute();
+
                 break;
         }
         if (resultCode == Activity.RESULT_CANCELED) {

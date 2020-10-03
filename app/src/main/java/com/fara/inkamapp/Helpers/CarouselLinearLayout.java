@@ -31,6 +31,6 @@ public class CarouselLinearLayout extends LinearLayout {
         // The main mechanism to display scale animation, you can customize it as your needs
         int w = this.getWidth();
         int h = this.getHeight();
-        canvas.scale(scale, scale, w/2, h/2);
+        canvas.scale(scale, scale, w / 2, h / 2);
     }
 }

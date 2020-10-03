@@ -66,7 +66,7 @@ public class ServiceBillsAndCarFines extends HideKeyboard implements ZXingScanne
 
     private ZXingScannerView mScannerView;
     private static final int MY_CAMERA_REQUEST_CODE = 100;
-    private TextView scanBarcode, toastText;
+    private TextView scanBarcode, toastText, purchased;
     private RelativeLayout showBarcode, hideBarcode;
     private ViewGroup contentFrame;
     private int billCode;
@@ -98,12 +98,10 @@ public class ServiceBillsAndCarFines extends HideKeyboard implements ZXingScanne
                 .build());
 
         setContentView(R.layout.activity_service_bills_and_car_fines);
+        initVariables();
+    }
 
-
-        contentFrame = findViewById(R.id.content_frame);
-        mScannerView = new ZXingScannerView(this);   // Programmatically initialize the scanner view
-        contentFrame.addView(mScannerView);
-
+    private void initVariables(){
         scanBarcode = findViewById(R.id.tv_barcode_scan);
         showBarcode = findViewById(R.id.rl_show_camera);
         hideBarcode = findViewById(R.id.rl_hide_camera);
@@ -113,6 +111,43 @@ public class ServiceBillsAndCarFines extends HideKeyboard implements ZXingScanne
         paymentId = findViewById(R.id.et_payment_id);
         nextStep = findViewById(R.id.btn_next_step);
         back = findViewById(R.id.ib_back);
+        purchased = findViewById(R.id.tv_purchased);
+        contentFrame = findViewById(R.id.content_frame);
+
+        mScannerView = new ZXingScannerView(this);   // Programmatically initialize the scanner view
+        contentFrame.addView(mScannerView);
+
+        if (checkPermission()) {
+            //main logic or main code
+            showBarcode.setVisibility(View.VISIBLE);
+            hideBarcode.setVisibility(View.INVISIBLE);
+
+        } else {
+            requestPermission();
+        }
+
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        token = sharedpreferences.getString("Token", null);
+        userID = sharedpreferences.getString("UserID", null);
+        AesKey = sharedpreferences.getString("key", null);
+        try {
+            encryptedToken = Base64.encode((RSA.encrypt(token, publicKey)));
+        } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        purchased.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), PurchasedItems.class);
+                if (billCode == 0)
+                    intent.putExtra("purchasedType", 7);
+                else
+                    intent.putExtra("purchasedType", 9);
+
+                startActivity(intent);
+            }
+        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,23 +156,6 @@ public class ServiceBillsAndCarFines extends HideKeyboard implements ZXingScanne
             }
         });
 
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        token = sharedpreferences.getString("Token", null);
-        userID = sharedpreferences.getString("UserID", null);
-        AesKey = sharedpreferences.getString("key", null);
-        try {
-            encryptedToken = Base64.encode((RSA.encrypt(token, publicKey)));
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
         Intent intent = getIntent();
         billCode = intent.getIntExtra("BillCode", 0);
 
@@ -154,24 +172,6 @@ public class ServiceBillsAndCarFines extends HideKeyboard implements ZXingScanne
             carBillCode.setVisibility(View.GONE);
         }
 
-
-        scanBarcode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkPermission()) {
-                    //main logic or main code
-
-                    showBarcode.setVisibility(View.VISIBLE);
-                    hideBarcode.setVisibility(View.INVISIBLE);
-
-                } else {
-                    requestPermission();
-                }
-
-
-            }
-        });
-
         nextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -182,30 +182,12 @@ public class ServiceBillsAndCarFines extends HideKeyboard implements ZXingScanne
                     startActivity(intent);
 
                 } else if (billCode == 1) {
-
                     billIdText = billId.getText().toString();
                     billPaymentText = paymentId.getText().toString();
                     new BillInfo().execute();
                 }
             }
         });
-
-    }
-
-    private boolean checkPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted
-            return false;
-        }
-        return true;
-    }
-
-    private void requestPermission() {
-
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.CAMERA},
-                MY_CAMERA_REQUEST_CODE);
     }
 
     @Override
@@ -213,8 +195,10 @@ public class ServiceBillsAndCarFines extends HideKeyboard implements ZXingScanne
         switch (requestCode) {
             case MY_CAMERA_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
 
+                    showBarcode.setVisibility(View.VISIBLE);
+                    hideBarcode.setVisibility(View.INVISIBLE);
                     // main logic
                 } else {
                     Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_SHORT).show();
@@ -265,7 +249,7 @@ public class ServiceBillsAndCarFines extends HideKeyboard implements ZXingScanne
     @Override
     public void handleResult(Result rawResult) {
 
-        if (carBillCode != null)
+        if (carBillCode.getVisibility() != View.GONE)
             carBillCode.setText(rawResult.getText());
         else
             billId.setText(rawResult.getText());
@@ -282,6 +266,22 @@ public class ServiceBillsAndCarFines extends HideKeyboard implements ZXingScanne
                 mScannerView.resumeCameraPreview(ServiceBillsAndCarFines.this);
             }
         }, 2000);
+    }
+
+    private boolean checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            return false;
+        }
+        return true;
+    }
+
+    private void requestPermission() {
+
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.CAMERA},
+                MY_CAMERA_REQUEST_CODE);
     }
 
     private boolean isNetworkAvailable() {
@@ -500,10 +500,10 @@ public class ServiceBillsAndCarFines extends HideKeyboard implements ZXingScanne
                         e.toString();
                     }
 
-                    Intent intent = new Intent(getApplicationContext(), FinalPayment.class);
-
-
-                    startActivity(intent);
+//                    Intent intent = new Intent(getApplicationContext(), FinalPayment.class);
+//
+//
+//                    startActivity(intent);
                 } else {
 
                     Toast toast = Toast.makeText(getApplicationContext(), serviceBillInfo.get_status().get_description(), Toast.LENGTH_SHORT);

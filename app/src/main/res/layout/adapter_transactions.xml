@@ -21,8 +21,8 @@
             android:text="پرداخت شاپرکی"
             android:layout_centerInParent="true"
             android:layout_alignParentEnd="true"
-            android:drawableEnd="@drawable/ic_green_oval"
-            android:drawablePadding="16dp"/>
+            android:drawablePadding="16dp"
+            app:drawableEndCompat="@drawable/ic_green_oval" />
 
         <TextView
             android:id="@+id/tv_transaction_rial"
@@ -38,7 +38,6 @@
             android:id="@+id/tv_transaction_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="۳۰,۰۰۰"
             android:textColor="@color/colorMainGreen"
             android:layout_toEndOf="@+id/tv_transaction_rial"
             android:textSize="16sp"
@@ -57,7 +56,6 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:textColor="@color/colorBrown"
-            android:text="۰۴:۳۲"
             android:layout_centerInParent="true"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="24dp" />
@@ -69,7 +67,6 @@
             android:textSize="12sp"
             android:layout_toStartOf="@+id/tv_transaction_time"
             android:textColor="@color/colorBrown"
-            android:text="۱۳۹۷/۰۹/۱۳"
             android:layout_centerInParent="true"
             android:layout_marginEnd="16dp"/>
 
@@ -80,7 +77,6 @@
             android:textSize="12sp"
             android:layout_toStartOf="@+id/tv_transaction_date"
             android:textColor="@color/colorBrown"
-            android:text="بانک ملی"
             android:layout_centerInParent="true"
             android:layout_marginEnd="16dp"/>
     </RelativeLayout>
@@ -108,7 +104,6 @@
             android:textSize="12sp"
             android:layout_toStartOf="@+id/tv_transaction_receiver_end_title"
             android:textColor="@color/colorBrown"
-            android:text="۳۴۵۳۵۳۴۳۴"
             android:layout_centerInParent="true"
             android:layout_marginEnd="8dp"/>
 
@@ -137,7 +132,6 @@
             android:textSize="12sp"
             android:layout_toStartOf="@+id/tv_transaction_bank_code_title"
             android:textColor="@color/colorBrown"
-            android:text="۳۴۲۴۳۴۳"
             android:layout_centerInParent="true"
             android:layout_marginEnd="8dp"/>
 
@@ -166,7 +160,6 @@
             android:textSize="12sp"
             android:layout_toStartOf="@+id/tv_transaction_card_number_title"
             android:textColor="@color/colorBrown"
-            android:text="۴۴۵۵ **** **** ۸۹۷۲"
             android:layout_centerInParent="true"
             android:layout_marginEnd="8dp"/>
 

@@ -48,6 +48,8 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -65,7 +67,7 @@ public class InternetPackageActivity extends AppCompatActivity implements NetPac
 
     private NetPackages netPackagesAdapter;
     private RelativeLayout packageInfo, rv_tdl, rv_fix, rv_credit;
-    private TextView toastText, tvTdl, tvFix, tvCredit;
+    private TextView toastText, tvTdl, tvFix, tvCredit, purchased;
     private JSONObject postData;
     private String phoneNumber, userID, encryptedToken, AesKey, token;
     private LinearLayout llDataplan;
@@ -94,7 +96,21 @@ public class InternetPackageActivity extends AppCompatActivity implements NetPac
                 .build());
 
         setContentView(R.layout.activity_internet_package);
+        initVariables();
 
+        new GetInternetPeriod().execute();
+    }
+
+    private void initVariables() {
+        llDataplan = findViewById(R.id.ll_dataplan);
+        rv_credit = findViewById(R.id.rv_credit);
+        rv_fix = findViewById(R.id.rv_fix);
+        rv_tdl = findViewById(R.id.rl_tdl);
+        tvCredit = findViewById(R.id.tv_credit);
+        tvFix = findViewById(R.id.tv_fix_sim);
+        tvTdl = findViewById(R.id.tv_tdl);
+        purchased = findViewById(R.id.tv_purchased);
+        back = findViewById(R.id.ib_back);
 
         Bundle intent = getIntent().getExtras();
         operatorType = intent.getInt("Operator");
@@ -103,15 +119,6 @@ public class InternetPackageActivity extends AppCompatActivity implements NetPac
         token = sharedpreferences.getString("Token", null);
         userID = sharedpreferences.getString("UserID", null);
         AesKey = sharedpreferences.getString("key", null);
-        llDataplan = findViewById(R.id.ll_dataplan);
-        rv_credit = findViewById(R.id.rv_credit);
-        rv_fix = findViewById(R.id.rv_fix);
-        rv_tdl = findViewById(R.id.rl_tdl);
-        tvCredit = findViewById(R.id.tv_credit);
-        tvFix = findViewById(R.id.tv_fix_sim);
-        tvTdl = findViewById(R.id.tv_tdl);
-
-        back = findViewById(R.id.ib_back);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,25 +130,15 @@ public class InternetPackageActivity extends AppCompatActivity implements NetPac
         rv_credit.setOnClickListener(this);
         rv_fix.setOnClickListener(this);
         rv_tdl.setOnClickListener(this);
+        purchased.setOnClickListener(this);
+
         try {
             encryptedToken = Base64.encode((RSA.encrypt(token, publicKey)));
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (BadPaddingException | IllegalBlockSizeException |
+                InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
+
             e.printStackTrace();
         }
-        new GetInternetPeriod().execute();
-
-
-        // data to populate the RecyclerView with
-
-
     }
 
     @Override
@@ -163,7 +160,6 @@ public class InternetPackageActivity extends AppCompatActivity implements NetPac
                 rv_credit.setBackgroundResource(R.drawable.green_rounded_background);
                 tvCredit.setTextColor(getResources().getColor(R.color.colorWhite));
 
-
                 planType = 0;
 
                 break;
@@ -180,10 +176,23 @@ public class InternetPackageActivity extends AppCompatActivity implements NetPac
                 planType = 3;
 
                 break;
+
+            case R.id.tv_purchased:
+                Intent intent = new Intent(getApplicationContext(), PurchasedItems.class);
+                intent.putExtra("purchasedType", 1);
+                startActivity(intent);
+                break;
+
             default:
                 break;
         }
 
+    }
+
+    private boolean isTDLTE(String input) {
+        Pattern p = Pattern.compile("^09[4][1][0-9]{7}$");
+        Matcher m = p.matcher(input);
+        return m.matches();
     }
 
     private boolean isNetworkAvailable() {
@@ -209,6 +218,7 @@ public class InternetPackageActivity extends AppCompatActivity implements NetPac
                     toastText.setGravity(Gravity.CENTER);
                     toastText.setTextSize(14);
                 }
+
                 toast.show();
             }
 
@@ -302,6 +312,25 @@ public class InternetPackageActivity extends AppCompatActivity implements NetPac
                 netPackagesAdapter.setClickListener(InternetPackageActivity.this);
                 recyclerView.setAdapter(netPackagesAdapter);
 
+                if (isTDLTE(phoneNumber)) {
+                    period = Integer.valueOf((String) internetPeriod.keySet().toArray()[4]);
+                    new GetDataPlanListByPeriod().execute();
+                    netPackagesAdapter.notifyDataSetChanged();
+                    rv_tdl.setBackgroundResource(R.drawable.green_rounded_background);
+                    tvTdl.setTextColor(getResources().getColor(R.color.colorWhite));
+                    planType = 3;
+                } else {
+
+                    period = Integer.valueOf((String) internetPeriod.keySet().toArray()[4]);
+                    new GetDataPlanListByPeriod().execute();
+                    netPackagesAdapter.notifyDataSetChanged();
+                    netPackagesAdapter.setClickListener(InternetPackageActivity.this);
+                    rv_credit.setBackgroundResource(R.drawable.green_rounded_background);
+                    tvCredit.setTextColor(getResources().getColor(R.color.colorWhite));
+
+                    planType = 0;
+                }
+
 
             } else {
                 Toast toast = Toast.makeText(getApplicationContext(), R.string.try_again, Toast.LENGTH_SHORT);
@@ -329,7 +358,7 @@ public class InternetPackageActivity extends AppCompatActivity implements NetPac
         TextView tvDescription = view.findViewById(R.id.tv_package_content);
         NumberFormat formatter = new DecimalFormat("#,###");
         String formattedNumber = formatter.format(plan.get_priceWithTax());
-        tvPrice.setText(Numbers.ToPersianNumbers( formattedNumber));
+        tvPrice.setText(Numbers.ToPersianNumbers(formattedNumber));
         tvDescription.setText(Numbers.ToPersianNumbers(plan.get_title()));
         if (operatorType == 0) {
             ivLogo.setImageResource(R.drawable.irancell_logo_green);
@@ -339,25 +368,26 @@ public class InternetPackageActivity extends AppCompatActivity implements NetPac
             ivLogo.setImageResource(R.drawable.rightel_logo);
         }
         llDataplan.addView(view);
+
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 planID = plan.get_id();
 
                 Bundle bundle = new Bundle();
-                bundle.putString("amountWithTax", String.valueOf( plan.get_priceWithTax()));
-                bundle.putString("amountWithoutTax", String.valueOf( plan.get_priceWithoutTax()));
-                bundle.putString("operator", String.valueOf( operatorType));
+                bundle.putString("amountWithTax", String.valueOf(plan.get_priceWithTax()));
+                bundle.putString("amountWithoutTax", String.valueOf(plan.get_priceWithoutTax()));
+                bundle.putString("operator", String.valueOf(operatorType));
                 bundle.putString("type", String.valueOf(planID));
                 bundle.putString("phone", phoneNumber);
                 bundle.putString("describe", plan.get_title());
-                bundle.putInt("serviceType",4);
+                bundle.putString("dataPlanType", String.valueOf(plan.get_dataPlanType()));
+                bundle.putInt("serviceType", 4);
 
 
                 bottomSheetDialogFragment = Payment.newInstance("Bottom Sheet Payment Dialog");
                 bottomSheetDialogFragment.setArguments(bundle);
                 bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
-
 
 
             }

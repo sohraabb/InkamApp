@@ -1,7 +1,10 @@
 package com.fara.inkamapp.Adapters;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -17,21 +20,24 @@ import com.fara.inkamapp.R;
 import java.text.ParseException;
 import java.util.List;
 
-public class CarouselPagerAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener  {
+public class CarouselPagerAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener {
 
     public final static float BIG_SCALE = 0.5f;
     public final static float SMALL_SCALE = 0.5f;
     public final static float DIFF_SCALE = BIG_SCALE - SMALL_SCALE;
-    private BusServices context;
+    private Context context;
     private FragmentManager fragmentManager;
     private float scale;
     private String currentDate;
     private TextView selectedDay, selectedDate;
-    public CarouselPagerAdapter(BusServices context, FragmentManager fm,String currentDate) {
+    private int activityType;
+
+    public CarouselPagerAdapter(Context context, FragmentManager fm, String currentDate, int activityType) {
         super(fm);
         this.fragmentManager = fm;
         this.context = context;
-        this.currentDate=currentDate;
+        this.currentDate = currentDate;
+        this.activityType = activityType;
     }
 
     @Override
@@ -49,12 +55,12 @@ public class CarouselPagerAdapter extends FragmentPagerAdapter implements ViewPa
             e.printStackTrace();
         }
         try {
-            Fragment frg= ItemFragment.newInstance(context, position, scale,currentDate);
+            Fragment frg = ItemFragment.newInstance(context.getApplicationContext(), position, scale, currentDate);
 
-        return  frg;
+            return frg;
         } catch (ParseException e) {
             e.printStackTrace();
-            return  null;
+            return null;
         }
     }
 
@@ -62,7 +68,8 @@ public class CarouselPagerAdapter extends FragmentPagerAdapter implements ViewPa
     public int getCount() {
         int count = 0;
         try {
-            count = BusServices.count * BusServices.LOOPS;
+
+            count = activityType * BusServices.LOOPS;
         } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
@@ -88,6 +95,11 @@ public class CarouselPagerAdapter extends FragmentPagerAdapter implements ViewPa
     @Override
     public void onPageSelected(int position) {
 
+        try {
+//            Toast.makeText(context, "Position : " + position, Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.toString();
+        }
     }
 
     @Override
@@ -102,7 +114,8 @@ public class CarouselPagerAdapter extends FragmentPagerAdapter implements ViewPa
     }
 
     private String getFragmentTag(int position) {
-        return "android:switcher:" + context.pager.getId() + ":" + position;
+        return "";
+        //return "android:switcher:" + context.pager.getId() + ":" + position;
     }
 
 }

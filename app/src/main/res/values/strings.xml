@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <resources>
     <string name="app_name">اینکام</string>
 
@@ -9,6 +11,8 @@
     <string name="turkey">تورکی</string>
 
     <string name="login_inkam">ورود به اینکام</string>
+    <string name="income_verification">تایید شماره موبایل</string>
+    <string name="enter_verification_code">کد ارسال شده به شماره موبایل را وارد نمایید.</string>
     <string name="enter_phone">لطفا شماره موبایل خود را وارد نمایید.</string>
     <string name="continue_">ادامه</string>
     <string name="send_again">ارسال مجدد</string>
@@ -17,7 +21,7 @@
     <string name="do_not_have_invitation">کد معرف ندارم</string>
     <string name="optional">(اختیاری)</string>
     <string name="submit_code">ثبت کد</string>
-    <string name="explain_invitation_one">با وارد کردن کد معرف ، تخفیف حاصل از خرید در ۵</string>
+    <string name="explain_invitation_one">با وارد کردن کد معرف ۱۰ شانس قرعه کشی دریافت کنید</string>
     <string name="explain_invitation_two">تراکنش اولتان را ۲ برابر کنید</string>
 
     <string name="enter_pass">لطفا رمز عبور خود را وارد نمایید.</string>
@@ -30,6 +34,7 @@
     <string name="first_name">نام</string>
     <string name="last_name">نام خانوادگی</string>
     <string name="your_city">شهر شما</string>
+    <string name="your_province">استان شما</string>
     <string name="pass_characters">رمز عبور باید حداقل ۶ کارکتر باشد</string>
     <string name="submit_info">ثبت اطلاعات</string>
 
@@ -39,8 +44,8 @@
     <string name="payment_services">خدمات مالی</string>
 
     <string name="intro_title_one">با خرید های همیشگی خود و اطرافیانتان مادام العمر کسب درآمد کنید!</string>
-    <string name="intro_title_two">خرید تمامی محصولات با تخفیف</string>
-    <string name="intro_title_two_text">با خرید تمامی محصولات و خدمات درصدی از سود خریدتان به عنوان تخفیف به اعتبار کیف پول شما افزوده خواهد شد</string>
+    <string name="intro_title_two">صندوق قرعه کشی</string>
+    <string name="intro_title_two_text">بر اساس مقدار خرید شانس برای برنده شدن مبلغ موجود در صندوق قرعه کشی دریافت کنید</string>
     <string name="intro_title_three">کسب درآمد مادام العمر با معرفی اینکام</string>
     <string name="intro_title_three_text">با معرفی اینکام به اطرافیان خودتان به صورت مادام العمر به ازای هر خرید آنها از اینکام درصدی از سود خرید آنها به اعتبار کیف پول شما اضافه خواهد شد</string>
     <string name="start">شروع کنید</string>
@@ -75,8 +80,8 @@
     <string name="inkam_make_money">کسب درآمد از اینکام</string>
 
     <string name="transactions">تراکنش ها</string>
-    <string name="user_cash_make">درآمد از کاربران</string>
-    <string name="purchase_cash_make">درآمد از خرید</string>
+    <string name="user_cash_make">درآمد امروز از کاربران</string>
+    <string name="purchase_cash_make">درآمد امروز از خرید</string>
     <string name="add_credit">افزایش اعتبار</string>
     <string name="transfer_credit">انتقال اعتبار</string>
     <string name="request_cash_out_credit">درخواست واریز اعتبار</string>
@@ -85,6 +90,7 @@
     <string name="new_id">شناسه جدید</string>
     <string name="my_friends">دوستان من</string>
     <string name="id_name">نام شناسه</string>
+    <string name="id_nick_name">نام مستعار شناسه</string>
     <string name="moaref_code">نام معرف</string>
     <string name="users_id">کاربران این شناسه</string>
     <string name="invite_friends">دعوت دوستان</string>
@@ -103,11 +109,14 @@
     <string name="expiration_date">تاریخ انقضا</string>
     <string name="submit_card">ثبت کارت</string>
 
+    <string name="no_notif">اعلان ندارید</string>
+    <string name="no_msg">پیام ندارید</string>
+
     <string name="make_name_invite_code">یک نام و کد معرف ایجاد کنید</string>
-    <string name="enter_code_id">کد شناسه را وارد نمایید.</string>
-    <string name="first_id_rule">شناسه انتخابی باید بیشتر از ۵ حرف و عدد باشد</string>
-    <string name="second_id_rule">شناسه می تواند شامل حروف انگلیسی و اعداد باشد</string>
-    <string name="third_id_rule">شناسه نمیتواند با ۰۹ شروع شود</string>
+    <string name="enter_code_id">کد معرف را وارد نمایید.</string>
+    <string name="first_id_rule">کد معرف انتخابی باید بیشتر از ۵ حرف و عدد باشد</string>
+    <string name="second_id_rule">کد معرف می تواند شامل حروف انگلیسی و اعداد باشد</string>
+    <string name="third_id_rule">کد معرف نمیتواند با ۰۹ شروع شود</string>
     <string name="submit_id">ثبت شناسه</string>
 
     <string name="user_details">جزییات کاربران</string>
@@ -137,6 +146,7 @@
     <string name="enter_cvv2">CVV2 را وارد نمایید</string>
 
     <string name="send_failed">ارسال ناموفق بود</string>
+    <string name="payment_failed">پرداخت ناموفق بود</string>
     <string name="amount">مبلغ</string>
     <string name="date_time">تاریخ و زمان</string>
     <string name="consistency_number">شماره پیگیری</string>
@@ -150,6 +160,11 @@
     <string name="online_support">پشتیبانی آنلاین</string>
     <string name="terms_conditions">قوانین و مقررات</string>
     <string name="about_inkam">درباره اینکام</string>
+    <string name="about_inkam_full">
+        فروشگاه شارژ اینکام با مدیریت آقای سعید فراتی نژاد با هدف سهولت در ارائه و خدمت خرید شارژ و بسته اینترنتی هر 3 اپراتور
+         کشور راه اندازی شده است، تا تجربه ای نو را در اختیار مصرف کنندگان سیم کارت های اعتباری و دائمی این سیم کارت ها قرار دهد.
+در صورت نیاز به راهنمایی، از طریق چت آنلاین می توانید با پشتیبانی سایت به صورت آنلاین ارتباط برقرار نمایید.
+    </string>
     <string name="setting">تنظیمات</string>
     <string name="log_out">خروج از حساب</string>
 
@@ -240,7 +255,7 @@
     <string name="barcode_scan">اسکن از طریق بارکد خوان</string>
     <string name="bills_with_id">دریافت با شناسه</string>
     <string name="enter_bills_id">شناسه قبض را وارد کنید</string>
-    <string name="enter_payment_id">شناسه پرداخت را وارد کنید</string>
+    <string name="enter_payment_id">شناسه پرداخت را وارد کنید (اختیاری)</string>
 
     <string name="payment_id">شناسه پرداخت</string>
     <string name="bills_id">شناسه قبض</string>
@@ -297,7 +312,7 @@
 
     <string name="all">همه</string>
     <string name="date">تاریخ</string>
-    <string name="reference_number">شماره مرجع</string>
+    <string name="reference_number">شماره پیگیری</string>
     <string name="crimes_list">شماره مرجع</string>
     <string name="pay_crime">پرداخت جریمه</string>
     <string name="select_all">انتخاب همه</string>
@@ -327,6 +342,9 @@
     <string name="error_net">لطفااتصال به اینترنت را بررسی کنید و دوباره تلاش نمایید.</string>
     <string name="error_input">کد رهگیری اشتباه است</string>
     <string name="code_sent">کد رهگیری دوباره برای شما ارسال شد.</string>
+    <string name="fill_phone_number">لطفا شماره موبایل را وارد کنید.</string>
+    <string name="fill_preferred_amount">لطفا مبلغ شارژ را وارد کنید.</string>
+    <string name="wrong_phone_number">شماره موبایل وارد شده صحیح نیست.</string>
 
     <string name="search_your_city">شهر خود را جستجو کنید</string>
     <string name="pay_wallet">پرداخت با کیف پول</string>
@@ -367,6 +385,51 @@
     <string name="online_pay">پرداخت آنلاین</string>
 
     <string name="no_ticket">بلیطی پیدا نشد</string>
+    <string name="fund_box">صندوق قرعه کشی</string>
+    <string name="cash_fund">موجودی صندوق</string>
+    <string name="fund_history">تاریخچه صندوق</string>
+    <string name="chances">شانس ها</string>
+    <string name="chance">شانس</string>
+    <string name="your_chances">شانس های شما</string>
+    <string name="increase_chance">افزایش شانس</string>
+    <string name="winners">برندگان</string>
+    <string name="income_interests">سود دریافتی</string>
+    <string name="space"> </string>
+    <string name="from_terminal">پرواز از ترمینال شماره</string>
+    <string name="passenger">مسافر</string>
+    <string name="adult">بزرگسال</string>
+    <string name="child">کودک</string>
+    <string name="infant">نوزاد</string>
+    <string name="id_success">شناسه با موفقیت ثبت شد.</string>
+    <string name="preferred_amount">مبلغ دلخواه(به ریال)</string>
+    <string name="permanent">دائمی</string>
+    <string name="repeat_purchase">ثبت در تراکنش های پر تکرار</string>
+    <string name="repeat_success">با موفقیت اضافه شد</string>
+    <string name="empty_purchased">خریدی انجام نشده</string>
+    <string name="point_received">امتیاز دریافتی</string>
+    <string name="email_address">پست الکترونیکی</string>
+    <string name="card_number_edit">شماره کارت بانکی</string>
+    <string name="request_agency">درخواست نمایندگی</string>
+    <string name="sheba">شماره شبا</string>
+    <string name="bank_name">نام بانک</string>
+    <string name="bank_card_name">نام صاحب بانک</string>
+    <string name="store_name">نام فروشگاه</string>
+    <string name="coming_soon">بزودی</string>
+
+    <string name="downloading">در حال دانلود</string>
+    <string name="update_title">دریافت آپدیت جدید</string>
+    <string name="version">نسخه</string>
+    <string name="update_is_available">برنامه برای بروزرسانی موجود است</string>
+    <string name="downloading_update">در حال دانلود آپدیت برنامه</string>
+    <string name="download_completed">با موفقیت دریافت شد</string>
+
+    <string name="credit_success">افزایش اعتبار با موفقیت انجام شد</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="birthdate">تاریخ تولد</string>
+    <string name="email">ایمیل</string>
 
 
 </resources>

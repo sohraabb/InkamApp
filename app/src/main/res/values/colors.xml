@@ -26,5 +26,9 @@
     <color name="colorSelectedSeat">#009b8a</color>
     <color name="colorUnSelectedSeat">#e8e9ea</color>
     <color name="colorUnableSeat">#f4f4f4</color>
+    <color name="colorBlackTransparent">#CC000000</color>
+    <color name="colorLightGreen">#00998C</color>
+
+
 
 </resources>

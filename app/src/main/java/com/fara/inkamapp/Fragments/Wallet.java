@@ -2,7 +2,9 @@ package com.fara.inkamapp.Fragments;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -18,14 +20,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fara.inkamapp.Activities.MainActivity;
+import com.fara.inkamapp.Activities.PhoneDebt;
 import com.fara.inkamapp.Activities.WalletTransactions;
 import com.fara.inkamapp.Adapters.AllUserCardsAdapter;
 import com.fara.inkamapp.BottomSheetFragments.AddExtraCredit;
 import com.fara.inkamapp.BottomSheetFragments.DepositRequest;
+import com.fara.inkamapp.BottomSheetFragments.Lottery;
 import com.fara.inkamapp.BottomSheetFragments.SubmitNewCard;
 import com.fara.inkamapp.BottomSheetFragments.TransferCredit;
+import com.fara.inkamapp.Dialogs.InquiryDebt;
+import com.fara.inkamapp.Dialogs.Interest;
 import com.fara.inkamapp.Helpers.FaraNetwork;
 import com.fara.inkamapp.Helpers.Numbers;
+import com.fara.inkamapp.Models.Fund;
 import com.fara.inkamapp.Models.User;
 import com.fara.inkamapp.Models.UserCard;
 import com.fara.inkamapp.R;
@@ -45,7 +52,7 @@ import ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator;
 public class Wallet extends Fragment {
 
     private BottomSheetDialogFragment bottomSheetDialogFragment;
-    private TextView transactions, addCard, toastText, walletBalance, tvPurchaseWalletCashValue, tvUserWalletCashValue;
+    private TextView transactions, addCard, toastText, walletBalance, tvPurchaseWalletCashValue, tvUserWalletCashValue, lottery, interests, profitFromPurchase;
     private RelativeLayout addCredit, transferCredit;
     private RecyclerView userCardsRecycler;
     private ScrollingPagerIndicator scrollingPagerIndicator;
@@ -68,6 +75,9 @@ public class Wallet extends Fragment {
         walletBalance = view.findViewById(R.id.tv_wallet_cash_value);
         tvPurchaseWalletCashValue = view.findViewById(R.id.tv_purchase_wallet_cash_value);
         tvUserWalletCashValue = view.findViewById(R.id.tv_user_wallet_cash_value);
+        lottery = view.findViewById(R.id.tv_fund_box);
+        interests = view.findViewById(R.id.tv_users_interests);
+        profitFromPurchase = view.findViewById(R.id.tv_profit_from_purchase);
         RelativeLayout rl_request_cash_out_credit = view.findViewById(R.id.rl_request_cash_out_credit);
 
 
@@ -112,6 +122,23 @@ public class Wallet extends Fragment {
             public void onClick(View view) {
                 bottomSheetDialogFragment = TransferCredit.newInstance("Bottom Sheet Get Money Dialog");
                 bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+            }
+        });
+
+        lottery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetDialogFragment = Lottery.newInstance("Bottom Sheet Get Money Dialog");
+                bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+            }
+        });
+
+        interests.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Interest interest = new Interest(getActivity());
+//                interest.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//                interest.show();
             }
         });
 
@@ -180,13 +207,12 @@ public class Wallet extends Fragment {
                     scrollingPagerIndicator.setVisibility(View.VISIBLE);
                     addCard.setVisibility(View.GONE);
 
-                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, true);
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
                     userCardsRecycler.setLayoutManager(layoutManager);
                     AllUserCardsAdapter allUserCardsAdapter = new AllUserCardsAdapter(getActivity(), userCards);
                     userCardsRecycler.setAdapter(allUserCardsAdapter);
 
-                    scrollingPagerIndicator.attachToRecyclerView(userCardsRecycler);
-                    scrollingPagerIndicator.setCurrentPosition(0);
+                    scrollingPagerIndicator.attachToRecyclerView(userCardsRecycler, userCards.size());
 
                 }
 
@@ -246,13 +272,26 @@ public class Wallet extends Fragment {
             super.onPostExecute(userWallet);
             //TODO we should add other items here too
 
+            NumberFormat formatter = new DecimalFormat("#,###");
 
             if (userWallet != null) {
-                NumberFormat formatter = new DecimalFormat("#,###");
+
+                if (!userWallet.isUser()) {
+                    profitFromPurchase.setVisibility(View.VISIBLE);
+                    lottery.setVisibility(View.GONE);
+                    tvPurchaseWalletCashValue.setText(Numbers.ToPersianNumbers(formatter.format(userWallet.getTodayProfit())));
+
+
+                } else {
+                    lottery.setVisibility(View.VISIBLE);
+                    profitFromPurchase.setVisibility(View.GONE);
+                    new GetAllFundReports().execute();
+
+                }
+
                 String formattedNumber = formatter.format(Double.valueOf(userWallet.getCashOfWallet()));
                 walletBalance.setText(Numbers.ToPersianNumbers(String.valueOf(formattedNumber)));
-                tvPurchaseWalletCashValue.setText(Numbers.ToPersianNumbers(String.valueOf(formatter.format(userWallet.getTodayProfit()))));
-                tvUserWalletCashValue.setText(Numbers.ToPersianNumbers(String.valueOf(formatter.format(userWallet.getIncome()))));
+                tvUserWalletCashValue.setText(Numbers.ToPersianNumbers(formatter.format(userWallet.getIncome())));
 
             } else {
                 Toast toast = Toast.makeText(getActivity(), R.string.try_again, Toast.LENGTH_SHORT);
@@ -271,4 +310,64 @@ public class Wallet extends Fragment {
 
         }
     }
+
+    private class GetAllFundReports extends AsyncTask<Void, Void, Fund> {
+
+        Fund results = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            if (!isNetworkAvailable()) {
+                Toast toast = Toast.makeText(getActivity(), R.string.error_net, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+            }
+
+        }
+
+        @Override
+        protected Fund doInBackground(Void... params) {
+
+            results = new Caller().GetFundReport(MainActivity._userId, MainActivity._token);
+
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(Fund fundReport) {
+            super.onPostExecute(fundReport);
+            //TODO we should add other items here too
+
+            if (fundReport != null) {
+                NumberFormat formatter = new DecimalFormat("#,###");
+                tvPurchaseWalletCashValue.setText(Numbers.ToPersianNumbers(formatter.format(fundReport.get_balance())));
+
+            } else {
+                Toast toast = Toast.makeText(getActivity(), R.string.try_again, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+            }
+
+        }
+    }
+
 }

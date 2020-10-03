@@ -6,9 +6,10 @@ import org.ksoap2.serialization.SoapObject;
 
 public class AdditionalInfo {
     private BusCities City;
-    private String Name ;
-    private String EnglishName ;
-    public AdditionalInfo(SoapObject input){
+    private String Name;
+    private String EnglishName;
+
+    public AdditionalInfo(SoapObject input) {
         try {
             EnglishName = input.getPropertySafelyAsString("EnglishName");
             Name = input.getPropertySafelyAsString("Name");
@@ -19,6 +20,7 @@ public class AdditionalInfo {
         }
 
     }
+
     public BusCities getCity() {
         return City;
     }

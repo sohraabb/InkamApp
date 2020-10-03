@@ -20,6 +20,7 @@ import com.fara.inkamapp.Helpers.Base64;
 import com.fara.inkamapp.Helpers.FaraNetwork;
 import com.fara.inkamapp.Helpers.HideKeyboard;
 import com.fara.inkamapp.Helpers.RSA;
+import com.fara.inkamapp.Models.ResponseStatus;
 import com.fara.inkamapp.Models.User;
 import com.fara.inkamapp.R;
 import com.fara.inkamapp.WebServices.Caller;
@@ -53,7 +54,6 @@ public class LoginUsePassword extends HideKeyboard implements View.OnClickListen
     private ImageButton back;
     private ProgressBar loadingProgress;
 
-
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
@@ -77,23 +77,10 @@ public class LoginUsePassword extends HideKeyboard implements View.OnClickListen
 
     }
 
-    private void initVariables() {
-        submit = findViewById(R.id.btn_enter);
-        forgot_pass = findViewById(R.id.tv_forgot_pass);
-        password = findViewById(R.id.et_password);
-        back = findViewById(R.id.ib_back);
-        loadingProgress = findViewById(R.id.progress_loader);
-
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-
-        Bundle intent = getIntent().getExtras();
-        phone = intent.getString("phoneNumber");
-
-        submit.setOnClickListener(this);
-        back.setOnClickListener(this);
-        forgot_pass.setOnClickListener(this);
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupUI(findViewById(R.id.parent));
     }
 
     @Override
@@ -117,15 +104,7 @@ public class LoginUsePassword extends HideKeyboard implements View.OnClickListen
 
                     }
 
-                } catch (BadPaddingException e) {
-                    e.printStackTrace();
-                } catch (IllegalBlockSizeException e) {
-                    e.printStackTrace();
-                } catch (InvalidKeyException e) {
-                    e.printStackTrace();
-                } catch (NoSuchPaddingException e) {
-                    e.printStackTrace();
-                } catch (NoSuchAlgorithmException e) {
+                } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 }
                 new agentLogin().execute();
@@ -146,7 +125,26 @@ public class LoginUsePassword extends HideKeyboard implements View.OnClickListen
         }
     }
 
+    private void initVariables() {
+        submit = findViewById(R.id.btn_enter);
+        forgot_pass = findViewById(R.id.tv_forgot_pass);
+        password = findViewById(R.id.et_password);
+        back = findViewById(R.id.ib_back);
+        loadingProgress = findViewById(R.id.progress_loader);
 
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
+        Bundle intent = getIntent().getExtras();
+        if (intent != null)
+            phone = intent.getString("phoneNumber");
+
+        submit.setOnClickListener(this);
+        back.setOnClickListener(this);
+        forgot_pass.setOnClickListener(this);
+
+        new GetUserIdByUsername().execute();
+
+    }
 
     private boolean isNetworkAvailable() {
         return FaraNetwork.isNetworkAvailable(getApplicationContext());
@@ -198,7 +196,6 @@ public class LoginUsePassword extends HideKeyboard implements View.OnClickListen
                     if (sharedpreferences.getString("UserID", null) == null && user.getID() != null) {
                         SharedPreferences.Editor editor = sharedpreferences.edit();
                         editor.putString("UserID", user.getID());
-
                         editor.apply();
                     }
 
@@ -221,22 +218,8 @@ public class LoginUsePassword extends HideKeyboard implements View.OnClickListen
                         editor.apply();
                     }
 
-
-                } catch (NoSuchPaddingException e) {
-                    e.printStackTrace();
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                } catch (InvalidParameterSpecException e) {
-                    e.printStackTrace();
-                } catch (InvalidAlgorithmParameterException e) {
-                    e.printStackTrace();
-                } catch (InvalidKeyException e) {
-                    e.printStackTrace();
-                } catch (BadPaddingException e) {
-                    e.printStackTrace();
-                } catch (IllegalBlockSizeException e) {
-                    e.printStackTrace();
-                } catch (UnsupportedEncodingException e) {
+                } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidParameterSpecException |
+                        InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
 
@@ -263,9 +246,9 @@ public class LoginUsePassword extends HideKeyboard implements View.OnClickListen
         }
     }
 
-    private class getUserById extends AsyncTask<Void, Void, User> {
+    private class GetUserIdByUsername extends AsyncTask<Void, Void, ResponseStatus> {
 
-        User results = null;
+        ResponseStatus results = null;
 
         @Override
         protected void onPreExecute() {
@@ -288,27 +271,40 @@ public class LoginUsePassword extends HideKeyboard implements View.OnClickListen
         }
 
         @Override
-        protected User doInBackground(Void... params) {
-            results = new Caller().getUserById(MainActivity._userId, MainActivity._token);
+        protected ResponseStatus doInBackground(Void... params) {
+            results = new Caller().userIdByUsername(phone);
 
             return results;
         }
 
         @Override
-        protected void onPostExecute(User user) {
+        protected void onPostExecute(ResponseStatus user) {
             super.onPostExecute(user);
             //TODO we should add other items here too
 
-            if (user != null) {
+            if (user != null && user.get_status().equals("SUCCESS")) {
 
+                if (sharedpreferences.getString("UserID", null) == null && user.get_id() != null) {
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putString("UserID", user.get_id());
+                    editor.apply();
+                }
+
+
+            } else {
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.try_again, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
             }
         }
-    }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setupUI(findViewById(R.id.parent));
     }
 }

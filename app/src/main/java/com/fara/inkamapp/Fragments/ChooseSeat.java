@@ -150,16 +150,13 @@ public class ChooseSeat extends Fragment {
                 } else if (s.getStatus().equals("Available")) {
                     currentBtn.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_corner));
                     currentBtn.setOnClickListener(onClickListener);
-                }
-                else if (s.getStatus().equals("1")) {
+                } else if (s.getStatus().equals("1")) {
                     currentBtn.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.button_male_select));
                     currentBtn.setOnClickListener(onClickListener);
-                }
-                else if (s.getStatus().equals("0")) {
+                } else if (s.getStatus().equals("0")) {
                     currentBtn.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.button_female_select));
                     currentBtn.setOnClickListener(onClickListener);
-                }
-                else {
+                } else {
                     currentBtn.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.button_selected_seat));
                     currentBtn.setEnabled(false);
                 }
@@ -204,7 +201,7 @@ public class ChooseSeat extends Fragment {
                 }
             }
             btn.setTag(seat);
-mListener.addSeat(selectedSeate);
+            mListener.addSeat(selectedSeate);
 
         }
     };

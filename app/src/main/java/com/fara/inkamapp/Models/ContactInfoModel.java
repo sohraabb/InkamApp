@@ -51,7 +51,7 @@ public class ContactInfoModel {
         return _phone;
     }
 
-    public ContactInfoModel(SoapObject input){
+    public ContactInfoModel(SoapObject input) {
         try {
             _id = input.getPropertySafelyAsString("ID");
             _userId = input.getPropertySafelyAsString("UserID");

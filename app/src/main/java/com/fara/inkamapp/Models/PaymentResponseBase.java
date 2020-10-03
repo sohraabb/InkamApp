@@ -1,9 +1,9 @@
 package com.fara.inkamapp.Models;
 
 public class PaymentResponseBase {
-        public short Status;
-        public String Message;
-        public Object Data;
+    public short Status;
+    public String Message;
+    public Object Data;
 
     public void setData(Object data) {
         Data = data;

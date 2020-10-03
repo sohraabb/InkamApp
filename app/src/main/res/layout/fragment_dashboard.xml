@@ -17,14 +17,51 @@
             android:layout_height="150dp"
             android:background="@drawable/shape_top_dash_p"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
-        <RelativeLayout
-            android:layout_width="50dp"
-            android:layout_height="100dp"
-            android:background="@drawable/oval_left_shape_p"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+        <FrameLayout
+            android:id="@+id/frame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:clickable="false"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/ib_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:padding="8dp"
+                app:srcCompat="@drawable/ic_notification"/>
+
+            <TextView
+                android:id="@+id/tv_has_notif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/red_oval_background"
+                android:gravity="center_horizontal"
+                android:clickable="false"
+                android:layout_marginStart="24dp"
+                android:textColor="@color/colorWhite"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/ic_notification" />
+        </FrameLayout>
+
+        <ImageButton
+            android:id="@+id/ib_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:padding="8dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toEndOf="@id/frame"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_history" />
 
         <RelativeLayout
             android:layout_width="50dp"
@@ -33,38 +70,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_image"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/test_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/ib_notification"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:background="@android:color/transparent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_notification" />
 
-        <ImageButton
-            android:id="@+id/ib_history"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
-            android:background="@android:color/transparent"
-            app:layout_constraintStart_toEndOf="@id/ib_notification"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_history" />
+        <RelativeLayout
+            android:layout_width="50dp"
+            android:layout_height="100dp"
+            android:background="@drawable/oval_left_shape_p"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
 
         <RelativeLayout
             android:id="@+id/rl_account_box"
@@ -76,37 +90,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profile_image">
-
-            <TextView
-                android:id="@+id/tv_wallet_balance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerInParent="true"
-                android:layout_margin="8dp"
-                android:textColor="@color/colorNightRider"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/tv_ryal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/tv_wallet_balance"
-                android:text="@string/rial"
-                android:textColor="@color/colorBrown"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tv_wallet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_wallet_balance"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/wallet_cashier"
-                android:textColor="@color/colorBrown"
-                android:textSize="18sp" />
 
             <RelativeLayout
                 android:id="@+id/rl_dash_info"
@@ -190,347 +173,389 @@
                     android:textColor="@color/colorBrown"
                     android:textSize="16sp" />
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_ryal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/tv_wallet_balance"
+                android:text="@string/rial"
+                android:textColor="@color/colorBrown"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_wallet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_wallet_balance"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/wallet_cashier"
+                android:textColor="@color/colorBrown"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_wallet_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_margin="8dp"
+                android:textColor="@color/colorNightRider"
+                android:textSize="20sp" />
         </RelativeLayout>
 
-<!--        <LinearLayout-->
-<!--            android:id="@+id/ll_first_row"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="8dp"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:layout_marginEnd="8dp"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:weightSum="90"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/rl_account_box">-->
-
-<!--            <RelativeLayout-->
-<!--                android:id="@+id/rl_internet_package"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_marginStart="8dp"-->
-<!--                android:layout_weight="30"-->
-<!--                android:background="@drawable/white_very_rounded_background"-->
-<!--                android:paddingTop="16dp"-->
-<!--                android:paddingBottom="16dp">-->
-
-<!--                <ImageView-->
-<!--                    android:id="@+id/iv_net_package"-->
-<!--                    android:layout_width="30dp"-->
-<!--                    android:layout_height="30dp"-->
-<!--                    android:layout_alignParentTop="true"-->
-<!--                    android:layout_centerInParent="true"-->
-<!--                    app:srcCompat="@drawable/ic_package" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/tv_net_package"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_below="@+id/iv_net_package"-->
-<!--                    android:layout_centerInParent="true"-->
-<!--                    android:layout_marginTop="16dp"-->
-<!--                    android:text="@string/net_package"-->
-<!--                    android:textColor="@color/colorBrown"-->
-<!--                    android:textSize="16sp" />-->
-<!--            </RelativeLayout>-->
-
-<!--            <RelativeLayout-->
-<!--                android:id="@+id/rl_card_to_card"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_marginStart="8dp"-->
-<!--                android:layout_marginEnd="8dp"-->
-<!--                android:layout_weight="30"-->
-<!--                android:background="@drawable/white_very_rounded_background"-->
-<!--                android:paddingTop="16dp"-->
-<!--                android:paddingBottom="16dp">-->
-
-<!--                <ImageView-->
-<!--                    android:id="@+id/iv_card_to"-->
-<!--                    android:layout_width="30dp"-->
-<!--                    android:layout_height="30dp"-->
-<!--                    android:layout_alignParentTop="true"-->
-<!--                    android:layout_centerInParent="true"-->
-<!--                    app:srcCompat="@drawable/ic_hand_card" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/tv_card_to"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_below="@+id/iv_card_to"-->
-<!--                    android:layout_centerInParent="true"-->
-<!--                    android:layout_marginTop="16dp"-->
-<!--                    android:text="@string/card_to_card"-->
-<!--                    android:textColor="@color/colorBrown"-->
-<!--                    android:textSize="16sp" />-->
-<!--            </RelativeLayout>-->
-
-<!--            <RelativeLayout-->
-<!--                android:id="@+id/rl_charge"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_marginEnd="8dp"-->
-<!--                android:layout_weight="30"-->
-<!--                android:background="@drawable/white_very_rounded_background"-->
-<!--                android:paddingTop="16dp"-->
-<!--                android:paddingBottom="16dp">-->
-
-<!--                <ImageView-->
-<!--                    android:id="@+id/iv_charge"-->
-<!--                    android:layout_width="30dp"-->
-<!--                    android:layout_height="30dp"-->
-<!--                    android:layout_alignParentTop="true"-->
-<!--                    android:layout_centerInParent="true"-->
-<!--                    app:srcCompat="@drawable/ic_sim_charge" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/tv_charge"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_below="@+id/iv_charge"-->
-<!--                    android:layout_centerInParent="true"-->
-<!--                    android:layout_marginTop="16dp"-->
-<!--                    android:text="@string/charge"-->
-<!--                    android:textColor="@color/colorBrown"-->
-<!--                    android:textSize="16sp" />-->
-<!--            </RelativeLayout>-->
-<!--        </LinearLayout>-->
-
-<!--        <LinearLayout-->
-<!--            android:id="@+id/ll_second_row"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="8dp"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:layout_marginEnd="8dp"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:weightSum="90"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/ll_first_row">-->
-
-<!--            <RelativeLayout-->
-<!--                android:id="@+id/rl_bus"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_marginStart="8dp"-->
-<!--                android:layout_weight="30"-->
-<!--                android:background="@drawable/white_very_rounded_background"-->
-<!--                android:paddingTop="16dp"-->
-<!--                android:paddingBottom="16dp">-->
-
-<!--                <ImageView-->
-<!--                    android:id="@+id/iv_bus"-->
-<!--                    android:layout_width="30dp"-->
-<!--                    android:layout_height="30dp"-->
-<!--                    android:layout_alignParentTop="true"-->
-<!--                    android:layout_centerInParent="true"-->
-<!--                    app:srcCompat="@drawable/ic_bus" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/tv_bus_ticket"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_below="@+id/iv_bus"-->
-<!--                    android:layout_centerInParent="true"-->
-<!--                    android:layout_marginTop="16dp"-->
-<!--                    android:text="@string/bus_ticket"-->
-<!--                    android:textColor="@color/colorBrown"-->
-<!--                    android:textSize="16sp" />-->
-<!--            </RelativeLayout>-->
-
-<!--            <RelativeLayout-->
-<!--                android:id="@+id/rl_train_ticket"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_marginStart="8dp"-->
-<!--                android:layout_marginEnd="8dp"-->
-<!--                android:layout_weight="30"-->
-<!--                android:background="@drawable/white_very_rounded_background"-->
-<!--                android:paddingTop="16dp"-->
-<!--                android:paddingBottom="16dp">-->
-
-<!--                <ImageView-->
-<!--                    android:id="@+id/iv_train"-->
-<!--                    android:layout_width="30dp"-->
-<!--                    android:layout_height="30dp"-->
-<!--                    android:layout_alignParentTop="true"-->
-<!--                    android:layout_centerInParent="true"-->
-<!--                    app:srcCompat="@drawable/ic_train" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/tv_train"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_below="@+id/iv_train"-->
-<!--                    android:layout_centerInParent="true"-->
-<!--                    android:layout_marginTop="16dp"-->
-<!--                    android:text="@string/train_ticket"-->
-<!--                    android:textColor="@color/colorBrown"-->
-<!--                    android:textSize="16sp" />-->
-<!--            </RelativeLayout>-->
-
-<!--            <RelativeLayout-->
-<!--                android:id="@+id/rl_plane"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_marginEnd="8dp"-->
-<!--                android:layout_weight="30"-->
-<!--                android:background="@drawable/white_very_rounded_background"-->
-<!--                android:paddingTop="16dp"-->
-<!--                android:paddingBottom="16dp">-->
-
-<!--                <ImageView-->
-<!--                    android:id="@+id/iv_plane"-->
-<!--                    android:layout_width="30dp"-->
-<!--                    android:layout_height="30dp"-->
-<!--                    android:layout_alignParentTop="true"-->
-<!--                    android:layout_centerInParent="true"-->
-<!--                    app:srcCompat="@drawable/ic_air_plain" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/tv_air_plane"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_below="@+id/iv_plane"-->
-<!--                    android:layout_centerInParent="true"-->
-<!--                    android:layout_marginTop="16dp"-->
-<!--                    android:text="@string/air_plane_ticket"-->
-<!--                    android:textColor="@color/colorBrown"-->
-<!--                    android:textSize="16sp" />-->
-<!--            </RelativeLayout>-->
-<!--        </LinearLayout>-->
-
-<!--        <LinearLayout-->
-<!--            android:id="@+id/ll_third_row"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="8dp"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:layout_marginEnd="8dp"-->
-<!--            android:layout_marginBottom="16dp"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:weightSum="90"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/ll_second_row">-->
-
-<!--            <RelativeLayout-->
-<!--                android:id="@+id/rl_car"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_marginStart="8dp"-->
-<!--                android:layout_weight="30"-->
-<!--                android:background="@drawable/white_very_rounded_background"-->
-<!--                android:paddingTop="16dp"-->
-<!--                android:paddingBottom="16dp">-->
-
-<!--                <ImageView-->
-<!--                    android:id="@+id/iv_car"-->
-<!--                    android:layout_width="30dp"-->
-<!--                    android:layout_height="30dp"-->
-<!--                    android:layout_alignParentTop="true"-->
-<!--                    android:layout_centerInParent="true"-->
-<!--                    app:srcCompat="@drawable/ic_car_bills" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/tv_car_bills"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_below="@+id/iv_car"-->
-<!--                    android:layout_centerInParent="true"-->
-<!--                    android:layout_marginTop="16dp"-->
-<!--                    android:text="@string/car_bills"-->
-<!--                    android:textColor="@color/colorBrown"-->
-<!--                    android:textSize="16sp" />-->
-<!--            </RelativeLayout>-->
-
-<!--            <RelativeLayout-->
-<!--                android:id="@+id/rl_phone"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_marginStart="8dp"-->
-<!--                android:layout_marginEnd="8dp"-->
-<!--                android:layout_weight="30"-->
-<!--                android:background="@drawable/white_very_rounded_background"-->
-<!--                android:paddingTop="16dp"-->
-<!--                android:paddingBottom="16dp">-->
-
-<!--                <ImageView-->
-<!--                    android:id="@+id/iv_phone"-->
-<!--                    android:layout_width="30dp"-->
-<!--                    android:layout_height="30dp"-->
-<!--                    android:layout_alignParentTop="true"-->
-<!--                    android:layout_centerInParent="true"-->
-<!--                    app:srcCompat="@drawable/ic_tell_bills" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/tv_phone_bills"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_below="@+id/iv_phone"-->
-<!--                    android:layout_centerInParent="true"-->
-<!--                    android:layout_marginTop="16dp"-->
-<!--                    android:text="@string/phone_bills"-->
-<!--                    android:textColor="@color/colorBrown"-->
-<!--                    android:textSize="16sp" />-->
-<!--            </RelativeLayout>-->
-
-<!--            <RelativeLayout-->
-<!--                android:id="@+id/rl_service"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_marginEnd="8dp"-->
-<!--                android:layout_weight="30"-->
-<!--                android:background="@drawable/white_very_rounded_background"-->
-<!--                android:paddingTop="16dp"-->
-<!--                android:paddingBottom="16dp">-->
-
-<!--                <ImageView-->
-<!--                    android:id="@+id/iv_paper"-->
-<!--                    android:layout_width="30dp"-->
-<!--                    android:layout_height="30dp"-->
-<!--                    android:layout_alignParentTop="true"-->
-<!--                    android:layout_centerInParent="true"-->
-<!--                    app:srcCompat="@drawable/ic_paper_bills" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/tv_paper_bills"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_below="@+id/iv_paper"-->
-<!--                    android:layout_centerInParent="true"-->
-<!--                    android:layout_marginTop="16dp"-->
-<!--                    android:text="@string/service_bills"-->
-<!--                    android:textColor="@color/colorBrown"-->
-<!--                    android:textSize="16sp" />-->
-<!--            </RelativeLayout>-->
-<!--        </LinearLayout>-->
-
-<!--        <RelativeLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="30dp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/ll_third_row" />-->
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rl_account_box">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rl_account_box">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_service_and_product"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </RelativeLayout>
+
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/ll_first_row"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="8dp"-->
+        <!--            android:layout_marginTop="16dp"-->
+        <!--            android:layout_marginEnd="8dp"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            android:weightSum="90"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/rl_account_box">-->
+
+        <!--            <RelativeLayout-->
+        <!--                android:id="@+id/rl_internet_package"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:layout_marginStart="8dp"-->
+        <!--                android:layout_weight="30"-->
+        <!--                android:background="@drawable/white_very_rounded_background"-->
+        <!--                android:paddingTop="16dp"-->
+        <!--                android:paddingBottom="16dp">-->
+
+        <!--                <ImageView-->
+        <!--                    android:id="@+id/iv_net_package"-->
+        <!--                    android:layout_width="30dp"-->
+        <!--                    android:layout_height="30dp"-->
+        <!--                    android:layout_alignParentTop="true"-->
+        <!--                    android:layout_centerInParent="true"-->
+        <!--                    app:srcCompat="@drawable/ic_package" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/tv_net_package"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_below="@+id/iv_net_package"-->
+        <!--                    android:layout_centerInParent="true"-->
+        <!--                    android:layout_marginTop="16dp"-->
+        <!--                    android:text="@string/net_package"-->
+        <!--                    android:textColor="@color/colorBrown"-->
+        <!--                    android:textSize="16sp" />-->
+        <!--            </RelativeLayout>-->
+
+        <!--            <RelativeLayout-->
+        <!--                android:id="@+id/rl_card_to_card"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:layout_marginStart="8dp"-->
+        <!--                android:layout_marginEnd="8dp"-->
+        <!--                android:layout_weight="30"-->
+        <!--                android:background="@drawable/white_very_rounded_background"-->
+        <!--                android:paddingTop="16dp"-->
+        <!--                android:paddingBottom="16dp">-->
+
+        <!--                <ImageView-->
+        <!--                    android:id="@+id/iv_card_to"-->
+        <!--                    android:layout_width="30dp"-->
+        <!--                    android:layout_height="30dp"-->
+        <!--                    android:layout_alignParentTop="true"-->
+        <!--                    android:layout_centerInParent="true"-->
+        <!--                    app:srcCompat="@drawable/ic_hand_card" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/tv_card_to"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_below="@+id/iv_card_to"-->
+        <!--                    android:layout_centerInParent="true"-->
+        <!--                    android:layout_marginTop="16dp"-->
+        <!--                    android:text="@string/card_to_card"-->
+        <!--                    android:textColor="@color/colorBrown"-->
+        <!--                    android:textSize="16sp" />-->
+        <!--            </RelativeLayout>-->
+
+        <!--            <RelativeLayout-->
+        <!--                android:id="@+id/rl_charge"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:layout_marginEnd="8dp"-->
+        <!--                android:layout_weight="30"-->
+        <!--                android:background="@drawable/white_very_rounded_background"-->
+        <!--                android:paddingTop="16dp"-->
+        <!--                android:paddingBottom="16dp">-->
+
+        <!--                <ImageView-->
+        <!--                    android:id="@+id/iv_charge"-->
+        <!--                    android:layout_width="30dp"-->
+        <!--                    android:layout_height="30dp"-->
+        <!--                    android:layout_alignParentTop="true"-->
+        <!--                    android:layout_centerInParent="true"-->
+        <!--                    app:srcCompat="@drawable/ic_sim_charge" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/tv_charge"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_below="@+id/iv_charge"-->
+        <!--                    android:layout_centerInParent="true"-->
+        <!--                    android:layout_marginTop="16dp"-->
+        <!--                    android:text="@string/charge"-->
+        <!--                    android:textColor="@color/colorBrown"-->
+        <!--                    android:textSize="16sp" />-->
+        <!--            </RelativeLayout>-->
+        <!--        </LinearLayout>-->
+
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/ll_second_row"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="8dp"-->
+        <!--            android:layout_marginTop="16dp"-->
+        <!--            android:layout_marginEnd="8dp"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            android:weightSum="90"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/ll_first_row">-->
+
+        <!--            <RelativeLayout-->
+        <!--                android:id="@+id/rl_bus"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:layout_marginStart="8dp"-->
+        <!--                android:layout_weight="30"-->
+        <!--                android:background="@drawable/white_very_rounded_background"-->
+        <!--                android:paddingTop="16dp"-->
+        <!--                android:paddingBottom="16dp">-->
+
+        <!--                <ImageView-->
+        <!--                    android:id="@+id/iv_bus"-->
+        <!--                    android:layout_width="30dp"-->
+        <!--                    android:layout_height="30dp"-->
+        <!--                    android:layout_alignParentTop="true"-->
+        <!--                    android:layout_centerInParent="true"-->
+        <!--                    app:srcCompat="@drawable/ic_bus" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/tv_bus_ticket"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_below="@+id/iv_bus"-->
+        <!--                    android:layout_centerInParent="true"-->
+        <!--                    android:layout_marginTop="16dp"-->
+        <!--                    android:text="@string/bus_ticket"-->
+        <!--                    android:textColor="@color/colorBrown"-->
+        <!--                    android:textSize="16sp" />-->
+        <!--            </RelativeLayout>-->
+
+        <!--            <RelativeLayout-->
+        <!--                android:id="@+id/rl_train_ticket"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:layout_marginStart="8dp"-->
+        <!--                android:layout_marginEnd="8dp"-->
+        <!--                android:layout_weight="30"-->
+        <!--                android:background="@drawable/white_very_rounded_background"-->
+        <!--                android:paddingTop="16dp"-->
+        <!--                android:paddingBottom="16dp">-->
+
+        <!--                <ImageView-->
+        <!--                    android:id="@+id/iv_train"-->
+        <!--                    android:layout_width="30dp"-->
+        <!--                    android:layout_height="30dp"-->
+        <!--                    android:layout_alignParentTop="true"-->
+        <!--                    android:layout_centerInParent="true"-->
+        <!--                    app:srcCompat="@drawable/ic_train" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/tv_train"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_below="@+id/iv_train"-->
+        <!--                    android:layout_centerInParent="true"-->
+        <!--                    android:layout_marginTop="16dp"-->
+        <!--                    android:text="@string/train_ticket"-->
+        <!--                    android:textColor="@color/colorBrown"-->
+        <!--                    android:textSize="16sp" />-->
+        <!--            </RelativeLayout>-->
+
+        <!--            <RelativeLayout-->
+        <!--                android:id="@+id/rl_plane"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:layout_marginEnd="8dp"-->
+        <!--                android:layout_weight="30"-->
+        <!--                android:background="@drawable/white_very_rounded_background"-->
+        <!--                android:paddingTop="16dp"-->
+        <!--                android:paddingBottom="16dp">-->
+
+        <!--                <ImageView-->
+        <!--                    android:id="@+id/iv_plane"-->
+        <!--                    android:layout_width="30dp"-->
+        <!--                    android:layout_height="30dp"-->
+        <!--                    android:layout_alignParentTop="true"-->
+        <!--                    android:layout_centerInParent="true"-->
+        <!--                    app:srcCompat="@drawable/ic_air_plain" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/tv_air_plane"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_below="@+id/iv_plane"-->
+        <!--                    android:layout_centerInParent="true"-->
+        <!--                    android:layout_marginTop="16dp"-->
+        <!--                    android:text="@string/air_plane_ticket"-->
+        <!--                    android:textColor="@color/colorBrown"-->
+        <!--                    android:textSize="16sp" />-->
+        <!--            </RelativeLayout>-->
+        <!--        </LinearLayout>-->
+
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/ll_third_row"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="8dp"-->
+        <!--            android:layout_marginTop="16dp"-->
+        <!--            android:layout_marginEnd="8dp"-->
+        <!--            android:layout_marginBottom="16dp"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            android:weightSum="90"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/ll_second_row">-->
+
+        <!--            <RelativeLayout-->
+        <!--                android:id="@+id/rl_car"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:layout_marginStart="8dp"-->
+        <!--                android:layout_weight="30"-->
+        <!--                android:background="@drawable/white_very_rounded_background"-->
+        <!--                android:paddingTop="16dp"-->
+        <!--                android:paddingBottom="16dp">-->
+
+        <!--                <ImageView-->
+        <!--                    android:id="@+id/iv_car"-->
+        <!--                    android:layout_width="30dp"-->
+        <!--                    android:layout_height="30dp"-->
+        <!--                    android:layout_alignParentTop="true"-->
+        <!--                    android:layout_centerInParent="true"-->
+        <!--                    app:srcCompat="@drawable/ic_car_bills" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/tv_car_bills"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_below="@+id/iv_car"-->
+        <!--                    android:layout_centerInParent="true"-->
+        <!--                    android:layout_marginTop="16dp"-->
+        <!--                    android:text="@string/car_bills"-->
+        <!--                    android:textColor="@color/colorBrown"-->
+        <!--                    android:textSize="16sp" />-->
+        <!--            </RelativeLayout>-->
+
+        <!--            <RelativeLayout-->
+        <!--                android:id="@+id/rl_phone"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:layout_marginStart="8dp"-->
+        <!--                android:layout_marginEnd="8dp"-->
+        <!--                android:layout_weight="30"-->
+        <!--                android:background="@drawable/white_very_rounded_background"-->
+        <!--                android:paddingTop="16dp"-->
+        <!--                android:paddingBottom="16dp">-->
+
+        <!--                <ImageView-->
+        <!--                    android:id="@+id/iv_phone"-->
+        <!--                    android:layout_width="30dp"-->
+        <!--                    android:layout_height="30dp"-->
+        <!--                    android:layout_alignParentTop="true"-->
+        <!--                    android:layout_centerInParent="true"-->
+        <!--                    app:srcCompat="@drawable/ic_tell_bills" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/tv_phone_bills"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_below="@+id/iv_phone"-->
+        <!--                    android:layout_centerInParent="true"-->
+        <!--                    android:layout_marginTop="16dp"-->
+        <!--                    android:text="@string/phone_bills"-->
+        <!--                    android:textColor="@color/colorBrown"-->
+        <!--                    android:textSize="16sp" />-->
+        <!--            </RelativeLayout>-->
+
+        <!--            <RelativeLayout-->
+        <!--                android:id="@+id/rl_service"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:layout_marginEnd="8dp"-->
+        <!--                android:layout_weight="30"-->
+        <!--                android:background="@drawable/white_very_rounded_background"-->
+        <!--                android:paddingTop="16dp"-->
+        <!--                android:paddingBottom="16dp">-->
+
+        <!--                <ImageView-->
+        <!--                    android:id="@+id/iv_paper"-->
+        <!--                    android:layout_width="30dp"-->
+        <!--                    android:layout_height="30dp"-->
+        <!--                    android:layout_alignParentTop="true"-->
+        <!--                    android:layout_centerInParent="true"-->
+        <!--                    app:srcCompat="@drawable/ic_paper_bills" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/tv_paper_bills"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_below="@+id/iv_paper"-->
+        <!--                    android:layout_centerInParent="true"-->
+        <!--                    android:layout_marginTop="16dp"-->
+        <!--                    android:text="@string/service_bills"-->
+        <!--                    android:textColor="@color/colorBrown"-->
+        <!--                    android:textSize="16sp" />-->
+        <!--            </RelativeLayout>-->
+        <!--        </LinearLayout>-->
+
+        <!--        <RelativeLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="30dp"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/ll_third_row" />-->
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_pic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

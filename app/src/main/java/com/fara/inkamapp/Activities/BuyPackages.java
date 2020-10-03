@@ -24,6 +24,7 @@ import com.fara.inkamapp.Helpers.FaraNetwork;
 import com.fara.inkamapp.Helpers.HideKeyboard;
 import com.fara.inkamapp.Helpers.Numbers;
 import com.fara.inkamapp.Helpers.RSA;
+import com.fara.inkamapp.Models.ApproveInternetPackage;
 import com.fara.inkamapp.Models.Data;
 import com.fara.inkamapp.Models.ReserveTopupRequest;
 import com.fara.inkamapp.Models.UserWallet;
@@ -80,6 +81,11 @@ public class BuyPackages extends HideKeyboard {
                 .build());
 
         setContentView(R.layout.activity_buy_packages);
+        initVariables();
+
+    }
+
+    private void initVariables() {
         payWallet = findViewById(R.id.btn_pay_wallet);
         Button btnPay = findViewById(R.id.btn_pay);
         TextView tvPrice = findViewById(R.id.tv_price);
@@ -107,16 +113,21 @@ public class BuyPackages extends HideKeyboard {
         describe = getIntent().getStringExtra("describe");
         NumberFormat formatter = new DecimalFormat("#,###");
         String formattedNumber = formatter.format(Double.valueOf(amount));
-
         tvPrice.setText(Numbers.ToPersianNumbers(formattedNumber));
         tvDescribe.setText(Numbers.ToPersianNumbers(describe));
-        if (operator == "0") {
-            ivLogo.setImageResource(R.drawable.irancell_logo_green);
-        } else if (operator == "1") {
-            ivLogo.setImageResource(R.drawable.hamrah_aval_logo_green);
-        } else if (operator == "2") {
-            ivLogo.setImageResource(R.drawable.rightel_logo);
+
+        switch (operator) {
+            case "0":
+                ivLogo.setImageResource(R.drawable.irancell_logo_green);
+                break;
+            case "1":
+                ivLogo.setImageResource(R.drawable.hamrah_aval_logo_green);
+                break;
+            case "2":
+                ivLogo.setImageResource(R.drawable.rightel_logo);
+                break;
         }
+
         postData = new JSONObject();
         try {
             postData.put("Amount", amount);
@@ -127,35 +138,18 @@ public class BuyPackages extends HideKeyboard {
             postData.put("DeviceType", "59");
             postData.put("Operator", operator);
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
+        } catch (JSONException | NoSuchPaddingException | NoSuchAlgorithmException |
+                InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
         }
-
 
         try {
             encryptedToken = Base64.encode((RSA.encrypt(token, publicKey)));
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException |
+                NoSuchPaddingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        new GetUserWallet().execute();
+
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,7 +162,36 @@ public class BuyPackages extends HideKeyboard {
                 new TopUpRequestForWallet().execute();
             }
         });
+
+        new GetUserWallet().execute();
+
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupUI(findViewById(R.id.parent));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == 1) {
+            dataToConfirm = data.getStringExtra("enData");
+            if (dataToConfirm != null)
+                dataToConfirm = dataToConfirm.replace("\\", "");
+            String one = data.getStringExtra("message");
+            String sts = String.valueOf(data.getIntExtra("status", 0));
+            if (sts.equals("0")) {
+                new approveTopUpRequest().execute();
+            }
+        }
+        if (resultCode == Activity.RESULT_CANCELED) {
+            //Write your code if there's no result
+        }
+        // }
+    }//
 
     private class InternetPackageReserve extends AsyncTask<Void, Void, ReserveTopupRequest> {
 
@@ -213,28 +236,13 @@ public class BuyPackages extends HideKeyboard {
                 intent.putExtra("Type", "1");
                 try {
                     intent.putExtra("Token", AESEncyption.decryptMsg(reserveTopUpRequest.get_token(), AesKey));
-                } catch (NoSuchPaddingException e) {
-                    e.printStackTrace();
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                } catch (InvalidParameterSpecException e) {
-                    e.printStackTrace();
-                } catch (InvalidAlgorithmParameterException e) {
-                    e.printStackTrace();
-                } catch (InvalidKeyException e) {
-                    e.printStackTrace();
-                } catch (BadPaddingException e) {
-                    e.printStackTrace();
-                } catch (IllegalBlockSizeException e) {
-                    e.printStackTrace();
-                } catch (UnsupportedEncodingException e) {
+                } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidParameterSpecException |
+                        InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
 
                 intent.putExtra("OrderID", orderId);
-
                 intent.putExtra("TSPEnabled", 1);
-
                 startActivityForResult(intent, 1);
 
             } else {
@@ -291,10 +299,9 @@ public class BuyPackages extends HideKeyboard {
             super.onPostExecute(userWallet);
             //TODO we should add other items here too
 
-
             if (userWallet != null) {
 
-                if (userWallet.get_balance() < Double.valueOf(amount)) {
+                if (userWallet.get_balance() < Double.parseDouble(amount)) {
                     payWallet.setEnabled(false);
                 } else {
                     payWallet.setEnabled(true);
@@ -359,9 +366,8 @@ public class BuyPackages extends HideKeyboard {
             //TODO we should add other items here too
 
 
-            if(reserveTopUpRequest!=null  ) {
+            if (reserveTopUpRequest != null) {
                 Intent intent = new Intent(getApplicationContext(), BuyResult.class);
-
                 intent.putExtra("type", "internet");
                 intent.putExtra("operator", operator);
                 intent.putExtra("amount", amount);
@@ -370,25 +376,20 @@ public class BuyPackages extends HideKeyboard {
                 intent.putExtra("date", reserveTopUpRequest.get_date());
                 intent.putExtra("refrenceNumber", refrenceNumber);
 
-
-                if (reserveTopUpRequest.get_referenceNumber()>0&& reserveTopUpRequest.get_responseCode()==0) {
-
+                if (reserveTopUpRequest.get_referenceNumber() > 0 && reserveTopUpRequest.get_responseCode() == 0) {
                     intent.putExtra("success", true);
-
 
                 } else {
                     intent.putExtra("success", false);
-
-
                 }
                 startActivity(intent);
             }
         }
     }
 
-    private class approveTopUpRequest extends AsyncTask<Void, Void, Data> {
+    private class approveTopUpRequest extends AsyncTask<Void, Void, ApproveInternetPackage> {
 
-        Data results = null;
+        ApproveInternetPackage results = null;
 
         @Override
         protected void onPreExecute() {
@@ -411,18 +412,11 @@ public class BuyPackages extends HideKeyboard {
         }
 
         @Override
-        protected Data doInBackground(Void... params) {
+        protected ApproveInternetPackage doInBackground(Void... params) {
             try {
                 results = new Caller().InternetPackageApprove(userID, encryptedToken, dataToConfirm, Base64.encode((RSA.encrypt(orderId, publicKey))), Base64.encode((RSA.encrypt(amount, publicKey))));
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
+            } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException |
+                    NoSuchPaddingException | NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
 
@@ -430,10 +424,10 @@ public class BuyPackages extends HideKeyboard {
         }
 
         @Override
-        protected void onPostExecute(Data reserveTopUpRequest) {
+        protected void onPostExecute(ApproveInternetPackage reserveTopUpRequest) {
             super.onPostExecute(reserveTopUpRequest);
             //TODO we should add other items here too
-            if(reserveTopUpRequest!=null && reserveTopUpRequest.getStatus()!=null) {
+            if (reserveTopUpRequest != null && reserveTopUpRequest.get_data() != null) {
                 Intent intent = new Intent(getApplicationContext(), BuyResult.class);
 
                 intent.putExtra("type", "internet");
@@ -441,60 +435,22 @@ public class BuyPackages extends HideKeyboard {
                 intent.putExtra("amount", amount);
                 intent.putExtra("describe", describe);
                 intent.putExtra("mobile", phone);
-                intent.putExtra("date", reserveTopUpRequest.getDate());
+                intent.putExtra("date", reserveTopUpRequest.get_dateTime());
                 intent.putExtra("refrenceNumber", refrenceNumber);
 
-
-                if (reserveTopUpRequest.getStatus().equals("0")) {
-
+                if (reserveTopUpRequest.get_status() == 0)
                     intent.putExtra("success", true);
-
-
-                } else {
+                else
                     intent.putExtra("success", false);
 
-
-                }
                 startActivity(intent);
             }
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-       /* dataToConfirm ="{\"PayInfo\":\"e51sG3Rg1s4vftpps9lO0WIP8EEnBZy82HNMVO66Lyq8K4ApX01DHxZGE0yW1SUkjDGSJbyg+vcqNTI2Gd3IpwoAcoIO7xUuJFh8MDIqhCEaVt2E0lMDqNqz7hPXcgPoz3bNb5RH8c63Bd+Nuj4fvHR2MWg5zf9dueSFi+D0+SQ=\",\"PayData\":\"dXySBeJSHxeNucG0HHu5nkuTC+Q\\/nYDvZ8Lam4LAtgs0ZM54onSPd1JqrNlb8qwjZHvsQLgKAQKyj1C0B\\/OxZjaStQW4VxTQj68OjhJ\\/Gmk3LX7o8FhxJgXRf6SdI0QVG7B\\/umquZ4wCye5Sj0v+jUQGimgxiFQEJzM5F3uqIao=\",\"DataSign\":\"D3jRnsTH3wpQJmj8ONcYcQOu9ByJ09sItU3BNryi\\/BPiW8V6d6fKarl3+ImzJ3JpTFN4tVjA2+ZRRs4X4rFSh3Yq4Wh8LQkdImZ3HvvZcTGDz32SBvoUOmQBA1Jf6YBGhl99tXRFr42L6NvxfJ3fj\\/9DXh4wPUfAcRKlM5UpueE=\",\"AutoConfirm\":false}";// data.getStringExtra("enData");
-        if(!dataToConfirm.equals(null))
-            dataToConfirm=    dataToConfirm.replace("\\", "");
-        String one = data.getStringExtra("message");
-        String two = String.valueOf(data.getIntExtra("status", 0));
-        new approveTopUpRequest().execute();
-*/
-        // if (requestCode == LAUNCH_SECOND_ACTIVITY) {
-        if (resultCode == 1) {
-            dataToConfirm = data.getStringExtra("enData");
-            if (!dataToConfirm.equals(null))
-                dataToConfirm = dataToConfirm.replace("\\", "");
-            String one = data.getStringExtra("message");
-            String sts = String.valueOf(data.getIntExtra("status", 0));
-            if (sts.equals("0")) {
-                new approveTopUpRequest().execute();
-            }
-        }
-        if (resultCode == Activity.RESULT_CANCELED) {
-            //Write your code if there's no result
-        }
-        // }
-    }//
-
     private boolean isNetworkAvailable() {
         return FaraNetwork.isNetworkAvailable(getApplicationContext());
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setupUI(findViewById(R.id.parent));
-    }
+
 }

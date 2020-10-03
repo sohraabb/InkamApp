@@ -55,7 +55,7 @@ import javax.crypto.NoSuchPaddingException;
 import static com.fara.inkamapp.Activities.LoginInkam.publicKey;
 import static com.fara.inkamapp.Activities.MainActivity.MyPREFERENCES;
 
-public class SubmitNewCard extends BottomSheetDialogFragment  {
+public class SubmitNewCard extends BottomSheetDialogFragment {
 
     String string;
     private EditText et_card_number, et_date_month, et_date_year;
@@ -66,14 +66,18 @@ public class SubmitNewCard extends BottomSheetDialogFragment  {
     private RelativeLayout card_background;
     private ImageView cardLogo;
     private SharedPreferences sharedpreferences;
+    private int MAX_LENGTH = 2;
+
     private RefershCardListener mListener;
-    public interface RefershCardListener{
+
+    public interface RefershCardListener {
         public void RefreshCard();
     }
 
     public void setRefershCardListener(RefershCardListener itemClickListener) {
         this.mListener = itemClickListener;
     }
+
     public static SubmitNewCard newInstance(String string) {
         SubmitNewCard submitNewCard = new SubmitNewCard();
         Bundle args = new Bundle();
@@ -87,14 +91,14 @@ public class SubmitNewCard extends BottomSheetDialogFragment  {
         super.onCreate(savedInstanceState);
         string = getArguments().getString("string");
         //bottom sheet round corners can be obtained but the while background appears to remove that we need to add this.
-        setStyle(DialogFragment.STYLE_NO_FRAME, 0);
+        setStyle(BottomSheetDialogFragment.STYLE_NO_FRAME, R.style.CustomBottomSheetDialogTheme);
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
-        mListener=(RefershCardListener)context;
+        mListener = (RefershCardListener) context;
 
     }
 
@@ -120,17 +124,29 @@ public class SubmitNewCard extends BottomSheetDialogFragment  {
             token = Base64.encode((RSA.encrypt(sharedpreferences.getString("Token", null), publicKey)));
             userID = sharedpreferences.getString("UserID", null);
 
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+
+
+        et_date_year.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() == MAX_LENGTH) {
+                    et_date_month.requestFocus();
+                }
+            }
+        });
 
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -142,22 +158,12 @@ public class SubmitNewCard extends BottomSheetDialogFragment  {
                 postData = new JSONObject();
                 try {
 
-                    postData.put("CardNumber", Base64.encode(RSA.encrypt(cardNo,publicKey)));
-                    postData.put("ExpDate", Base64.encode(RSA.encrypt(expDate,publicKey)));
+                    postData.put("CardNumber", Base64.encode(RSA.encrypt(cardNo, publicKey)));
+                    postData.put("ExpDate", Base64.encode(RSA.encrypt(expDate, publicKey)));
                     postData.put("IsDefault", "true");
 
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (NoSuchPaddingException e) {
-                    e.printStackTrace();
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                } catch (InvalidKeyException e) {
-                    e.printStackTrace();
-                } catch (IllegalBlockSizeException e) {
-                    e.printStackTrace();
-                } catch (BadPaddingException e) {
+                } catch (JSONException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
                     e.printStackTrace();
                 }
 
@@ -222,6 +228,7 @@ public class SubmitNewCard extends BottomSheetDialogFragment  {
             if (responseStatus != null) {
                 if (responseStatus.get_status().equals("SUCCESS")) {
                     mListener.RefreshCard();
+                    dismiss();
 
                 } else {
 

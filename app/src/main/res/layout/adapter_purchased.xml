@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
     android:background="@drawable/edittext_background_black_stroke"
     android:orientation="vertical"
     android:padding="16dp">
@@ -17,8 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="خرید موفق"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="@color/colorGreen"/>
 
     </RelativeLayout>
@@ -41,8 +42,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_alignParentEnd="true"
-            android:text="@string/charge"
-            android:textSize="16sp"
+            android:text="@string/amount"
+            android:textSize="14sp"
             android:textColor="@color/colorLightGray"/>
 
         <TextView
@@ -53,7 +54,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginEnd="8dp"
             android:text="@string/rial"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="@color/colorBrown"/>
 
         <TextView
@@ -63,7 +64,6 @@
             android:layout_centerInParent="true"
             android:layout_toEndOf="@+id/tv_rial"
             android:layout_marginEnd="8dp"
-            android:text="۱۰,۰۰۰"
             android:textSize="16sp"
             android:textColor="@color/colorMainGreen"/>
 
@@ -74,8 +74,7 @@
             android:layout_centerInParent="true"
             android:layout_toEndOf="@+id/tv_purchased_amount"
             android:layout_marginEnd="8dp"
-            android:text="@string/irancell"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="@color/colorBrown"/>
     </RelativeLayout>
 
@@ -97,18 +96,17 @@
         android:layout_centerInParent="true"
         android:layout_alignParentEnd="true"
         android:text="@string/date"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textColor="@color/colorLightGray"/>
 
         <TextView
-            android:id="@+id/tv_purchased_date"
+            android:id="@+id/tv_purchased_persian_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_alignParentStart="true"
             android:layout_marginEnd="16dp"
-            android:text="۱۳۹۷/۰۹/۱۳"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="@color/colorNightRider"/>
 
         <TextView
@@ -116,9 +114,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_toEndOf="@+id/tv_purchased_date"
-            android:text="۰۴:۳۲"
-            android:textSize="16sp"
+            android:layout_toEndOf="@+id/tv_purchased_persian_date"
+            android:textSize="14sp"
             android:textColor="@color/colorNightRider"/>
     </RelativeLayout>
 
@@ -140,7 +137,7 @@
             android:layout_centerInParent="true"
             android:layout_alignParentEnd="true"
             android:text="@string/mobile_number"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="@color/colorLightGray"/>
 
         <TextView
@@ -149,8 +146,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_alignParentStart="true"
-            android:text="۰۹۱۲۳۴۵۶۷۸۹"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="@color/colorNightRider"/>
     </RelativeLayout>
 
@@ -172,7 +168,7 @@
             android:layout_centerInParent="true"
             android:layout_alignParentEnd="true"
             android:text="@string/reference_number"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="@color/colorLightGray"/>
 
         <TextView
@@ -181,8 +177,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_alignParentStart="true"
-            android:text="۰۹۱۲۳۴۵۶۷۸۹"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="@color/colorNightRider"/>
 
     </RelativeLayout>

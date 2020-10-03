@@ -91,7 +91,9 @@ public class AddExtraCredit extends BottomSheetDialogFragment implements View.On
         super.onCreate(savedInstanceState);
         string = getArguments().getString("string");
         //bottom sheet round corners can be obtained but the while background appears to remove that we need to add this.
-        setStyle(DialogFragment.STYLE_NO_FRAME, 0);
+//        setStyle(DialogFragment.STYLE_NO_FRAME, 0);
+        setStyle(BottomSheetDialogFragment.STYLE_NO_FRAME, R.style.CustomBottomSheetDialogTheme);
+
     }
 
     @Nullable
@@ -157,8 +159,6 @@ public class AddExtraCredit extends BottomSheetDialogFragment implements View.On
                 amount = Numbers.ToEnglishNumbers(et_amount.getText().toString().replace(",", ""));
                 new IncreaseWalletCredit().execute();
 
-//                bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
-//                dismiss();
             }
         });
 
@@ -169,11 +169,6 @@ public class AddExtraCredit extends BottomSheetDialogFragment implements View.On
     public void onClick(View v) {
         et_amount.setText(((TextView) v).getText().toString().replace("ریال", ""));
         amount = Numbers.ToEnglishNumbers(et_amount.getText().toString().replace(",", ""));
-//        v.setBackgroundResource(R.drawable.edittext_background_black_stroke);
-//        if (tvSelected != null) {
-//            tvSelected.setBackgroundResource(R.drawable.edittext_background_black_stroke);
-//        }
-//        tvSelected = ((TextView) v);
 
     }
 
@@ -181,7 +176,21 @@ public class AddExtraCredit extends BottomSheetDialogFragment implements View.On
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this._context = context;
-        mClickListener=(ItemClickListener)context;
+        mClickListener = (ItemClickListener) context;
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 1) {
+            dataToConfirm = data.getStringExtra("enData").replace("\\", "");
+            String one = data.getStringExtra("message");
+            String sts = String.valueOf(data.getIntExtra("status", -1));
+            if (sts.equals("0")) {
+                new IncreaseWalletCreditRequestConfirm().execute();
+            }
+        }
 
     }
 
@@ -220,17 +229,11 @@ public class AddExtraCredit extends BottomSheetDialogFragment implements View.On
             String res = null;
             try {
                 try {
-                    res = new Caller().IncreaseWalletCreditRequest(MainActivity._userId, MainActivity._token, Long.parseLong(MainActivity._userName.substring(1)), Base64.encode((RSA.encrypt(amount, publicKey))));
+                    res = new Caller().IncreaseWalletCreditRequest(MainActivity._userId, MainActivity._token,
+                            Long.parseLong(MainActivity._userName.substring(1)), Base64.encode((RSA.encrypt(amount, publicKey))));
 
-                } catch (BadPaddingException e) {
-                    e.printStackTrace();
-                } catch (IllegalBlockSizeException e) {
-                    e.printStackTrace();
-                } catch (InvalidKeyException e) {
-                    e.printStackTrace();
-                } catch (NoSuchPaddingException e) {
-                    e.printStackTrace();
-                } catch (NoSuchAlgorithmException e) {
+                } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException |
+                        NoSuchPaddingException | NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 }
             } catch (Exception ee) {
@@ -239,21 +242,8 @@ public class AddExtraCredit extends BottomSheetDialogFragment implements View.On
             Gson gson = new Gson();
             try {
                 results = gson.fromJson(AESEncyption.decryptMsg(res, AesKey), PaymentResult.class);
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (InvalidParameterSpecException e) {
-                e.printStackTrace();
-            } catch (InvalidAlgorithmParameterException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
+            } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidParameterSpecException | InvalidAlgorithmParameterException |
+                    InvalidKeyException | BadPaddingException | IllegalBlockSizeException | UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
             return results;
@@ -296,7 +286,6 @@ public class AddExtraCredit extends BottomSheetDialogFragment implements View.On
 
     }
 
-
     private class IncreaseWalletCreditRequestConfirm extends AsyncTask<Void, Void, String> {
 
         String results = null;
@@ -326,15 +315,7 @@ public class AddExtraCredit extends BottomSheetDialogFragment implements View.On
 
             try {
                 results = new Caller().increaseWalletCreditRequestConfirm(MainActivity._userId, MainActivity._token, dataToConfirm, Base64.encode((RSA.encrypt(amount, publicKey))));
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
+            } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
 
@@ -348,7 +329,7 @@ public class AddExtraCredit extends BottomSheetDialogFragment implements View.On
 
             if (response != null) {
 
-                Toast toast = Toast.makeText(getActivity(), response, Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getActivity(), R.string.credit_success, Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toastText = toast.getView().findViewById(android.R.id.message);
                 toast.getView().setBackgroundResource(R.drawable.toast_background);
@@ -378,24 +359,6 @@ public class AddExtraCredit extends BottomSheetDialogFragment implements View.On
                 }
                 toast.show();
             }
-
         }
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (resultCode) {
-            case 1:
-                dataToConfirm = data.getStringExtra("enData").replace("\\", "");
-                String one = data.getStringExtra("message");
-                String sts = String.valueOf(data.getIntExtra("status", -1));
-                if (sts.equals("0")) {
-                    new IncreaseWalletCreditRequestConfirm().execute();
-                }
-                break;
-        }
-
-    }
-
 }

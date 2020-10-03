@@ -48,7 +48,6 @@ public class InvitationCode extends HideKeyboard {
     private JSONObject postData;
     private SharedPreferences sharedpreferences;
 
-
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
@@ -70,6 +69,12 @@ public class InvitationCode extends HideKeyboard {
         initVariables();
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupUI(findViewById(R.id.parent));
     }
 
     private void initVariables() {
@@ -102,18 +107,10 @@ public class InvitationCode extends HideKeyboard {
             _firstName = intent.getString("FirstName");
             _lastName = intent.getString("LastName");
             _cityID = intent.getString("CityID");
-            _lastName = intent.getString("LastName");
             _password = intent.getString("Password");
             _phoneNumber = intent.getString("Phone");
-            _profilePicURL = intent.getString("ProfilePicURL");
             _isUser = intent.getString("IsUser");
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setupUI(findViewById(R.id.parent));
     }
 
     private class checkVerificationCode extends AsyncTask<Void, Void, Boolean> {
@@ -176,23 +173,15 @@ public class InvitationCode extends HideKeyboard {
                 postData.put("CityID", _cityID);
                 postData.put("Password", _encryptedPassword);
                 postData.put("Phone", _phoneNumber);
-                postData.put("ProfilePicURL", _profilePicURL);
+                postData.put("ProfilePicURL", sharedpreferences.getString("ProfilePicURL", null));
                 postData.put("IsUser", _isUser);
                 postData.put("AesKey", _encryptedKey);
                 postData.put("perenestorCode", _presenterCode);
 
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
-            } catch (BadPaddingException e) {
+
+            } catch (JSONException | NoSuchPaddingException | NoSuchAlgorithmException |
+                    InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
                 e.printStackTrace();
             }
 
@@ -217,14 +206,10 @@ public class InvitationCode extends HideKeyboard {
                     _token = AESEncyption.decryptMsg(userList.get_users().get(0).getToken(), sharedpreferences.getString("key", null));
                     _userID = userList.get_users().get(0).getID();
 
-                    //Sohrab : save the expDate later on
-
-//                    expDate = userList.get_users().get(0).get_expirationDate().toString();
                     SharedPreferences.Editor editor = sharedpreferences.edit();
                     editor.putString("Token", _token);
                     editor.putString("UserID", _userID);
-//                    editor.putString("ExpDate", expDate);
-
+                    editor.putString("UserName", _username);
                     editor.apply();
                 } catch (Exception e) {
                     e.printStackTrace();

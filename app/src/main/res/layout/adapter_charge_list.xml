@@ -50,7 +50,6 @@
             android:layout_centerInParent="true"
             android:layout_marginEnd="16dp"
             android:layout_toStartOf="@+id/iv_operator_logo"
-            android:text="۱۰,۰۰۰"
             android:textColor="@color/colorMainGreen"
             android:textSize="14sp" />
     </RelativeLayout>

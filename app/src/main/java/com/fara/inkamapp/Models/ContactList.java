@@ -51,7 +51,7 @@ public class ContactList {
         return _userId;
     }
 
-    public ContactList(SoapObject input){
+    public ContactList(SoapObject input) {
         try {
             _id = input.getPropertySafelyAsString("ID");
             _userId = input.getPropertySafelyAsString("UserID");

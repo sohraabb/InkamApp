@@ -3,20 +3,22 @@ package com.fara.inkamapp.Models;
 import java.util.List;
 
 public class TicketToBook {
-    private String BusID ;
+    private String BusID;
 
-    private float DesiredDiscountPercentage ;
-    private List<Passengers> Passengers ;
-    private BusContact Contact ;
-    private String DestinationCityCode ;
-    private String OriginCityCode ;
-    private String DepartureDate ;
-    private double Amount ;
-    private String PhoneNumber ;
-    private String HookUrl ;
-    public TicketToBook(){
+    private float DesiredDiscountPercentage;
+    private List<Passengers> Passengers;
+    private BusContact Contact;
+    private String DestinationCityCode;
+    private String OriginCityCode;
+    private String DepartureDate;
+    private double Amount;
+    private String PhoneNumber;
+    private String HookUrl;
+
+    public TicketToBook() {
 
     }
+
     public TicketToBook(String busID, float desiredDiscountPercentage, List<Passengers> passengers, BusContact contact, String destinationCityCode, String originCityCode, String departureDate, double amount, String phoneNumber) {
         BusID = busID;
         DesiredDiscountPercentage = desiredDiscountPercentage;
@@ -27,7 +29,7 @@ public class TicketToBook {
         DepartureDate = departureDate;
         Amount = amount;
         PhoneNumber = phoneNumber;
-        HookUrl="inkam.ir";
+        HookUrl = "inkam.ir";
     }
 
 
@@ -54,7 +56,6 @@ public class TicketToBook {
     public void setContact(BusContact contact) {
         Contact = contact;
     }
-
 
 
     public String getDestinationCityCode() {

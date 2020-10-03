@@ -13,7 +13,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -21,11 +23,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fara.inkamapp.Dialogs.AgencyRequest;
 import com.fara.inkamapp.Helpers.AESEncyption;
 import com.fara.inkamapp.Helpers.Base64;
 import com.fara.inkamapp.Helpers.FaraNetwork;
@@ -45,6 +51,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -60,11 +67,11 @@ import static com.fara.inkamapp.Activities.CompleteProfile.MyPREFERENCES;
 import static com.fara.inkamapp.Activities.LoginInkam.publicKey;
 
 public class EditUserProfile extends HideKeyboard implements View.OnClickListener {
-    private TextView toastText, submit, requestPassword;
+    private TextView toastText, submit, requestPassword, requestAgency;
     private ImageButton back;
-    private EditText firstName, lastName, city;
+    private EditText firstName, lastName, city, presenter;
     private CircleImageView profileImage;
-    private String _userId, _token, _username, _encodeImage = "", _cityID, _cityName, AesKey;
+    private String _userId, _token, _username, _encodeImage = "", _cityID, _cityName, AesKey, phone;
     private SharedPreferences sharedPreferences;
     private JSONObject user;
     private static final int SELECT_PHOTO = 100;
@@ -96,275 +103,24 @@ public class EditUserProfile extends HideKeyboard implements View.OnClickListene
 
     }
 
-    private void initVariables() {
-        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        AesKey = sharedPreferences.getString("key", null);
-        try {
-            _userId = sharedPreferences.getString("UserID", null);
-            _token = Base64.encode((RSA.encrypt(sharedPreferences.getString("Token", null), publicKey)));
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        back = findViewById(R.id.ib_back);
-        submit = findViewById(R.id.tv_submit);
-        firstName = findViewById(R.id.et_first_name);
-        lastName = findViewById(R.id.et_last_name);
-        city = findViewById(R.id.et_your_city);
-        profileImage = findViewById(R.id.choose_profile_image);
-        requestPassword = findViewById(R.id.tv_new_pass);
-
-        submit.setOnClickListener(this);
-        back.setOnClickListener(this);
-        requestPassword.setOnClickListener(this);
-        profileImage.setOnClickListener(this);
-        city.setOnClickListener(this);
-    }
-
-    private boolean isNetworkAvailable() {
-        return FaraNetwork.isNetworkAvailable(getApplicationContext());
-    }
-
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.tv_submit:
-                new UpdateUser().execute();
-
-                break;
-            case R.id.choose_profile_image:
-
-                if (checkPermissionREAD_EXTERNAL_STORAGE(this)) {
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                     photoPickerIntent.setType("image/*");
                     startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+                } else {
+                    Toast.makeText(EditUserProfile.this, "Access Denied",
+                            Toast.LENGTH_SHORT).show();
                 }
-
-
                 break;
-
-            case R.id.tv_new_pass:
-
-                break;
-
-            case R.id.et_your_city:
-                Intent i = new Intent(getApplicationContext(), SearchProvince.class);
-                startActivityForResult(i, 1);
-
-                break;
-            case R.id.ib_back:
-                onBackPressed();
-
-                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions,
+                        grantResults);
         }
-    }
-
-    private class GetUserInfo extends AsyncTask<Void, Void, User> {
-
-        User results = null;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            if (!isNetworkAvailable()) {
-                Toast toast = Toast.makeText(getApplicationContext(), R.string.error_net, Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toastText = toast.getView().findViewById(android.R.id.message);
-                toast.getView().setBackgroundResource(R.drawable.toast_background);
-                if (toastText != null) {
-                    toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
-                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
-                    toastText.setGravity(Gravity.CENTER);
-                    toastText.setTextSize(14);
-                }
-                toast.show();
-            }
-
-        }
-
-        @Override
-        protected User doInBackground(Void... params) {
-            results = new Caller().getUserById(_userId, _token);
-            userInfo = results;
-            return results;
-        }
-
-        @Override
-        protected void onPostExecute(User userInfo) {
-            super.onPostExecute(userInfo);
-            //TODO we should add other items here too
-
-            if (userInfo != null) {
-                if (!userInfo.getFirstName().equals("anyType{}") && userInfo.getFirstName() != null) {
-                    firstName.setText(userInfo.getFirstName());
-                    firstName.setBackgroundResource(R.drawable.edit_text_green_storke);
-                }
-                if (!userInfo.getLastName().equals("anyType{}") && userInfo.getLastName() != null) {
-                    lastName.setText(userInfo.getLastName());
-                    lastName.setBackgroundResource(R.drawable.edit_text_green_storke);
-                }
-                if (!userInfo.getCityName().equals("anyType{}") && userInfo.getCityName() != null) {
-                    city.setText(userInfo.getCityName());
-                    city.setBackgroundResource(R.drawable.edit_text_green_storke);
-
-                }
-
-                if (!userInfo.getProfilePicURL().equals("anyType{}") && userInfo.getProfilePicURL() != null) {
-                    Picasso.with(getApplicationContext())
-                            .load("http://" + userInfo.getProfilePicURL()).resize(100, 100).centerCrop().into(profileImage, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            Log.i("Sohrab P", "Success");
-
-                        }
-
-                        @Override
-                        public void onError() {
-
-                        }
-
-                    });
-                }
-
-
-            } else {
-                Toast toast = Toast.makeText(getApplicationContext(), R.string.try_again, Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toastText = toast.getView().findViewById(android.R.id.message);
-                toast.getView().setBackgroundResource(R.drawable.toast_background);
-
-                if (toastText != null) {
-                    toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
-                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
-                    toastText.setGravity(Gravity.CENTER);
-                    toastText.setTextSize(14);
-                }
-                toast.show();
-            }
-
-        }
-    }
-
-
-    private class UpdateUser extends AsyncTask<Void, Void, ResponseStatus> {
-
-        ResponseStatus results = null;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            if (!isNetworkAvailable()) {
-                Toast toast = Toast.makeText(getApplicationContext(), R.string.error_net, Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toastText = toast.getView().findViewById(android.R.id.message);
-                toast.getView().setBackgroundResource(R.drawable.toast_background);
-                if (toastText != null) {
-                    toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
-                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
-                    toastText.setGravity(Gravity.CENTER);
-                    toastText.setTextSize(14);
-                }
-                toast.show();
-            }
-
-
-            user = new JSONObject();
-            try {
-                userInfo.setFirstName(firstName.getText().toString());
-                userInfo.setLastName(lastName.getText().toString());
-                userInfo.setProfilePicURL(_encodeImage);
-                userInfo.setCityID(_cityID);
-
-                if (userInfo.getCreditCard() != null && !userInfo.getCreditCard().equals("")) {
-                    String card = AESEncyption.decryptMsg(userInfo.getCreditCard(), AesKey);
-                    userInfo.setCreditCard(Base64.encode(RSA.encrypt(card, publicKey)));
-                }
-                if (userInfo.getSheba() != null && !userInfo.getSheba().equals("")) {
-                    String sheba = AESEncyption.decryptMsg(userInfo.getSheba(), AesKey);
-                    userInfo.setSheba(Base64.encode(RSA.encrypt(sheba, publicKey)));
-                }
-               /* user.put("ID", sharedPreferences.getString("UserID", null));
-                user.put("FirstName", firstName.getText().toString());
-                user.put("LastName", lastName.getText().toString());
-                user.put("UserName", sharedPreferences.getString("UserName", null));
-                user.put("ProfilePicURL", _encodeImage);
-                user.put("CityID", _cityID);*/
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        protected ResponseStatus doInBackground(Void... params) {
-            Gson g = new Gson();
-            String u = g.toJson(userInfo);
-            results = new Caller().updateUser(_token, u);
-
-            return results;
-        }
-
-        @Override
-        protected void onPostExecute(ResponseStatus responseStatus) {
-            super.onPostExecute(responseStatus);
-            //TODO we should add other items here too
-
-            if (responseStatus != null && responseStatus.get_status().equals("SUCCESS")) {
-                Toast toast = Toast.makeText(getApplicationContext(), R.string.user_success, Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toastText = toast.getView().findViewById(android.R.id.message);
-                toast.getView().setBackgroundResource(R.drawable.toast_background);
-
-                if (toastText != null) {
-                    toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
-                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
-                    toastText.setGravity(Gravity.CENTER);
-                    toastText.setTextSize(14);
-                }
-                toast.show();
-
-            } else {
-                Toast toast = Toast.makeText(getApplicationContext(), R.string.try_again, Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toastText = toast.getView().findViewById(android.R.id.message);
-                toast.getView().setBackgroundResource(R.drawable.toast_background);
-
-                if (toastText != null) {
-                    toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
-                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
-                    toastText.setGravity(Gravity.CENTER);
-                    toastText.setTextSize(14);
-                }
-                toast.show();
-            }
-
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setupUI(findViewById(R.id.ConstraintLayout));
-
-    }
-
-    private String encodeImage(Bitmap bm) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] bImage = baos.toByteArray();
-        String encImage = Base64.encode(bImage);
-
-        return encImage;
     }
 
     @Override
@@ -411,6 +167,315 @@ public class EditUserProfile extends HideKeyboard implements View.OnClickListene
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_submit:
+                new UpdateUser().execute();
+
+                break;
+            case R.id.choose_profile_image:
+
+                if (checkPermissionREAD_EXTERNAL_STORAGE(this)) {
+                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                    photoPickerIntent.setType("image/*");
+                    startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+                }
+
+
+                break;
+
+            case R.id.tv_new_pass:
+
+                Intent intent = new Intent(getApplicationContext(), RecoverPassword.class);
+                intent.putExtra("phone", phone);
+                startActivity(intent);
+
+                break;
+
+            case R.id.et_your_city:
+                Intent i = new Intent(getApplicationContext(), SearchProvince.class);
+                startActivityForResult(i, 1);
+
+                break;
+            case R.id.ib_back:
+                onBackPressed();
+
+                break;
+
+            case R.id.tv_agency_request:
+                AgencyRequest agencyRequest = new AgencyRequest(this, userInfo);
+                agencyRequest.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                agencyRequest.show();
+                Window window = agencyRequest.getWindow();
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                break;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupUI(findViewById(R.id.ConstraintLayout));
+
+    }
+
+    private void initVariables() {
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        AesKey = sharedPreferences.getString("key", null);
+        try {
+            _userId = sharedPreferences.getString("UserID", null);
+            _token = Base64.encode((RSA.encrypt(sharedPreferences.getString("Token", null), publicKey)));
+        } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        back = findViewById(R.id.ib_back);
+        submit = findViewById(R.id.tv_submit);
+        firstName = findViewById(R.id.et_first_name);
+        lastName = findViewById(R.id.et_last_name);
+        city = findViewById(R.id.et_your_city);
+        profileImage = findViewById(R.id.choose_profile_image);
+        requestPassword = findViewById(R.id.tv_new_pass);
+        presenter = findViewById(R.id.et_peresentor);
+        requestAgency = findViewById(R.id.tv_agency_request);
+
+        submit.setOnClickListener(this);
+        back.setOnClickListener(this);
+        requestPassword.setOnClickListener(this);
+        profileImage.setOnClickListener(this);
+        city.setOnClickListener(this);
+        requestAgency.setOnClickListener(this);
+    }
+
+    private boolean isNetworkAvailable() {
+        return FaraNetwork.isNetworkAvailable(getApplicationContext());
+    }
+
+    private class GetUserInfo extends AsyncTask<Void, Void, User> {
+
+        User results = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            if (!isNetworkAvailable()) {
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.error_net, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+            }
+
+        }
+
+        @Override
+        protected User doInBackground(Void... params) {
+            results = new Caller().getUserById(_userId, _token);
+            userInfo = results;
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(User userInfo) {
+            super.onPostExecute(userInfo);
+            //TODO we should add other items here too
+
+            if (userInfo != null) {
+
+                if (!userInfo.getPhone().equals("anyType{}") && userInfo.getUserName() != null)
+                    phone = userInfo.getUserName();
+
+                if (!userInfo.getFirstName().equals("anyType{}") && userInfo.getFirstName() != null) {
+                    firstName.setText(userInfo.getFirstName());
+                    firstName.setBackgroundResource(R.drawable.edit_text_green_storke);
+                }
+                if (!userInfo.getLastName().equals("anyType{}") && userInfo.getLastName() != null) {
+                    lastName.setText(userInfo.getLastName());
+                    lastName.setBackgroundResource(R.drawable.edit_text_green_storke);
+                }
+                if (!userInfo.getCityName().equals("anyType{}") && userInfo.getCityName() != null) {
+                    city.setText(userInfo.getCityName());
+                    city.setBackgroundResource(R.drawable.edit_text_green_storke);
+                    _cityID = userInfo.getCityID();
+
+                }
+
+                if (!userInfo.getPerenestorCode().equals("anyType{}") && userInfo.getPerenestorCode() != null) {
+                    presenter.setVisibility(View.VISIBLE);
+                    presenter.setText(userInfo.getPerenestorCode());
+                    presenter.setBackgroundResource(R.drawable.edit_text_green_storke);
+                }
+
+
+                if (!userInfo.getProfilePicURL().equals("anyType{}") && userInfo.getProfilePicURL() != null) {
+                    Picasso.with(getApplicationContext())
+                            .load("https://" + userInfo.getProfilePicURL()).resize(100, 100).centerCrop().into(profileImage, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            Log.i("Sohrab P", "Success");
+
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+
+                    });
+                }
+
+
+            } else {
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.try_again, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+            }
+
+        }
+    }
+
+    private class UpdateUser extends AsyncTask<Void, Void, ResponseStatus> {
+
+        ResponseStatus results = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            if (!isNetworkAvailable()) {
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.error_net, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+            }
+
+
+            user = new JSONObject();
+            try {
+//                userInfo.setFirstName(firstName.getText().toString());
+//                userInfo.setLastName(lastName.getText().toString());
+//                if (!_encodeImage.equals(""))
+//                    userInfo.setProfilePicURL(_encodeImage);
+//
+//                userInfo.setCityID(_cityID);
+//
+//                if (userInfo.getCreditCard() != null && !userInfo.getCreditCard().equals("anyType{}")) {
+//                    String card = AESEncyption.decryptMsg(userInfo.getCreditCard(), AesKey);
+//                    userInfo.setCreditCard(Base64.encode(RSA.encrypt(card, publicKey)));
+//                }
+//                if (userInfo.getSheba() != null && !userInfo.getSheba().equals("anyType{}")) {
+//                    String sheba = AESEncyption.decryptMsg(userInfo.getSheba(), AesKey);
+//                    userInfo.setSheba(Base64.encode(RSA.encrypt(sheba, publicKey)));
+//                }
+//
+//                if (userInfo.getRegisteryDate() != null && !userInfo.getSheba().equals(""))
+//                    userInfo.setRegisteryDate("");
+//
+//                if (userInfo.getExpirationDate() != null && !userInfo.getSheba().equals(""))
+//                    userInfo.setExpirationDate(new Date());
+//
+//                if (userInfo.getRegisteryDatePersian() != null && !userInfo.getSheba().equals(""))
+//                    userInfo.setRegisteryDatePersian("");
+
+
+//                userInfo.setUserName(sharedPreferences.getString("UserName", null));
+//                userInfo.setID(sharedPreferences.getString("UserID", null));
+
+
+                user.put("ID", sharedPreferences.getString("UserID", null));
+                user.put("FirstName", firstName.getText().toString());
+                user.put("LastName", lastName.getText().toString());
+                user.put("UserName", sharedPreferences.getString("UserName", null));
+                user.put("ProfilePicURL", _encodeImage);
+                user.put("CityID", _cityID);
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected ResponseStatus doInBackground(Void... params) {
+            Gson g = new Gson();
+            String u = g.toJson(userInfo);
+            results = new Caller().updateUser(_token, user.toString().replace("\\", ""));
+
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(ResponseStatus responseStatus) {
+            super.onPostExecute(responseStatus);
+            //TODO we should add other items here too
+
+            if (responseStatus != null && responseStatus.get_status().equals("SUCCESS")) {
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.user_success, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+
+            } else {
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.try_again, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toastText = toast.getView().findViewById(android.R.id.message);
+                toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+                if (toastText != null) {
+                    toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                    toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                    toastText.setGravity(Gravity.CENTER);
+                    toastText.setTextSize(14);
+                }
+                toast.show();
+            }
+
+        }
+    }
+
+    private String encodeImage(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] bImage = baos.toByteArray();
+        String encImage = Base64.encode(bImage);
+
+        return encImage;
     }
 
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
@@ -460,26 +525,6 @@ public class EditUserProfile extends HideKeyboard implements View.OnClickListene
                 });
         AlertDialog alert = alertBuilder.create();
         alert.show();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                    photoPickerIntent.setType("image/*");
-                    startActivityForResult(photoPickerIntent, SELECT_PHOTO);
-                } else {
-                    Toast.makeText(EditUserProfile.this, "Access Denied",
-                            Toast.LENGTH_SHORT).show();
-                }
-                break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions,
-                        grantResults);
-        }
     }
 
 }

@@ -91,7 +91,7 @@ public class Passengers implements Parcelable {
         Email = email;
     }
 
-    public Passengers(Parcel in){
+    public Passengers(Parcel in) {
         String[] data = new String[6];
 
         in.readStringArray(data);

@@ -86,7 +86,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:text="6219 8610 2951 1317"
             android:textColor="@color/colorWhite"
             android:textSize="16sp" />
 
@@ -99,7 +98,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:text="03/02"
             android:textColor="@color/colorWhite"
             android:textSize="16sp" />
 

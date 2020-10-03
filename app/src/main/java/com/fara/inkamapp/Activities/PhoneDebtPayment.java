@@ -76,6 +76,13 @@ public class PhoneDebtPayment extends HideKeyboard {
                 .build());
 
         setContentView(R.layout.activity_phone_debt_payment);
+
+        initVariables();
+        new GetUserWallet().execute();
+
+    }
+
+    private void initVariables() {
         tvPhone = findViewById(R.id.tv_phone_number);
         tvTermTitle = findViewById(R.id.tv_term_title);
         tvTermAmount = findViewById(R.id.tv_term_value);
@@ -102,18 +109,10 @@ public class PhoneDebtPayment extends HideKeyboard {
 
         try {
             encryptedToken = Base64.encode((RSA.encrypt(token, publicKey)));
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException |
+                NoSuchPaddingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        new GetUserWallet().execute();
         payOnline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,6 +120,7 @@ public class PhoneDebtPayment extends HideKeyboard {
 
             }
         });
+
         payWallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,6 +129,68 @@ public class PhoneDebtPayment extends HideKeyboard {
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupUI(findViewById(R.id.parent));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        dataToConfirm = data.getStringExtra("enData");
+        if (resultCode == 3) {
+            dataToConfirm = data.getStringExtra("enData");
+            if (dataToConfirm != null)
+                dataToConfirm = dataToConfirm.replace("\\", "");
+            String one = data.getStringExtra("message");
+            String sts = String.valueOf(data.getIntExtra("status", 0));
+            if (sts.equals("0")) {
+                new BillSuccess().execute();
+            }
+        } else if (resultCode == 4) {
+            Toast toast = Toast.makeText(getApplicationContext(), "خطا" +
+                    "در" +
+                    "ثبت" +
+                    "درخواست" +
+                    "پرداخت" +
+                    "قبض", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toastText = toast.getView().findViewById(android.R.id.message);
+            toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+            if (toastText != null) {
+                toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                toastText.setGravity(Gravity.CENTER);
+                toastText.setTextSize(14);
+            }
+            toast.show();
+        } else if (resultCode == 6) {
+            Toast toast = Toast.makeText(getApplicationContext(), "خطای" +
+                    "داخلی" +
+                    "کتابخانه" +
+                    "در" +
+                    "ثبت" +
+                    "پرداخت" +
+                    "قبض", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toastText = toast.getView().findViewById(android.R.id.message);
+            toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+            if (toastText != null) {
+                toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
+                toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+                toastText.setGravity(Gravity.CENTER);
+                toastText.setTextSize(14);
+            }
+            toast.show();
+        }
+
+        // }
+    }//
 
     private class GetUserWallet extends AsyncTask<Void, Void, UserWallet> {
 
@@ -169,7 +231,7 @@ public class PhoneDebtPayment extends HideKeyboard {
 
             if (userWallet != null) {
 
-                if (userWallet.get_balance() < Double.valueOf(_termAmount)) {
+                if (userWallet.get_balance() < Double.parseDouble(_termAmount)) {
                     payWallet.setEnabled(false);
                 } else {
                     payWallet.setEnabled(true);
@@ -225,27 +287,13 @@ public class PhoneDebtPayment extends HideKeyboard {
         protected PaymentResult doInBackground(Void... params) {
 
 
-            String res = new Caller().GetBillToken(userID, encryptedToken, Long.valueOf(userName.substring(1)), Long.valueOf(_paymentId), Long.valueOf(_billId));
+            String res = new Caller().GetBillToken(userID, encryptedToken, Long.parseLong(userName.substring(1)), Long.parseLong(_paymentId), Long.parseLong(_billId));
             try {
                 Gson gson = new Gson();
                 results = gson.fromJson(AESEncyption.decryptMsg(res, AesKey), PaymentResult.class);
 
-
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (InvalidParameterSpecException e) {
-                e.printStackTrace();
-            } catch (InvalidAlgorithmParameterException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
+            } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidParameterSpecException | InvalidAlgorithmParameterException |
+                    InvalidKeyException | BadPaddingException | IllegalBlockSizeException | UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
 
@@ -259,8 +307,6 @@ public class PhoneDebtPayment extends HideKeyboard {
 
 
             if (serviceBillInfo != null) {
-
-
                 orderID = serviceBillInfo.getOrderID();
                 Intent intent = new Intent(getApplicationContext(), PaymentInitiator.class);
                 intent.putExtra("Type", "2");
@@ -320,21 +366,10 @@ public class PhoneDebtPayment extends HideKeyboard {
                 results = g.fromJson(json, PayInfo.class);
 
 
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (InvalidAlgorithmParameterException e) {
-                e.printStackTrace();
-            } catch (InvalidParameterSpecException e) {
+            } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException |
+                    NoSuchAlgorithmException | UnsupportedEncodingException |
+                    InvalidAlgorithmParameterException | InvalidParameterSpecException e) {
+
                 e.printStackTrace();
             }
             return results;
@@ -352,18 +387,14 @@ public class PhoneDebtPayment extends HideKeyboard {
             /// intent.putExtra("mobile", phone);
 
             intent.putExtra("date", data.getPayDTime());
-            intent.putExtra("refrenceNumber",String.valueOf( data.getTrcNo()));
+            intent.putExtra("refrenceNumber", String.valueOf(data.getTrcNo()));
 
 
-            if (data.getStatus() == 0) {
-
+            if (data.getStatus() == 0)
                 intent.putExtra("success", true);
-
-
-            } else {
+            else
                 intent.putExtra("success", false);
 
-            }
             startActivity(intent);
 
         }
@@ -452,62 +483,6 @@ public class PhoneDebtPayment extends HideKeyboard {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        dataToConfirm = data.getStringExtra("enData");
-        if (resultCode == 3) {
-            dataToConfirm = data.getStringExtra("enData");
-            if (!dataToConfirm.equals(null))
-                dataToConfirm = dataToConfirm.replace("\\", "");
-            String one = data.getStringExtra("message");
-            String sts = String.valueOf(data.getIntExtra("status", 0));
-            if (sts.equals("0")) {
-                new BillSuccess().execute();
-            }
-        } else if (resultCode == 4) {
-            Toast toast = Toast.makeText(getApplicationContext(), "خطا" +
-                    "در" +
-                    "ثبت" +
-                    "درخواست" +
-                    "پرداخت" +
-                    "قبض", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toastText = toast.getView().findViewById(android.R.id.message);
-            toast.getView().setBackgroundResource(R.drawable.toast_background);
-
-            if (toastText != null) {
-                toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
-                toastText.setTextColor(getResources().getColor(R.color.colorBlack));
-                toastText.setGravity(Gravity.CENTER);
-                toastText.setTextSize(14);
-            }
-            toast.show();
-        } else if (resultCode == 6) {
-            Toast toast = Toast.makeText(getApplicationContext(), "خطای" +
-                    "داخلی" +
-                    "کتابخانه" +
-                    "در" +
-                    "ثبت" +
-                    "پرداخت" +
-                    "قبض", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toastText = toast.getView().findViewById(android.R.id.message);
-            toast.getView().setBackgroundResource(R.drawable.toast_background);
-
-            if (toastText != null) {
-                toastText.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/IRANSansMobile.ttf"));
-                toastText.setTextColor(getResources().getColor(R.color.colorBlack));
-                toastText.setGravity(Gravity.CENTER);
-                toastText.setTextSize(14);
-            }
-            toast.show();
-        }
-
-        // }
-    }//
-
     private boolean isNetworkAvailable() {
         return FaraNetwork.isNetworkAvailable(getApplicationContext());
     }
@@ -516,9 +491,5 @@ public class PhoneDebtPayment extends HideKeyboard {
         finish();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setupUI(findViewById(R.id.parent));
-    }
+
 }

@@ -1,5 +1,6 @@
 package com.fara.inkamapp.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -14,28 +15,29 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fara.inkamapp.Activities.AirplaneTickets;
 import com.fara.inkamapp.Activities.BusTickets;
 import com.fara.inkamapp.Activities.BuyCharge;
-import com.fara.inkamapp.Activities.CardToCardTransfer;
-import com.fara.inkamapp.Activities.CrispWebView;
 import com.fara.inkamapp.Activities.MainActivity;
 import com.fara.inkamapp.Activities.Notifications;
 import com.fara.inkamapp.Activities.PhoneDebt;
 import com.fara.inkamapp.Activities.ServiceBillsAndCarFines;
-import com.fara.inkamapp.Activities.TrainTickets;
 import com.fara.inkamapp.Adapters.DashboardServiceAdapter;
 import com.fara.inkamapp.BottomSheetFragments.InternetPackageBottomSheet;
 import com.fara.inkamapp.BottomSheetFragments.RepeatTransaction;
 import com.fara.inkamapp.BottomSheetFragments.UserProfile;
+import com.fara.inkamapp.BuildConfig;
+import com.fara.inkamapp.Dialogs.UpdateDialog;
 import com.fara.inkamapp.Helpers.Base64;
 import com.fara.inkamapp.Helpers.FaraNetwork;
 import com.fara.inkamapp.Helpers.Numbers;
 import com.fara.inkamapp.Helpers.RSA;
+import com.fara.inkamapp.Helpers.XMLfunctions;
+import com.fara.inkamapp.Models.NotificationList;
 import com.fara.inkamapp.Models.ProductAndService;
 import com.fara.inkamapp.Models.User;
 import com.fara.inkamapp.R;
@@ -43,6 +45,14 @@ import com.fara.inkamapp.WebServices.Caller;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -54,6 +64,8 @@ import java.util.ArrayList;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -70,13 +82,14 @@ public class Dashboard extends Fragment {
     private BottomSheetDialogFragment bottomSheetDialogFragment;
     //    private RelativeLayout charge, cardToCard, netPackage, trainTicket, planeTicket, busTicket, phone, car, service;
     private RelativeLayout netPackage;
-    private TextView toastText, tvIncom, tvUsers;
+    private TextView toastText, tvIncom, tvUsers, numNotif;
     private RecyclerView mRecyclerView;
     private DashboardServiceAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private TextView walletBalance;
     private String encrytedToken;
-
+    private int numberOfMessages, unreadMsg, unreadNotif;
+    private CheckUpdateLauncherAsync _checkUpdate;
 
     public Dashboard() {
         // Required empty public constructor
@@ -97,6 +110,7 @@ public class Dashboard extends Fragment {
         walletBalance = view.findViewById(R.id.tv_wallet_balance);
         tvIncom = view.findViewById(R.id.tv_income);
         tvUsers = view.findViewById(R.id.tv_users);
+        numNotif = view.findViewById(R.id.tv_has_notif);
 
         mRecyclerView = view.findViewById(R.id.rv_service_and_product);
         mRecyclerView.setHasFixedSize(true);
@@ -116,6 +130,7 @@ public class Dashboard extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Notifications.class);
                 startActivity(intent);
+                numNotif.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -129,23 +144,26 @@ public class Dashboard extends Fragment {
 
         try {
             encrytedToken = Base64.encode((RSA.encrypt(MainActivity._token, publicKey)));
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
 
-        new loginVerification().execute();
-        new getUserWallet().execute();
-
 
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        new loginVerification().execute();
+        new getUserWallet().execute();
+        new getAllNotifications().execute();
+        new getAllMessages().execute();
+
+        _checkUpdate = new CheckUpdateLauncherAsync();
+        _checkUpdate.execute();
+
     }
 
     private boolean isNetworkAvailable() {
@@ -200,56 +218,68 @@ public class Dashboard extends Fragment {
                     public void onItemClick(View view, int position) {
                         switch (position) {
                             case 0:
-                                Intent carBillsIntent = new Intent(getActivity(), ServiceBillsAndCarFines.class);
-                                carBillsIntent.putExtra("BillCode", 0);
-                                startActivity(carBillsIntent);
+                                bottomSheetDialogFragment = InternetPackageBottomSheet.newInstance("Bottom Sheet Get Money Dialog");
+                                bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+
                                 break;
 
                             case 1:
-                                Intent phoneDebtIntent = new Intent(getActivity(), PhoneDebt.class);
-                                startActivity(phoneDebtIntent);
+//                                Intent cardToCard = new Intent(getActivity(), CardToCardTransfer.class);
+//                                startActivity(cardToCard);
+
+                                makeToast(getResources().getString(R.string.coming_soon));
+
+
                                 break;
 
                             case 2:
-                                Intent airplaneIntent = new Intent(getActivity(), AirplaneTickets.class);
-                                startActivity(airplaneIntent);
+                                Intent chargeIntent = new Intent(getActivity(), BuyCharge.class);
+                                startActivity(chargeIntent);
+
+
                                 break;
 
                             case 3:
+                                Intent ticketIntent = new Intent(getActivity(), BusTickets.class);
+                                startActivity(ticketIntent);
 
-                                Intent billIntent = new Intent(getActivity(), ServiceBillsAndCarFines.class);
-                                billIntent.putExtra("BillCode", 1);
-                                startActivity(billIntent);
+
                                 break;
 
                             case 4:
-                                Intent cardToCard = new Intent(getActivity(), CardToCardTransfer.class);
-                                startActivity(cardToCard);
+//                                Intent trainTicket = new Intent(getActivity(), TrainTickets.class);
+//                                startActivity(trainTicket);
+                                makeToast(getResources().getString(R.string.coming_soon));
+
                                 break;
 
                             case 5:
 
-                                Intent chargeIntent = new Intent(getActivity(), BuyCharge.class);
-                                startActivity(chargeIntent);
+//                                Intent airplaneIntent = new Intent(getActivity(), AirplaneTickets.class);
+//                                startActivity(airplaneIntent);
+                                makeToast(getResources().getString(R.string.coming_soon));
+
 
                                 break;
 
                             case 6:
-
-                                Intent ticketIntent = new Intent(getActivity(), BusTickets.class);
-                                startActivity(ticketIntent);
+                                Intent carBillsIntent = new Intent(getActivity(), ServiceBillsAndCarFines.class);
+                                carBillsIntent.putExtra("BillCode", 0);
+                                startActivity(carBillsIntent);
 
                                 break;
 
                             case 7:
+                                Intent phoneDebtIntent = new Intent(getActivity(), PhoneDebt.class);
+                                startActivity(phoneDebtIntent);
 
-                                Intent trainTicket = new Intent(getActivity(), TrainTickets.class);
-                                startActivity(trainTicket);
+
                                 break;
 
                             case 8:
-                                bottomSheetDialogFragment = InternetPackageBottomSheet.newInstance("Bottom Sheet Get Money Dialog");
-                                bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+                                Intent billIntent = new Intent(getActivity(), ServiceBillsAndCarFines.class);
+                                billIntent.putExtra("BillCode", 1);
+                                startActivity(billIntent);
                                 break;
 
                             default:
@@ -276,6 +306,21 @@ public class Dashboard extends Fragment {
             }
 
         }
+    }
+
+    private void makeToast(String msg) {
+        Toast toast = Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toastText = toast.getView().findViewById(android.R.id.message);
+        toast.getView().setBackgroundResource(R.drawable.toast_background);
+
+        if (toastText != null) {
+            toastText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/IRANSansMobile.ttf"));
+            toastText.setTextColor(getResources().getColor(R.color.colorBlack));
+            toastText.setGravity(Gravity.CENTER);
+            toastText.setTextSize(14);
+        }
+        toast.show();
     }
 
     private class getUserWallet extends AsyncTask<Void, Void, User> {
@@ -318,13 +363,14 @@ public class Dashboard extends Fragment {
                 NumberFormat formatter = new DecimalFormat("#,###");
                 String formattedNumber = formatter.format(Double.valueOf(userWallet.getCashOfWallet()));
                 walletBalance.setText(Numbers.ToPersianNumbers(String.valueOf(formattedNumber)));
-                tvUsers.setText(Numbers.ToPersianNumbers(String.valueOf(formatter.format(userWallet.getUserCount()))));
-                tvIncom.setText(Numbers.ToPersianNumbers(String.valueOf(formatter.format(userWallet.getIncome()))));
+                tvUsers.setText(Numbers.ToPersianNumbers(formatter.format(userWallet.getUserCount())));
+                String totalIncome = formatter.format(userWallet.getTotalIncome() + userWallet.getTotalProfit());
+                tvIncom.setText(Numbers.ToPersianNumbers(totalIncome));
                 if (!userWallet.getProfilePicURL().equals("anyType{}") && userWallet.getProfilePicURL() != null) {
 
 
                     Picasso.with(getContext())
-                            .load("http://" + userWallet.getProfilePicURL()).resize(25, 25).centerCrop().into(profile, new Callback() {
+                            .load("https://" + userWallet.getProfilePicURL()).resize(30, 30).centerCrop().into(profile, new Callback() {
                         @Override
                         public void onSuccess() {
                             Log.i("Sohrab P", "Success");
@@ -426,5 +472,133 @@ public class Dashboard extends Fragment {
         }
     }
 
+    private class getAllNotifications extends AsyncTask<Void, Void, ArrayList<NotificationList>> {
+
+        ArrayList<NotificationList> results = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected ArrayList<NotificationList> doInBackground(Void... params) {
+            results = new Caller().getAllNotifications(MainActivity._userId, MainActivity._token);
+
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<NotificationList> notifications) {
+            super.onPostExecute(notifications);
+            //TODO we should add other items here too
+
+            if (notifications != null) {
+
+                for (int i = 0; i < notifications.size(); i++)
+                    if (notifications.get(i).get_unRead() > 0)
+                        unreadNotif = notifications.get(i).get_unRead();
+//                        unreadNotifications.setText(String.valueOf(notifications.get(i).get_unRead()));
+
+                new getAllMessages().execute();
+            }
+
+        }
+    }
+
+    private class getAllMessages extends AsyncTask<Void, Void, ArrayList<NotificationList>> {
+
+        ArrayList<NotificationList> results = null;
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected ArrayList<NotificationList> doInBackground(Void... params) {
+            results = new Caller().getMessages(MainActivity._userId, MainActivity._token);
+
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<NotificationList> messages) {
+            super.onPostExecute(messages);
+            //TODO we should add other items here too
+
+            if (messages != null) {
+
+                for (int i = 0; i < messages.size(); i++) {
+                    if (messages.get(i).get_unRead() > 0)
+                        unreadMsg = messages.get(i).get_unRead();
+
+
+                    numberOfMessages = unreadMsg + unreadNotif;
+                    if (numberOfMessages > 0) {
+                        numNotif.setVisibility(View.VISIBLE);
+                        numNotif.setText(Numbers.ToPersianNumbers(String.valueOf(numberOfMessages)));
+                    }
+                }
+            }
+        }
+    }
+
+    private class CheckUpdateLauncherAsync extends
+            AsyncTask<Context, String, Boolean> {
+
+        Context context;
+        String LatestLauncherVersion = "";
+
+        @Override
+        protected Boolean doInBackground(Context... ctx) {
+            try {
+                context = getActivity();
+                HttpGet uri = new HttpGet(
+                        "http://income-app.ir/updateInfo.xml");
+
+                DefaultHttpClient client = new DefaultHttpClient();
+
+                HttpResponse resp = client.execute(uri);
+
+                StatusLine status = resp.getStatusLine();
+
+                DocumentBuilderFactory factory = DocumentBuilderFactory
+                        .newInstance();
+                DocumentBuilder builder = factory.newDocumentBuilder();
+
+                Document doc = builder.parse(resp.getEntity().getContent());
+
+                NodeList nodes = doc.getElementsByTagName("update");
+                Element el = (Element) nodes.item(0);
+
+                LatestLauncherVersion = XMLfunctions.getValue(el, "version")
+                        .trim();
+
+
+                if (Double.parseDouble(LatestLauncherVersion) > Double.parseDouble(BuildConfig.VERSION_NAME))
+                    return true;
+                else
+                    return false;
+            } catch (java.net.SocketTimeoutException e) {
+                return false;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+
+            if (result == true) {
+
+                UpdateDialog alert = new UpdateDialog();
+                alert.showDialog(getActivity());
+
+            }
+
+        }
+    }
 
 }

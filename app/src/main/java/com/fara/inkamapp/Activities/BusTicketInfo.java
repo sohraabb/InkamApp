@@ -59,12 +59,12 @@ public class BusTicketInfo extends AppCompatActivity {
     private TextView tvDestination;
     private TextView tvDay;
     private TextView tvDate;
-    private TextView tvCurrentLocTime,tvDiscount;
+    private TextView tvCurrentLocTime, tvDiscount;
     private TextView tvDestinationTime;
     private TextView tvNumberPassengers;
     private RelativeLayout rvDiscount;
-    private String destName,destinationID,sourceID;
-    private String  token, userID, encryptedToken, AesKey,dataToConfirm;
+    private String destName, destinationID, sourceID;
+    private String token, userID, encryptedToken, AesKey, dataToConfirm;
     private SharedPreferences sharedpreferences;
 
 
@@ -86,21 +86,37 @@ public class BusTicketInfo extends AppCompatActivity {
                 .build());
 
         setContentView(R.layout.activity_bus_ticket_info);
-        tvName = (TextView) findViewById(R.id.tv_name);
-        busType = (TextView) findViewById(R.id.bus_type);
-        busEndOrigin = (TextView) findViewById(R.id.bus_end_origin);
-        busEndDestination = (TextView) findViewById(R.id.bus_end_destination);
-        tvAdultPrice = (TextView) findViewById(R.id.tv_adult_price);
-        tvCurrentLocation = (TextView) findViewById(R.id.tv_current_location);
-        tvDestination = (TextView) findViewById(R.id.tv_destination);
-        tvDay = (TextView) findViewById(R.id.tv_day);
-        tvDate = (TextView) findViewById(R.id.tv_date);
-        tvCurrentLocTime = (TextView) findViewById(R.id.tv_current_loc_time);
-        tvDestinationTime = (TextView) findViewById(R.id.tv_destination_time);
-        tvNumberPassengers = (TextView) findViewById(R.id.tv_number_passengers);
-        tvDiscount=findViewById(R.id.tv_price_discount);
-        rvDiscount=findViewById(R.id.rl_discount);
-        ///
+        initVariables();
+
+        new GetSpecificService().execute();
+    }
+
+    private void initVariables() {
+        tvName = findViewById(R.id.tv_name);
+        busType = findViewById(R.id.bus_type);
+        busEndOrigin = findViewById(R.id.bus_end_origin);
+        busEndDestination = findViewById(R.id.bus_end_destination);
+        tvAdultPrice = findViewById(R.id.tv_adult_price);
+        tvCurrentLocation = findViewById(R.id.tv_current_location);
+        tvDestination = findViewById(R.id.tv_destination);
+        tvDay = findViewById(R.id.tv_day);
+        tvDate = findViewById(R.id.tv_date);
+        tvCurrentLocTime = findViewById(R.id.tv_current_loc_time);
+        tvDestinationTime = findViewById(R.id.tv_destination_time);
+        tvNumberPassengers = findViewById(R.id.tv_number_passengers);
+        tvDiscount = findViewById(R.id.tv_price_discount);
+        rvDiscount = findViewById(R.id.rl_discount);
+
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        token = sharedpreferences.getString("Token", null);
+        userID = sharedpreferences.getString("UserID", null);
+        AesKey = sharedpreferences.getString("key", null);
+        try {
+            encryptedToken = Base64.encode((RSA.encrypt(token, publicKey)));
+        } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
         busID = getIntent().getStringExtra("busID");
         String fromDate = getIntent().getStringExtra("fromDate");
         destName = getIntent().getStringExtra("toName");
@@ -115,53 +131,34 @@ public class BusTicketInfo extends AppCompatActivity {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.UK);
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-        tvCurrentLocTime.setText(Numbers.ToPersianNumbers( time.split("T")[1].substring(0,5)));
+        tvCurrentLocTime.setText(Numbers.ToPersianNumbers(time.split("T")[1].substring(0, 5)));
 
         ///
 
-        String[] separateDate = fromDate.replace("T"," ").split(" ")[0].split("-");
+        String[] separateDate = fromDate.replace("T", " ").split(" ")[0].split("-");
 
         PersianCalendar j = new PersianCalendar();
 
         j.set(Integer.parseInt(separateDate[0]), Integer.parseInt(separateDate[1]) - 1, Integer.parseInt(separateDate[2]));
         String currentPersianDate = j.getPersianShortDate();
-        tvDate.setText(Numbers.ToPersianNumbers( currentPersianDate));
+        tvDate.setText(Numbers.ToPersianNumbers(currentPersianDate));
         tvDay.setText(j.getPersianLongDate().split(" ")[0]);
         ///
 
 
-        Button btnSelect= (Button)findViewById(R.id.btn_select_ticket);
+        Button btnSelect = findViewById(R.id.btn_select_ticket);
         btnSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent= new Intent(getApplicationContext(),BusTicketSelectionProcess.class);
-                intent.putExtra("busID",busID);
-                intent.putExtra("toCity",destName);
+                Intent intent = new Intent(getApplicationContext(), BusTicketSelectionProcess.class);
+                intent.putExtra("busID", busID);
+                intent.putExtra("toCity", destName);
                 intent.putExtra("sourceID", sourceID);
                 intent.putExtra("destinationID", destinationID);
                 startActivity(intent);
 
             }
         });
-
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        token = sharedpreferences.getString("Token", null);
-        userID = sharedpreferences.getString("UserID", null);
-        AesKey = sharedpreferences.getString("key", null);
-        try {
-            encryptedToken = Base64.encode((RSA.encrypt(token, publicKey)));
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        new GetSpecificService().execute();
     }
 
     private class GetSpecificService extends AsyncTask<Void, Void, Bus> {
@@ -220,17 +217,17 @@ public class BusTicketInfo extends AppCompatActivity {
                     tvName.setText(bus.getCompany());
                     busType.setText(bus.getType());
                     busEndOrigin.setText(bus.getBoardingPoint().getTerminal());
-                    busEndDestination.setText(bus.getDroppingPoints().get(bus.getDroppingPoints().size()-1).getTerminal());
+                    busEndDestination.setText(bus.getDroppingPoints().get(bus.getDroppingPoints().size() - 1).getTerminal());
                     ///
-                    float discount=  bus.getFinancial().getMaxApplicableDiscountPercentage();
-                    if (discount>0){
+                    float discount = bus.getFinancial().getMaxApplicableDiscountPercentage();
+                    if (discount > 0) {
                         rvDiscount.setVisibility(View.VISIBLE);
                     }
-                    int price =bus.getFinancial().getPrice();
+                    int price = bus.getFinancial().getPrice();
 
                     DecimalFormat sdd = new DecimalFormat("#,###");
                     Double doubleNumber = Double.parseDouble(String.valueOf(bus.getFinancial().getPrice()));
-                    Double doubleNumber2 = Double.parseDouble(String.valueOf( price-(price*discount/100)));
+                    Double doubleNumber2 = Double.parseDouble(String.valueOf(price - (price * discount / 100)));
 
                     String format = sdd.format(doubleNumber);
                     ///
@@ -240,9 +237,7 @@ public class BusTicketInfo extends AppCompatActivity {
                     tvDestination.setText(bus.getDroppingPoints().get(0).getCity());
 
 
-
                 } catch (Exception ex) {
-                    String d = ex.toString();
                     Log.e("errorrrrrrrrr", ex.toString());
                 }
             }
@@ -252,7 +247,8 @@ public class BusTicketInfo extends AppCompatActivity {
     private boolean isNetworkAvailable() {
         return FaraNetwork.isNetworkAvailable(getApplicationContext());
     }
-    public void backClicked(View v){
+
+    public void backClicked(View v) {
         finish();
     }
 }
